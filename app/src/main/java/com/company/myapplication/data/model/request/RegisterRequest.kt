@@ -1,4 +1,4 @@
-package com.company.myapplication.data.model
+package com.company.myapplication.data.model.request
 
 data class RegisterRequest(
     val name:String,

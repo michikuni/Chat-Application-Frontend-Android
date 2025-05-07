@@ -1,4 +1,4 @@
-package com.company.myapplication.ui.home
+package com.company.myapplication.ui.home.chat
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -14,7 +14,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import com.company.myapplication.data.model.UserChatPreview
+import com.company.myapplication.data.model.chat.UserChatPreview
 
 @Composable
 fun ChatItem(user: UserChatPreview) {
@@ -43,6 +43,7 @@ fun ChatItem(user: UserChatPreview) {
             }
         }
         Spacer(modifier = Modifier.width(12.dp))
+
         Column(Modifier.weight(1f)) {
             Text(text = user.name, fontWeight = FontWeight.Bold)
             Text(

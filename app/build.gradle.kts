@@ -40,6 +40,7 @@ android {
 }
 
 dependencies {
+    implementation("androidx.compose.material:material:1.8.0")
     implementation("br.com.devsrsouza.compose.icons:font-awesome:1.1.0")
 
     implementation("io.coil-kt:coil-compose:2.5.0")

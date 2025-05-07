@@ -1,14 +1,14 @@
 package com.company.myapplication.repository
 
 import com.company.myapplication.data.api.ApiService
-import com.company.myapplication.data.model.LoginRequest
-import com.company.myapplication.data.model.RegisterRequest
+import com.company.myapplication.data.model.request.LoginRequest
+import com.company.myapplication.data.model.request.RegisterRequest
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 class AuthRepository {
     private val retrofit = Retrofit.Builder()
-        .baseUrl("http://192.168.5.108:8080")
+        .baseUrl("https://shaky-owls-end.loca.lt")
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 

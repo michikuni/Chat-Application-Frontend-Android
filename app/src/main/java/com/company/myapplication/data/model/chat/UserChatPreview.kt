@@ -1,4 +1,4 @@
-package com.company.myapplication.data.model
+package com.company.myapplication.data.model.chat
 
 data class UserChatPreview(
     val id: Long,

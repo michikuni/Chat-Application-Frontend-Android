@@ -2,15 +2,17 @@ package com.company.myapplication.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.company.myapplication.data.model.chat.UserChatPreview
 import com.company.myapplication.ui.home.ContactScreen
 import com.company.myapplication.ui.home.HomeScreen
-import com.company.myapplication.ui.home.chat.BoxChat
+import com.company.myapplication.ui.home.chat.boxchat.BoxChat
 import com.company.myapplication.ui.login.LoginScreen
 import com.company.myapplication.ui.register.RegisterScreen
 import com.company.myapplication.viewmodel.AuthViewModel

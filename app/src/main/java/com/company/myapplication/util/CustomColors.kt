@@ -5,7 +5,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
-val topAppBarColor = Color(0xFFEEEEEE)
+val topAppBarColor = Color(0xFFEEEEEE) //Top
 val searchBackgroundColor = Color(0xFFD9D9D9)
 val lineBreakMessage = Color(0xFFAFAFAF)
 val themeColor = Color(0xFF0084FF).copy(alpha = 0.6f)

@@ -41,6 +41,8 @@ android {
 
 dependencies {
     implementation("androidx.compose.material:material:1.8.0")
+    implementation ("androidx.compose.material:material-icons-extended:1.6.1")
+
     implementation("br.com.devsrsouza.compose.icons:font-awesome:1.1.0")
 
     implementation("io.coil-kt:coil-compose:2.5.0")

@@ -8,7 +8,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.company.myapplication.data.model.chat.UserChatPreview
+import com.company.myapplication.ui.home.ContactScreen
 import com.company.myapplication.ui.home.HomeScreen
+import com.company.myapplication.ui.home.chat.BoxChat
 import com.company.myapplication.ui.login.LoginScreen
 import com.company.myapplication.ui.register.RegisterScreen
 import com.company.myapplication.viewmodel.AuthViewModel
@@ -63,8 +65,25 @@ fun AppNavigation() {
         }
         composable("home") {
             HomeScreen(
-                users = usersState.value
+                users = usersState.value,
+                navHostController = navController
             )
         }
+
+        composable("contact") {
+            ContactScreen(
+                contacts = usersState.value,
+                navHostController = navController
+            )
+        }
+
+        composable("boxchat/{name}") { backStackEntry ->
+            val name = backStackEntry.arguments?.getString("name")
+            BoxChat(
+                contact = name,
+                navHostController = navController
+            )
+        }
+
     }
 }

@@ -8,7 +8,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class AuthRepository {
     private val retrofit = Retrofit.Builder()
-        .baseUrl("https://shaky-owls-end.loca.lt")
+        .baseUrl("http://192.168.5.106:8080")
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 

@@ -2,8 +2,10 @@ package com.company.myapplication.ui.home.chat
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.*
@@ -13,18 +15,31 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.company.myapplication.data.model.chat.UserChatPreview
 
 @Composable
-fun ChatItem(user: UserChatPreview) {
+fun ChatItem(
+    user: UserChatPreview,
+    navHostController: NavHostController
+) {
+    var isSelected by remember { mutableStateOf(false) }
     Row(
         modifier = Modifier
+            .background(
+                if (isSelected) Color(0xFFEEEEEE) else Color.Transparent,
+                shape = RoundedCornerShape(10.dp)
+            )
+            .clickable {
+                isSelected = !isSelected
+                navHostController.navigate("boxchat/${user.name}")
+            }
             .fillMaxWidth()
             .padding(12.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Box {
+        Box{
             AsyncImage(
                 model = user.avatarUrl,
                 contentDescription = null,

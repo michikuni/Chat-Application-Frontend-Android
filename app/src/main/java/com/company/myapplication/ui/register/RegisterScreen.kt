@@ -7,8 +7,6 @@ import androidx.compose.ui.*
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.*
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.company.myapplication.viewmodel.AuthViewModel
 import kotlinx.coroutines.delay
 

@@ -22,45 +22,64 @@ import com.company.myapplication.util.topAppBarColor
 fun SearchBar(
     query: String,
     onQueryChange: (String) -> Unit,
-    modifier: Modifier = Modifier,
 ) {
     Box (
         modifier = Modifier
             .fillMaxWidth()
             .height(50.dp)
             .background(color = topAppBarColor)
-            .padding(10.dp),
-        contentAlignment = Alignment.Center
+            .padding(10.dp)
     ){
-        BasicTextField(
-            value = query,
-            onValueChange = onQueryChange,
-            modifier = modifier
-                .width(300.dp)
-                .height(30.dp)
-                .background(color = searchBackgroundColor, shape = RoundedCornerShape(16.dp))
-            ,
-            singleLine = true,
-            textStyle = TextStyle(fontSize = 14.sp, color = Color.Black),
-            decorationBox = { innerTextField ->
-                Row(verticalAlignment = Alignment.CenterVertically
-                ){
-                    Spacer(modifier = Modifier.width(5.dp))
-                    Icon(
-                        imageVector = Icons.Default.Search,
-                        contentDescription = null,
-                        modifier = Modifier.size(20.dp),
-                        tint = Color.Gray
-                    )
-                    Spacer(modifier = Modifier.width(8.dp))
-                    if (query.isEmpty()){
-                        Text("Search", color = Color.Gray, fontSize = 16.sp)
-                    } else {
-                        innerTextField()
+        Row (
+            modifier = Modifier
+                .fillMaxHeight()
+                .background(color = Color.Transparent),
+            verticalAlignment = Alignment.CenterVertically
+        ){
+            Spacer(modifier = Modifier.weight(0.125f))
+            BasicTextField(
+                value = query,
+                onValueChange = onQueryChange,
+                modifier = Modifier
+                    .height(30.dp)
+                    .background(color = searchBackgroundColor,
+                        shape = RoundedCornerShape(16.dp))
+                    .weight(0.75f)
+                ,
+                singleLine = true,
+                textStyle = TextStyle(fontSize = 14.sp, color = Color.Black),
+                decorationBox = { innerTextField ->
+                    Row(verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier
+                            .padding(horizontal = 8.dp)
+                    ){
+                        Spacer(modifier = Modifier.width(5.dp))
+                        Icon(
+                            imageVector = Icons.Default.Search,
+                            contentDescription = null,
+                            modifier = Modifier.size(20.dp),
+                            tint = Color.Gray
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Box(
+                            modifier = Modifier.weight(1f),
+                            contentAlignment = Alignment.CenterStart
+                        ) {
+                            if (query.isEmpty()) {
+                                Text(
+                                    text = "Search",
+                                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f),
+                                    fontSize = 14.sp,
+                                    style = MaterialTheme.typography.bodyMedium
+                                )
+                            }
+                            innerTextField()
+                        }
                     }
-                }
 
-            }
-        )
+                }
+            )
+            Spacer(modifier = Modifier.weight(0.125f))
+        }
     }
 }

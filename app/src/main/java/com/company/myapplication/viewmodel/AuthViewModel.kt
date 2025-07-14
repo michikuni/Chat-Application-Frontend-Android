@@ -15,10 +15,10 @@ class AuthViewModel: ViewModel() {
     var errorMessage by mutableStateOf<String?>(null)
     var registerSuccess by mutableStateOf(false)
 
-    fun login(username: String, password: String){
+    fun login(account: String, password: String){
         viewModelScope.launch {
             try {
-                val result = repo.login(username, password)
+                val result = repo.login(account, password)
 
                 if (result != null){
                     token = result
@@ -32,10 +32,10 @@ class AuthViewModel: ViewModel() {
         }
     }
 
-    fun register(name: String, username: String, email: String, password: String){
+    fun register(name: String, account: String, email: String, password: String){
         viewModelScope.launch {
             try {
-                val success = repo.register(name, username, email, password)
+                val success = repo.register(name, account, email, password)
                 registerSuccess = success
                 errorMessage = if (success) null else "Register failed"
             } catch (e: Exception){

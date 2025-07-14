@@ -8,21 +8,21 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class AuthRepository {
     private val retrofit = Retrofit.Builder()
-        .baseUrl("http://192.168.5.106:8080")
+        .baseUrl("http://10.0.2.2:8080")
         .addConverterFactory(GsonConverterFactory.create())
         .build()
-
     private val api = retrofit.create(ApiService::class.java)
 
-    suspend fun register(name: String, username: String, email:String, password: String): Boolean{
-        val response = api.register(RegisterRequest(name, username, email, password))
+    suspend fun register(name: String, account: String, email:String, password: String): Boolean{
+        val response = api.register(RegisterRequest(name, account, email, password))
         return response.isSuccessful
     }
 
-    suspend fun login(username: String, password: String):String?{
-        val response = api.login(LoginRequest(username, password))
-        return if (response.isSuccessful) response.body()?.token else {
-            // Log lỗi chi tiết
+    suspend fun login(account: String, password: String):String?{
+        val response = api.login(LoginRequest(account, password))
+        return if (response.isSuccessful)
+            response.body()?.token
+        else {
             val errorBody = response.errorBody()?.string()
             println("Login error: $errorBody")
             null

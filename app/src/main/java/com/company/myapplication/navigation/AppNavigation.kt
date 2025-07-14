@@ -2,13 +2,12 @@ package com.company.myapplication.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.company.myapplication.data.model.chat.BoxChat
 import com.company.myapplication.data.model.chat.UserChatPreview
 import com.company.myapplication.ui.home.ContactScreen
 import com.company.myapplication.ui.home.HomeScreen
@@ -21,9 +20,45 @@ import com.company.myapplication.viewmodel.AuthViewModel
 fun AppNavigation() {
     val navController = rememberNavController()
     val authViewModel = remember { AuthViewModel() }
+    val message = remember { mutableStateOf<List<BoxChat>>(emptyList()) }
     val usersState = remember {
         mutableStateOf<List<UserChatPreview>>(emptyList())
     }
+    LaunchedEffect (Unit){
+        message.value = listOf(
+        BoxChat("1", "Lê Phương Thúy", true, "Yêu thì yêu không yêu thì yêu", "avatar1.png", "19:07"),
+        BoxChat("2", "Dũng Trần", false, "Chắc mấy câu truy vấn", "avatar2.png", "17:05"),
+        BoxChat("3", "Học viện CSND", true, "Tài liệu ôn thi tuần sau", "avatar3.png", "16:05"),
+        BoxChat("4", "Ngọc Anh", false, "Tối rảnh không?", "avatar4.png", "20:45"),
+        BoxChat("5", "Hoàng Đức", true, "Làm project chưa?", "avatar5.png", "14:30"),
+        BoxChat("6", "Trần Minh", false, "Hẹn gặp sau nhé", "avatar6.png", "11:15"),
+        BoxChat("7", "Thu Hằng", true, "Check mail rồi nha", "avatar7.png", "10:50"),
+        BoxChat("8", "Cường IT", false, "Đẩy lên Git chưa?", "avatar8.png", "13:00"),
+        BoxChat("9", "Hà Linh", true, "Ảnh đẹp quá!", "avatar9.png", "09:15"),
+        BoxChat("10", "Phạm Quốc", false, "Ngày mai học không?", "avatar10.png", "21:30"),
+        BoxChat("11", "Mai Trang", true, "Xem bài này chưa", "avatar11.png", "18:12"),
+        BoxChat("12", "Lộc Nguyễn", true, "Đã gửi báo cáo", "avatar12.png", "22:00"),
+        BoxChat("13", "Đức Anh", false, "Trả lời inbox đi", "avatar13.png", "23:20"),
+        BoxChat("14", "Trần Huy", true, "Mạng lag vãi", "avatar14.png", "15:40"),
+        BoxChat("15", "Lê Hương", false, "Sáng mai call nhé", "avatar15.png", "08:00"),
+        BoxChat("16", "Team Java", true, "Review code rồi", "avatar16.png", "16:00"),
+        BoxChat("17", "Nguyễn Thảo", true, "Lên thư viện chứ?", "avatar17.png", "07:45"),
+        BoxChat("18", "Đặng Nam", false, "Xin tài liệu", "avatar18.png", "12:30"),
+        BoxChat("19", "Bùi Chi", true, "Làm app tới đâu rồi?", "avatar19.png", "19:10"),
+        BoxChat("20", "Cô Giang", false, "Bài kiểm tra tuần sau", "avatar20.png", "17:50"),
+        BoxChat("21", "Tú Anh", true, "Đã xem video rồi", "avatar21.png", "13:25"),
+        BoxChat("22", "Minh Châu", false, "Gặp nhau chiều nay", "avatar22.png", "16:45"),
+        BoxChat("23", "Thế Bảo", true, "Code xong chưa?", "avatar23.png", "18:10"),
+        BoxChat("24", "Phương Uyên", true, "Cài Android Studio chưa?", "avatar24.png", "10:40"),
+        BoxChat("25", "Khoa CNTT", false, "Lịch học đã cập nhật", "avatar25.png", "09:55"),
+        BoxChat("26", "Tổ trưởng lớp", true, "Họp lớp 19h", "avatar26.png", "19:00"),
+        BoxChat("27", "Trịnh Đức", false, "Bài tập nhóm đâu?", "avatar27.png", "20:20"),
+        BoxChat("28", "Hòa Bình", true, "Gửi link Zoom", "avatar28.png", "14:10"),
+        BoxChat("29", "Anh Quân", false, "Deadline tối nay nha", "avatar29.png", "23:45"),
+        BoxChat("30", "Linh Lan", true, "Đang rảnh nè", "avatar30.png", "12:00")
+    )
+    }
+
     LaunchedEffect(Unit) {
         // TODO: Gọi API thật tại đây nếu có
         usersState.value = listOf(
@@ -83,7 +118,8 @@ fun AppNavigation() {
             val name = backStackEntry.arguments?.getString("name")
             BoxChat(
                 contact = name,
-                navHostController = navController
+                navHostController = navController,
+                message = message.value
             )
         }
 

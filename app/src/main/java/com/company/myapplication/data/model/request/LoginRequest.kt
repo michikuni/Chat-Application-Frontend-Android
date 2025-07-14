@@ -1,6 +1,6 @@
 package com.company.myapplication.data.model.request
 
 data class LoginRequest (
-    val username: String,
+    val account: String,
     val password: String
 )

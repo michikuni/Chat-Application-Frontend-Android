@@ -15,7 +15,7 @@ fun LoginScreen(
     onLoginSuccess: () -> Unit,
     onNavigateToRegister: () -> Unit
 ) {
-    var username by remember { mutableStateOf("") }
+    var account by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
 
     Column(
@@ -30,8 +30,8 @@ fun LoginScreen(
         Spacer(modifier = Modifier.height(16.dp))
 
         OutlinedTextField(
-            value = username,
-            onValueChange = { username = it },
+            value = account,
+            onValueChange = { account = it },
             label = { Text("Email") },
             modifier = Modifier.fillMaxWidth()
         )
@@ -48,7 +48,7 @@ fun LoginScreen(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        Button(onClick = { viewModel.login(username, password) }, modifier = Modifier.fillMaxWidth()) {
+        Button(onClick = { viewModel.login(account, password) }, modifier = Modifier.fillMaxWidth()) {
             Text("Đăng nhập")
         }
 

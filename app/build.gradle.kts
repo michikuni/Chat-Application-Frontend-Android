@@ -40,17 +40,17 @@ android {
 }
 
 dependencies {
-    implementation("androidx.compose.material:material:1.8.0")
-    implementation ("androidx.compose.material:material-icons-extended:1.6.1")
+    implementation(libs.androidx.material)
+    implementation (libs.androidx.material.icons.extended)
 
-    implementation("br.com.devsrsouza.compose.icons:font-awesome:1.1.0")
+    implementation(libs.font.awesome)
 
-    implementation("io.coil-kt:coil-compose:2.5.0")
+    implementation(libs.coil.compose)
 
-    implementation("com.squareup.retrofit2:retrofit:2.11.0")
-    implementation("com.squareup.retrofit2:converter-gson:2.11.0")
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
 
-    implementation("androidx.datastore:datastore-preferences:1.1.4")
+    implementation(libs.androidx.datastore.preferences)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

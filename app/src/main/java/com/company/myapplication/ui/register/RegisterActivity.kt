@@ -17,7 +17,7 @@ fun RegisterScreen(
     onNavigateToLogin: () -> Unit
 ) {
     var name by remember { mutableStateOf("") }
-    var username by remember { mutableStateOf("") }
+    var account by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var confirmPassword by remember { mutableStateOf("") }
@@ -43,8 +43,8 @@ fun RegisterScreen(
         Spacer(modifier = Modifier.height(8.dp))
 
         OutlinedTextField(
-            value = username,
-            onValueChange = { username = it},
+            value = account,
+            onValueChange = { account = it},
             label = { Text("Username") },
             modifier = Modifier.fillMaxWidth()
         )
@@ -80,7 +80,7 @@ fun RegisterScreen(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        Button(onClick = { viewModel.register(name, username, email, password) },modifier = Modifier.fillMaxWidth()
+        Button(onClick = { viewModel.register(name, account, email, password) },modifier = Modifier.fillMaxWidth()
         ) {
             Text("Đăng ký")
         }

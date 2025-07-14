@@ -2,7 +2,7 @@ package com.company.myapplication.data.model.request
 
 data class RegisterRequest(
     val name:String,
-    val username:String,
+    val account:String,
     val email:String,
     val password:String
 )

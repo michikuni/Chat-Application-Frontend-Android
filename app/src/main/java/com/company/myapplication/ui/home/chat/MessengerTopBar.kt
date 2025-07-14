@@ -8,8 +8,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AddCircle
-import androidx.compose.material.icons.filled.Edit
+
+import androidx.compose.material.icons.filled.CheckBox
+import androidx.compose.material.icons.outlined.AddBox
+import androidx.compose.material.icons.outlined.DisabledByDefault
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -23,6 +25,9 @@ import com.company.myapplication.util.topAppBarColor
 import com.company.myapplication.util.topAppBarHeight
 import com.company.myapplication.util.topAppBarPadding
 import com.company.myapplication.util.topTitleFontSize
+import compose.icons.FontAwesomeIcons
+import compose.icons.fontawesomeicons.Solid
+import compose.icons.fontawesomeicons.solid.PencilAlt
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -46,7 +51,7 @@ fun MessengerTopBar(
             navigationIcon = {
                 IconButton(onClick = {}) {
                     Icon(
-                        imageVector = Icons.Default.Edit,
+                        imageVector = Icons.Outlined.DisabledByDefault,
                         contentDescription = null,
                         tint = themeColor
                     )
@@ -56,7 +61,7 @@ fun MessengerTopBar(
                 IconButton(onClick = {  }
                 ) {
                     Icon(
-                        imageVector = Icons.Default.AddCircle,
+                        imageVector = Icons.Outlined.AddBox,
                         contentDescription = null,
                         tint = themeColor
                     )

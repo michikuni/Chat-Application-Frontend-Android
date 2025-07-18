@@ -8,7 +8,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class AuthRepository {
     private val retrofit = Retrofit.Builder()
-        .baseUrl("http://10.0.2.2:8080")
+        .baseUrl("http://192.168.5.103:8080")
         .addConverterFactory(GsonConverterFactory.create())
         .build()
     private val api = retrofit.create(ApiService::class.java)

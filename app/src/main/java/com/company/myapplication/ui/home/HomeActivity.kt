@@ -1,5 +1,6 @@
 package com.company.myapplication.ui.home
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -14,29 +15,34 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.company.myapplication.data.model.chat.UserChatPreview
-import com.company.myapplication.ui.components.SearchBar
+import com.company.myapplication.ui.home.util.SearchBar
 import com.company.myapplication.ui.home.util.BottomNavigationBar
 import com.company.myapplication.ui.home.chat.ChatItem
 import com.company.myapplication.ui.home.chat.MessengerTopBar
 import com.company.myapplication.util.lineBreakMessage
+import com.company.myapplication.util.topAppBarColor
 
 @Composable
 fun HomeScreen(
     users: List<UserChatPreview>,
     navHostController: NavHostController,
 ){
+    val configuration = LocalConfiguration.current
+    val screenWidth = configuration.screenWidthDp
+    val screenHeight = configuration.screenHeightDp
+    val paddingLR = (screenWidth / 10).dp
     var searchQuery by remember { mutableStateOf("") }
 
     val filterUser = users.filter {
         it.name.contains(searchQuery, ignoreCase = true)
     }
     Scaffold (
-        topBar = {MessengerTopBar()},
+        topBar = {MessengerTopBar(users)},
         bottomBar = {
             val currentBackStackEntry = navHostController.currentBackStackEntryAsState().value
             val currentRoute = currentBackStackEntry?.destination?.route?: ""
@@ -48,7 +54,9 @@ fun HomeScreen(
             .padding(paddingValues)){
             SearchBar(
                 query = searchQuery,
-                onQueryChange = { searchQuery = it}
+                onQueryChange = { searchQuery = it},
+                modifier = Modifier
+                    .background(color = topAppBarColor)
             )
             LazyColumn (
                 contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp)

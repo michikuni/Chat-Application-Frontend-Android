@@ -1,16 +1,12 @@
 package com.company.myapplication.ui.home
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -20,7 +16,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import com.company.myapplication.data.model.chat.UserChatPreview
 import com.company.myapplication.ui.home.contact.ContactTopBar
 import com.company.myapplication.ui.home.util.BottomNavigationBar
-import com.company.myapplication.ui.components.SearchBar
+import com.company.myapplication.ui.home.util.SearchBar
 import com.company.myapplication.ui.home.contact.ContactItem
 import com.company.myapplication.util.lineBreakMessage
 

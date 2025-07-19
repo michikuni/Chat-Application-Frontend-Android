@@ -3,24 +3,28 @@ package com.company.myapplication.ui.home.chat
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import com.company.myapplication.ui.home.util.SearchBar
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountCircle
-import androidx.compose.material.icons.filled.ChatBubbleOutline
-import androidx.compose.material.icons.filled.Face
-import androidx.compose.material.icons.filled.Group
+import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.*
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import androidx.compose.ui.unit.*
 import androidx.compose.ui.window.Dialog
+import com.company.myapplication.data.model.chat.UserChatPreview
 
 @Composable
 fun CreateConversationPopup(
+        users: List<UserChatPreview>,
         onDismiss: () -> Unit
     ) {
+        var searchQuery by remember { mutableStateOf("") }
+
+        val filterUser = users.filter {
+            it.name.contains(searchQuery, ignoreCase = true)
+        }
         Dialog(onDismissRequest = { onDismiss() }) {
             Surface(
                 shape = RoundedCornerShape(16.dp),
@@ -49,21 +53,20 @@ fun CreateConversationPopup(
                             modifier = Modifier.clickable { onDismiss() }
                         )
                     }
-
-                    Spacer(modifier = Modifier.height(16.dp))
+                    SearchBar(query = searchQuery,
+                        onQueryChange = {searchQuery = it},)
 
                     // Danh sách các item
-                    PopupItem(icon = Icons.Default.Group, text = "Tạo nhóm mới")
-                    PopupItem(icon = Icons.Default.ChatBubbleOutline, text = "Cộng đồng")
-                    PopupItem(icon = Icons.Default.Face, text = "Chat với AI")
+                    PopupItem(icon = Icons.Default.PersonAdd, text = "Thêm bạn")
+                    PopupItem(icon = Icons.Default.GroupAdd, text = "Tạo nhóm mới")
 
                     Spacer(modifier = Modifier.height(16.dp))
                     Text("Gợi ý", style = MaterialTheme.typography.labelMedium)
 
                     // Giả lập danh sách liên hệ gợi ý
-                    val suggestedContacts = listOf("Đặng Bích Duyên", "Hoàng Bảo Khanh", "Linh Đào")
+                    val suggestedContacts = filterUser
                     suggestedContacts.forEach {
-                        PopupSuggestion(name = it)
+                        PopupSuggestion(name = it.name)
                     }
                 }
             }

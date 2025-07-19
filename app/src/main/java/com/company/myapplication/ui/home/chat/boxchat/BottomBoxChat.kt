@@ -7,32 +7,32 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Send
-import androidx.compose.material.icons.filled.AttachFile
+import androidx.compose.material.icons.filled.Attachment
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.company.myapplication.util.searchBackgroundColor
 import com.company.myapplication.util.themeColor
+import com.company.myapplication.ui.home.util.TextField
+import com.company.myapplication.util.topAppBarColor
+
 
 @Composable
 fun BottomBoxChat(
     query: String,
     onQueryChange: (String) -> Unit,
 ){
+    val configuration = LocalConfiguration.current
+    val screenWidth = configuration.screenWidthDp
+    val screenHeight = configuration.screenHeightDp
+    val tfWidth = (screenHeight / 10 * 7.5)
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -49,46 +49,18 @@ fun BottomBoxChat(
             IconButton(onClick = {},
                 modifier = Modifier.weight(0.125f)) {
                 Icon(
-                    imageVector = Icons.Default.AttachFile,
+                    imageVector = Icons.Default.Attachment,
                     contentDescription = "Attach",
                     tint = themeColor
                 )
             }
 
-            BasicTextField(
-                value = query,
-                onValueChange = onQueryChange,
-                modifier = Modifier
-                    .height(30.dp)
-                    .background(color = searchBackgroundColor,
-                        shape = RoundedCornerShape(16.dp))
-                    .weight(0.75f)
-                ,
-                singleLine = false,
-                textStyle = TextStyle(fontSize = 14.sp, color = Color.Black),
-                decorationBox = {innerTextField ->
-                    Row (
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier
-                            .padding(horizontal = 8.dp)
-                    ){
-                        Box(
-                            modifier = Modifier.weight(1f),
-                            contentAlignment = Alignment.CenterStart
-                        ){
-                            if (query.isEmpty()){
-                                Text(
-                                    text = "Nhập tin nhắn ...",
-                                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = .38f),
-                                    fontSize = 14.sp,
-                                    style = MaterialTheme.typography.bodyMedium
-                                )
-                            }
-                            innerTextField()
-                        }
-                    }
-                }
-            )
+            TextField(query = query,
+                onQueryChange = onQueryChange,
+                text = "Nhập tin nhắn ...",
+                multiLine = true,
+                color = topAppBarColor,
+                modifier = Modifier.weight(0.75f))
 
             IconButton(onClick = {},
                 modifier = Modifier.weight(0.125f)) {

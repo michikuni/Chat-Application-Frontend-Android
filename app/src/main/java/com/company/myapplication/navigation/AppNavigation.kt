@@ -1,7 +1,10 @@
 package com.company.myapplication.navigation
 
+import android.app.Activity
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.navigation.compose.NavHost
@@ -17,9 +20,9 @@ import com.company.myapplication.ui.register.RegisterScreen
 import com.company.myapplication.viewmodel.AuthViewModel
 
 @Composable
-fun AppNavigation() {
+fun AppNavigation(activity: Activity) {
     val navController = rememberNavController()
-    val authViewModel = remember { AuthViewModel() }
+    val authViewModel = remember { AuthViewModel(activity) }
     val message = remember { mutableStateOf<List<BoxChat>>(emptyList()) }
     val usersState = remember {
         mutableStateOf<List<UserChatPreview>>(emptyList())
@@ -89,7 +92,7 @@ fun AppNavigation() {
         composable("login") {
             LoginScreen(
                 viewModel = authViewModel,
-                onLoginSuccess = { navController.navigate("home")},
+                onLoginSuccess = {navController.navigate("home")},
                 onNavigateToRegister = { navController.navigate("register")}
             )
         }
@@ -109,17 +112,8 @@ fun AppNavigation() {
 
         composable("contact") {
             ContactScreen(
-                contacts = usersState.value,
+                authViewModel = authViewModel,
                 navHostController = navController
-            )
-        }
-
-        composable("boxchat/{name}") { backStackEntry ->
-            val name = backStackEntry.arguments?.getString("name")
-            BoxChat(
-                contact = name,
-                navHostController = navController,
-                message = message.value
             )
         }
 

@@ -1,5 +1,6 @@
 package com.company.myapplication.ui.login
 
+import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -15,8 +16,17 @@ fun LoginScreen(
     onLoginSuccess: () -> Unit,
     onNavigateToRegister: () -> Unit
 ) {
-    var account by remember { mutableStateOf("") }
+    var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+
+    val loginResult by viewModel.loginResult.collectAsState()
+
+    LaunchedEffect(loginResult) {
+        loginResult?.let {
+            onLoginSuccess()
+            Log.e("LoginScreen", "Login Success! UserID: ${viewModel.userId}")
+        }
+    }
 
     Column(
         modifier = Modifier
@@ -30,8 +40,8 @@ fun LoginScreen(
         Spacer(modifier = Modifier.height(16.dp))
 
         OutlinedTextField(
-            value = account,
-            onValueChange = { account = it },
+            value = username,
+            onValueChange = { username = it },
             label = { Text("Email") },
             modifier = Modifier.fillMaxWidth()
         )
@@ -48,13 +58,13 @@ fun LoginScreen(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        Button(onClick = { viewModel.login(account, password) }, modifier = Modifier.fillMaxWidth()) {
+        Button(
+            onClick = {
+                viewModel.login(username, password)
+                      },
+            modifier = Modifier.fillMaxWidth())
+        {
             Text("Đăng nhập")
-        }
-
-        viewModel.token?.let {
-            Text("Logged in! Token: ${it.take(20)}...")
-            LaunchedEffect(Unit) { onLoginSuccess() }
         }
 
         viewModel.errorMessage?.let {

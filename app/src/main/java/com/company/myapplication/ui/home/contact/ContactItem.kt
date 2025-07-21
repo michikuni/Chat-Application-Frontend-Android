@@ -11,6 +11,8 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -18,10 +20,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import com.company.myapplication.data.model.chat.UserChatPreview
+import com.company.myapplication.data.model.user.UserRespone
+import com.company.myapplication.viewmodel.AuthViewModel
 
 @Composable
-fun ContactItem(contact: UserChatPreview){
+fun ContactItem(
+    contact: UserRespone){
     Row (
         modifier = Modifier
             .fillMaxWidth()
@@ -34,7 +38,7 @@ fun ContactItem(contact: UserChatPreview){
                     .size(50.dp)
                     .clip(CircleShape),
                 contentDescription = null,
-                model = contact.avatarUrl
+                model = contact.avatar
             )
                     }
         Spacer(modifier = Modifier.width(12.dp))
@@ -45,7 +49,7 @@ fun ContactItem(contact: UserChatPreview){
             Text(text = contact.name,
                 fontWeight = FontWeight.Bold,
                 fontSize = 14.sp)
-            if(contact.isOnline){
+            if(contact.createAt != null){
                 Box{
                     Text("Online", fontSize = 12.sp)
                 }

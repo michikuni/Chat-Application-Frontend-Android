@@ -1,14 +1,11 @@
 package com.company.myapplication.data.api
 
-import com.company.myapplication.data.model.request.CreateGroupRequest
-import com.company.myapplication.data.model.request.LoginRequest
-import com.company.myapplication.data.model.response.LoginResponse
-import com.company.myapplication.data.model.request.RegisterRequest
-import com.company.myapplication.data.model.response.CreateGroupResponse
+import com.company.myapplication.data.model.auth.LoginRequest
+import com.company.myapplication.data.model.auth.LoginResponse
+import com.company.myapplication.data.model.auth.RegisterRequest
+import com.company.myapplication.data.model.user.UserRespone
 import retrofit2.Response
-import retrofit2.http.Body
-import retrofit2.http.Header
-import retrofit2.http.POST
+import retrofit2.http.*
 
 
 interface ApiService {
@@ -16,9 +13,6 @@ interface ApiService {
     suspend fun register(@Body request: RegisterRequest): Response<Void>
     @POST("api/auth/login")
     suspend fun login(@Body request: LoginRequest) : Response<LoginResponse>
-    @POST("api/groups/create_group")
-    suspend fun createGroup(
-        @Body request: CreateGroupRequest,
-        @Header("Authorization") token: String
-    ): Response<CreateGroupResponse>
+    @GET("api/users/all_users/{userId}")
+    suspend fun getAllFriendsById(@Path("userId") userId: Long) : Response<List<UserRespone>>
 }

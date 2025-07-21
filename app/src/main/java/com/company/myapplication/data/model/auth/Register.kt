@@ -1,8 +1,8 @@
-package com.company.myapplication.data.model.request
+package com.company.myapplication.data.model.auth
 
 data class RegisterRequest(
     val name:String,
-    val account:String,
+    val username:String,
     val email:String,
     val password:String
 )

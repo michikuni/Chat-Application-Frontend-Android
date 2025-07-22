@@ -11,8 +11,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
-import androidx.navigation.NavHostController
-import com.company.myapplication.data.model.chat.UserChatPreview
 import com.company.myapplication.util.*
 import com.company.myapplication.viewmodel.AuthViewModel
 
@@ -20,9 +18,7 @@ import com.company.myapplication.viewmodel.AuthViewModel
 @Composable
 fun MessengerTopBar(
     activity: Activity,
-    navHostController: NavHostController,
     authViewModel: AuthViewModel,
-    users: List<UserChatPreview>,
     onLogoutSuccess: () -> Unit
     ) {
     var showDialog by remember { mutableStateOf(false) }
@@ -66,7 +62,7 @@ fun MessengerTopBar(
             )
         )
         if (showDialog) {
-            CreateConversationPopup(users, onDismiss = { showDialog = false })
+            CreateConversationPopup(activity = activity, authViewModel = authViewModel, onDismiss = { showDialog = false })
         }
     }
 

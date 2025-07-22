@@ -1,7 +1,5 @@
 package com.company.myapplication.data.model.user
 
-import java.time.Instant
-
 data class UserResponse(
     val id: Long,
     val name: String,

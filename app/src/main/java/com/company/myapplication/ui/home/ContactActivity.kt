@@ -2,6 +2,7 @@ package com.company.myapplication.ui.home
 
 import android.app.Activity
 import android.util.Log
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -21,6 +22,7 @@ import com.company.myapplication.ui.home.util.SearchBar
 import com.company.myapplication.ui.home.contact.ContactItem
 import com.company.myapplication.util.UserSharedPreferences
 import com.company.myapplication.util.lineBreakMessage
+import com.company.myapplication.util.topAppBarColor
 import com.company.myapplication.viewmodel.AuthViewModel
 
 @Composable
@@ -59,7 +61,9 @@ fun ContactScreen(
             .padding(paddingValues)){
             SearchBar(
                 query = searchQuery,
-                onQueryChange = { searchQuery = it }
+                onQueryChange = { searchQuery = it },
+                modifier = Modifier
+                        .background(color = topAppBarColor)
             )
             LazyColumn (contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp)){
                 items(filterContact){ contact ->

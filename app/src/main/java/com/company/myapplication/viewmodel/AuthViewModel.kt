@@ -2,17 +2,12 @@ package com.company.myapplication.viewmodel
 
 import android.app.Activity
 import android.util.Log
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.compose.runtime.*
+import androidx.lifecycle.*
 import com.company.myapplication.data.model.user.UserResponse
 import com.company.myapplication.repository.AuthRepository
 import com.company.myapplication.util.UserSharedPreferences
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 class AuthViewModel(activity: Activity): ViewModel(){

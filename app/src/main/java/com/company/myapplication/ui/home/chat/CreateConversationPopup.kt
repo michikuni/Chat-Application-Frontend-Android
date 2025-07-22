@@ -1,5 +1,6 @@
 package com.company.myapplication.ui.home.chat
 
+import android.app.Activity
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -13,13 +14,20 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.*
 import androidx.compose.ui.window.Dialog
-import com.company.myapplication.data.model.chat.UserChatPreview
+import com.company.myapplication.util.UserSharedPreferences
+import com.company.myapplication.viewmodel.AuthViewModel
 
 @Composable
 fun CreateConversationPopup(
-        users: List<UserChatPreview>,
-        onDismiss: () -> Unit
-    ) {
+    activity: Activity,
+    authViewModel: AuthViewModel,
+    onDismiss: () -> Unit
+) {
+    val userId = UserSharedPreferences.getId(activity)
+    LaunchedEffect(Unit) {
+        authViewModel.getAllFriends(userId)
+    }
+    val users by authViewModel.friends.collectAsState()
         var searchQuery by remember { mutableStateOf("") }
 
         val filterUser = users.filter {

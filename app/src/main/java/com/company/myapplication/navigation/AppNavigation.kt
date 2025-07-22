@@ -86,9 +86,6 @@ fun AppNavigation(activity: Activity) {
             UserChatPreview(20, "Cô Giang", "bài kiểm tra tuần sau", "17:50", "cogiang", false)
         )
     }
-
-
-    val contacts by authViewModel.friends.collectAsState()
     NavHost(navController = navController, startDestination = "login") {
         composable("login") {
             LoginScreen(

@@ -43,7 +43,7 @@ fun HomeScreen(
         it.name.contains(searchQuery, ignoreCase = true)
     }
     Scaffold (
-        topBar = {MessengerTopBar(activity = activity, authViewModel = authViewModel, navHostController = navHostController, users = users, onLogoutSuccess = onLogoutSuccess)},
+        topBar = {MessengerTopBar(activity = activity, authViewModel = authViewModel, onLogoutSuccess = onLogoutSuccess)},
         bottomBar = {
             val currentBackStackEntry = navHostController.currentBackStackEntryAsState().value
             val currentRoute = currentBackStackEntry?.destination?.route?: ""

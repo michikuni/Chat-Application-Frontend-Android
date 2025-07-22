@@ -3,6 +3,7 @@ package com.company.myapplication.ui.home.chat
 import android.app.Activity
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import com.company.myapplication.ui.home.util.SearchBar
 import androidx.compose.material.icons.Icons
@@ -10,10 +11,12 @@ import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.*
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.*
 import androidx.compose.ui.window.Dialog
+import coil.compose.AsyncImage
 import com.company.myapplication.util.UserSharedPreferences
 import com.company.myapplication.viewmodel.AuthViewModel
 
@@ -65,8 +68,22 @@ fun CreateConversationPopup(
                         onQueryChange = {searchQuery = it},)
 
                     // Danh sách các item
-                    PopupItem(icon = Icons.Default.PersonAdd, text = "Thêm bạn")
-                    PopupItem(icon = Icons.Default.GroupAdd, text = "Tạo nhóm mới")
+                    PopupItem(
+                        icon = Icons.Default.PersonAdd,
+                        text = "Thêm bạn",
+//                        onClick =
+                    )
+                    PopupItem(
+                        icon = Icons.Default.GroupAdd,
+                        text = "Tạo nhóm mới",
+//                        onClick =
+                    )
+                    PopupItem(
+                        icon = Icons.Default.Group,
+                        text = "Lời mời kết bạn",
+//                        onClick =
+                    )
+
 
                     Spacer(modifier = Modifier.height(16.dp))
                     Text("Gợi ý", style = MaterialTheme.typography.labelMedium)
@@ -74,7 +91,11 @@ fun CreateConversationPopup(
                     // Giả lập danh sách liên hệ gợi ý
                     val suggestedContacts = filterUser
                     suggestedContacts.forEach {
-                        PopupSuggestion(name = it.name)
+                        PopupSuggestion(
+                            avatar = it.avatar,
+                            name = it.name,
+//                            onClick =
+                        )
                     }
                 }
             }
@@ -82,11 +103,15 @@ fun CreateConversationPopup(
     }
 
     @Composable
-    fun PopupItem(icon: ImageVector, text: String) {
+    fun PopupItem(
+        icon: ImageVector,
+        text: String,
+//        onClick: () -> Unit
+    ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .clickable { /* Xử lý logic */ }
+//                .clickable { onClick() }
                 .padding(vertical = 12.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -97,15 +122,25 @@ fun CreateConversationPopup(
     }
 
     @Composable
-    fun PopupSuggestion(name: String) {
+    fun PopupSuggestion(
+        avatar: String?,
+        name: String,
+//        onClick: () -> Unit
+    ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .clickable { /* Mở chat */ }
+//                .clickable { onClick() }
                 .padding(vertical = 10.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Icon(Icons.Default.AccountCircle, contentDescription = null, modifier = Modifier.size(40.dp))
+            AsyncImage(
+                model = avatar,
+                contentDescription = null,
+                modifier = Modifier
+                    .size(50.dp)
+                    .clip(CircleShape)
+            )
             Spacer(modifier = Modifier.width(12.dp))
             Text(name, fontSize = 15.sp)
         }

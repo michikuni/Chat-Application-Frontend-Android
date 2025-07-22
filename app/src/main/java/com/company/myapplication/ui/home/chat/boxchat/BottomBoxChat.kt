@@ -29,10 +29,6 @@ fun BottomBoxChat(
     query: String,
     onQueryChange: (String) -> Unit,
 ){
-    val configuration = LocalConfiguration.current
-    val screenWidth = configuration.screenWidthDp
-    val screenHeight = configuration.screenHeightDp
-    val tfWidth = (screenHeight / 10 * 7.5)
     Box(
         modifier = Modifier
             .fillMaxWidth()

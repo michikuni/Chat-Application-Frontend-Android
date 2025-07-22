@@ -16,7 +16,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.company.myapplication.data.model.chat.BoxChat
-import com.company.myapplication.data.model.chat.UserChatPreview
 
 
 @Composable
@@ -25,10 +24,10 @@ fun BoxChat(
     navHostController: NavHostController,
     message: List<BoxChat>
 ){
-    var ChatMessage by remember { mutableStateOf("") }
+    var chatMessage by remember { mutableStateOf("") }
     Scaffold (
         topBar = { TopBoxChat(contact = contact, navHostController = navHostController) },
-        bottomBar = { BottomBoxChat(query =  ChatMessage, onQueryChange = {ChatMessage = it})}
+        bottomBar = { BottomBoxChat(query =  chatMessage, onQueryChange = {chatMessage = it})}
     ){ paddingValues ->
         Column (
             modifier = Modifier

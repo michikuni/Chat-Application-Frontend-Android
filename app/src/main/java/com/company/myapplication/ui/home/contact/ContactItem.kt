@@ -11,8 +11,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -20,12 +18,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import com.company.myapplication.data.model.user.UserRespone
-import com.company.myapplication.viewmodel.AuthViewModel
+import com.company.myapplication.data.model.user.UserResponse
 
 @Composable
 fun ContactItem(
-    contact: UserRespone){
+    contact: UserResponse
+){
     Row (
         modifier = Modifier
             .fillMaxWidth()
@@ -49,12 +47,8 @@ fun ContactItem(
             Text(text = contact.name,
                 fontWeight = FontWeight.Bold,
                 fontSize = 14.sp)
-            if(contact.createAt != null){
-                Box{
-                    Text("Online", fontSize = 12.sp)
-                }
-            } else {
-                Text("Offline", fontSize = 12.sp)
+            Box{
+                Text("Online", fontSize = 12.sp)
             }
         }
     }

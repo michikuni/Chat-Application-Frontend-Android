@@ -5,7 +5,7 @@ import com.company.myapplication.data.api.ApiService
 import com.company.myapplication.data.model.auth.LoginRequest
 import com.company.myapplication.data.model.auth.LoginResponse
 import com.company.myapplication.data.model.auth.RegisterRequest
-import com.company.myapplication.data.model.user.UserRespone
+import com.company.myapplication.data.model.user.UserResponse
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -41,7 +41,7 @@ class AuthRepository (context: Activity){
         }
     }
 
-    suspend fun getAllFriendsById(userId: Long): List<UserRespone> {
+    suspend fun getAllFriendsById(userId: Long): List<UserResponse> {
         val response = api.getAllFriendsById(userId)
         if (response.isSuccessful){
             return response.body() ?: emptyList()

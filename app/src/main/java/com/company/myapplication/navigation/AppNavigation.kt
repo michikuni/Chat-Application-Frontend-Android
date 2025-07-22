@@ -3,8 +3,8 @@ package com.company.myapplication.navigation
 import android.app.Activity
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.navigation.compose.NavHost
@@ -14,7 +14,6 @@ import com.company.myapplication.data.model.chat.BoxChat
 import com.company.myapplication.data.model.chat.UserChatPreview
 import com.company.myapplication.ui.home.ContactScreen
 import com.company.myapplication.ui.home.HomeScreen
-import com.company.myapplication.ui.home.chat.boxchat.BoxChat
 import com.company.myapplication.ui.login.LoginScreen
 import com.company.myapplication.ui.register.RegisterScreen
 import com.company.myapplication.viewmodel.AuthViewModel
@@ -88,9 +87,12 @@ fun AppNavigation(activity: Activity) {
         )
     }
 
+
+    val contacts by authViewModel.friends.collectAsState()
     NavHost(navController = navController, startDestination = "login") {
         composable("login") {
             LoginScreen(
+                activity = activity,
                 viewModel = authViewModel,
                 onLoginSuccess = {navController.navigate("home")},
                 onNavigateToRegister = { navController.navigate("register")}
@@ -105,13 +107,19 @@ fun AppNavigation(activity: Activity) {
         }
         composable("home") {
             HomeScreen(
+                activity = activity,
+                authViewModel = authViewModel,
                 users = usersState.value,
-                navHostController = navController
+                navHostController = navController,
+                onLogoutSuccess = { navController.navigate("login"){
+                    popUpTo(0){ inclusive = true }
+                } }
             )
         }
 
         composable("contact") {
             ContactScreen(
+                activity = activity,
                 authViewModel = authViewModel,
                 navHostController = navController
             )

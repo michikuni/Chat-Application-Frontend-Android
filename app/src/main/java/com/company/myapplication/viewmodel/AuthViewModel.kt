@@ -5,13 +5,11 @@ import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.company.myapplication.data.model.auth.LoginResponse
-import com.company.myapplication.data.model.user.UserRespone
+import com.company.myapplication.data.model.user.UserResponse
 import com.company.myapplication.repository.AuthRepository
+import com.company.myapplication.util.UserSharedPreferences
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -20,26 +18,29 @@ import kotlinx.coroutines.launch
 class AuthViewModel(activity: Activity): ViewModel(){
     private val repo = AuthRepository(activity)
 
-    private val _loginResult = MutableStateFlow<LoginResponse?>(null)
-    val loginResult: StateFlow<LoginResponse?> = _loginResult.asStateFlow()
     var errorMessage by mutableStateOf<String?>(null)
     var registerSuccess by mutableStateOf(false)
+    var loginSuccess by mutableStateOf(false)
 
-    var userId: Long? = null
-        private set
 
-    private val _friends = MutableStateFlow<List<UserRespone>>(emptyList())
-    val friends: StateFlow<List<UserRespone>> = _friends.asStateFlow()
+    private val _friends = MutableStateFlow<List<UserResponse>>(emptyList())
+    val friends: StateFlow<List<UserResponse>> get() = _friends
 
-    fun login(account: String, password: String){
+
+    fun login(activity: Activity, account: String, password: String){
         viewModelScope.launch {
             try {
+                UserSharedPreferences.clearSession(activity)
                 val result = repo.login(account, password)
-
                 if (result != null){
-                    _loginResult.value = result
-                    userId = result.id
+                    val id = result.id
+                    val username = result.username
+                    val token = result.token
                     errorMessage = null
+
+                    Log.e("Auth ViewModel", "ID: $id, USERNAME $username, TOKEN $token")
+                    UserSharedPreferences.saveUser(activity, id = id, username = username, token = token)
+                    loginSuccess = true
                 } else{
                     errorMessage = "Login failed can't response token"
                 }
@@ -48,6 +49,11 @@ class AuthViewModel(activity: Activity): ViewModel(){
             }
         }
     }
+
+    fun logout(activity: Activity) {
+        UserSharedPreferences.clearSession(activity)
+    }
+
 
     fun register(name: String, account: String, email: String, password: String){
         viewModelScope.launch {

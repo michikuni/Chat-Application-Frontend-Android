@@ -1,5 +1,6 @@
 package com.company.myapplication.ui.home
 
+import android.app.Activity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -26,23 +27,23 @@ import com.company.myapplication.ui.home.chat.ChatItem
 import com.company.myapplication.ui.home.chat.MessengerTopBar
 import com.company.myapplication.util.lineBreakMessage
 import com.company.myapplication.util.topAppBarColor
+import com.company.myapplication.viewmodel.AuthViewModel
 
 @Composable
 fun HomeScreen(
+    activity: Activity,
+    authViewModel: AuthViewModel,
     users: List<UserChatPreview>,
     navHostController: NavHostController,
+    onLogoutSuccess: () -> Unit
 ){
-    val configuration = LocalConfiguration.current
-    val screenWidth = configuration.screenWidthDp
-    val screenHeight = configuration.screenHeightDp
-    val paddingLR = (screenWidth / 10).dp
     var searchQuery by remember { mutableStateOf("") }
 
     val filterUser = users.filter {
         it.name.contains(searchQuery, ignoreCase = true)
     }
     Scaffold (
-        topBar = {MessengerTopBar(users)},
+        topBar = {MessengerTopBar(activity = activity, authViewModel = authViewModel, navHostController = navHostController, users = users, onLogoutSuccess = onLogoutSuccess)},
         bottomBar = {
             val currentBackStackEntry = navHostController.currentBackStackEntryAsState().value
             val currentRoute = currentBackStackEntry?.destination?.route?: ""

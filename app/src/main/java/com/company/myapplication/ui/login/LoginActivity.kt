@@ -1,5 +1,6 @@
 package com.company.myapplication.ui.login
 
+import android.app.Activity
 import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
@@ -8,10 +9,13 @@ import androidx.compose.ui.*
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.*
 import androidx.compose.ui.unit.dp
+import com.company.myapplication.util.UserSharedPreferences
 import com.company.myapplication.viewmodel.AuthViewModel
+import kotlinx.coroutines.delay
 
 @Composable
 fun LoginScreen(
+    activity: Activity,
     viewModel: AuthViewModel,
     onLoginSuccess: () -> Unit,
     onNavigateToRegister: () -> Unit
@@ -19,14 +23,6 @@ fun LoginScreen(
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
 
-    val loginResult by viewModel.loginResult.collectAsState()
-
-    LaunchedEffect(loginResult) {
-        loginResult?.let {
-            onLoginSuccess()
-            Log.e("LoginScreen", "Login Success! UserID: ${viewModel.userId}")
-        }
-    }
 
     Column(
         modifier = Modifier
@@ -60,11 +56,18 @@ fun LoginScreen(
 
         Button(
             onClick = {
-                viewModel.login(username, password)
+                viewModel.login(activity, username, password)
                       },
             modifier = Modifier.fillMaxWidth())
         {
             Text("Đăng nhập")
+        }
+
+        if (viewModel.loginSuccess){
+            Text("Đăng nhập thành công!", color = Color.Green)
+            LaunchedEffect(Unit) {
+                onLoginSuccess()
+            }
         }
 
         viewModel.errorMessage?.let {

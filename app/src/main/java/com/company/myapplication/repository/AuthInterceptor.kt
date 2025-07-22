@@ -17,21 +17,11 @@ class AuthInterceptor(private val context: Activity) : Interceptor {
             chain.request()
         }
         Log.e("INTERCEP AUTH", ">>> TOKEN: $token")
-        // Log header gửi đi
-        for ((name, value) in request.headers) {
-            Log.e("INTERCEP REQUEST", ">>> Request Headers:$name: $value")
-        }
 
         val response = chain.proceed(request)
 
         if (response.code == 401) {
-            // Clear session vì token hết hạn
             UserSharedPreferences.clearSession(context)
-        }
-
-        // Log header trả về
-        for ((name, value) in response.headers) {
-            Log.e("INTERCEP RESPONSE", ">>> Response Headers: $name: $value")
         }
 
         return response

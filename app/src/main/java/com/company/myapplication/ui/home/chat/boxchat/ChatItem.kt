@@ -1,4 +1,4 @@
-package com.company.myapplication.ui.home.chat
+package com.company.myapplication.ui.home.chat.boxchat
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border

@@ -16,15 +16,14 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.company.myapplication.data.model.chat.UserChatPreview
 import com.company.myapplication.ui.home.util.SearchBar
 import com.company.myapplication.ui.home.util.BottomNavigationBar
-import com.company.myapplication.ui.home.chat.ChatItem
-import com.company.myapplication.ui.home.chat.MessengerTopBar
+import com.company.myapplication.ui.home.chat.boxchat.ChatItem
+import com.company.myapplication.ui.home.chat.topboxchat.MessengerTopBar
 import com.company.myapplication.util.lineBreakMessage
 import com.company.myapplication.util.topAppBarColor
 import com.company.myapplication.viewmodel.AuthViewModel
@@ -43,7 +42,7 @@ fun HomeScreen(
         it.name.contains(searchQuery, ignoreCase = true)
     }
     Scaffold (
-        topBar = {MessengerTopBar(activity = activity, authViewModel = authViewModel, onLogoutSuccess = onLogoutSuccess)},
+        topBar = { MessengerTopBar(activity = activity, authViewModel = authViewModel, onLogoutSuccess = onLogoutSuccess) },
         bottomBar = {
             val currentBackStackEntry = navHostController.currentBackStackEntryAsState().value
             val currentRoute = currentBackStackEntry?.destination?.route?: ""

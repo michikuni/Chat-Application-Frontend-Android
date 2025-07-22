@@ -1,12 +1,14 @@
 package com.company.myapplication.repository
 
 import android.app.Activity
+import android.util.Log
 import com.company.myapplication.data.api.ApiService
 import com.company.myapplication.data.model.auth.LoginRequest
 import com.company.myapplication.data.model.auth.LoginResponse
 import com.company.myapplication.data.model.auth.RegisterRequest
 import com.company.myapplication.data.model.user.UserResponse
 import okhttp3.OkHttpClient
+import okhttp3.RequestBody
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -48,5 +50,10 @@ class AuthRepository (context: Activity){
         } else{
             throw Exception("Lỗi lấy danh sách bạn bè: ${response.code()}")
         }
+    }
+
+    suspend fun sendAddRequest(userId: Long, receiverEmail: RequestBody): Boolean{
+        val response = api.sendAddRequest(userId, receiverEmail)
+        return response.isSuccessful
     }
 }

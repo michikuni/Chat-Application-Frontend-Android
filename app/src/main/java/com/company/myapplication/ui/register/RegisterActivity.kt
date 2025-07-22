@@ -91,11 +91,11 @@ fun RegisterScreen(
             Text("Đã có tài khoản? Đăng nhập")
         }
         viewModel.errorMessage?.let {
-            Text("Error register: $it", color = Color.Red)
+            Text("Đăng ký thất bại, mã lỗi: $it", color = Color.Red)
         }
 
         if (viewModel.registerSuccess) {
-            Text("Register success!", color = Color.Green)
+            Text("Đăng ký thành công!", color = Color.Green)
             LaunchedEffect(Unit) {
                 delay(1000)
                 onRegisterSuccess()

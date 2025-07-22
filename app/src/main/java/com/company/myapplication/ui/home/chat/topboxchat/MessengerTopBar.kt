@@ -1,4 +1,4 @@
-package com.company.myapplication.ui.home.chat
+package com.company.myapplication.ui.home.chat.topboxchat
 
 import android.app.Activity
 import androidx.compose.foundation.background

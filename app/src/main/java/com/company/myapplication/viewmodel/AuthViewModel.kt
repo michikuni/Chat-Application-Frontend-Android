@@ -9,12 +9,14 @@ import com.company.myapplication.repository.AuthRepository
 import com.company.myapplication.util.UserSharedPreferences
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import okhttp3.RequestBody
 
 class AuthViewModel(activity: Activity): ViewModel(){
     private val repo = AuthRepository(activity)
 
     var errorMessage by mutableStateOf<String?>(null)
     var registerSuccess by mutableStateOf(false)
+    var sendAddSuccess by mutableStateOf(false)
     var loginSuccess by mutableStateOf(false)
 
 
@@ -39,8 +41,10 @@ class AuthViewModel(activity: Activity): ViewModel(){
                 } else{
                     errorMessage = "Login failed can't response token"
                 }
+            } catch (e: NullPointerException){
+                errorMessage = "Lỗi đăng nhập ${e.message}"
             } catch (e: Exception){
-                errorMessage = "Failed exception token: ${e.message}"
+                errorMessage = "Lỗi đăng nhập ${e.message}"
             }
         }
     }
@@ -55,9 +59,9 @@ class AuthViewModel(activity: Activity): ViewModel(){
             try {
                 val success = repo.register(name, account, email, password)
                 registerSuccess = success
-                errorMessage = if (success) null else "Register failed"
-            } catch (e: Exception){
-                errorMessage = "Failed register: ${e.message}"
+                errorMessage = if (success) null else "Đăng ký thất bại"
+            } catch (e: IllegalArgumentException){
+                errorMessage = "Lỗi đăng ký: ${e.message}"
                 registerSuccess = false
             }
         }
@@ -75,6 +79,20 @@ class AuthViewModel(activity: Activity): ViewModel(){
             } catch (e: Exception){
                 errorMessage = "Lỗi lấy danh sách bạn bè ${e.message}"
             }
+        }
+    }
+
+    fun sendAddRequest(userId: Long, receiverEmail: RequestBody){
+        viewModelScope.launch {
+            try {
+                val success = repo.sendAddRequest(userId, receiverEmail)
+                sendAddSuccess = success
+                Log.e("SENDDDD", "$sendAddSuccess")
+                errorMessage = if (success) null else "Gửi lời mời kết bạn thất bại"
+            } catch (e: IllegalArgumentException){
+                errorMessage = "Lỗi gửi lời mời kết bạn${e.message}"
+            }
+
         }
     }
 }

@@ -122,5 +122,11 @@ fun AppNavigation(activity: Activity) {
             )
         }
 
+//        composable("boxchat/{boxchatId}"){
+//            BoxChat(
+//                message =
+//            )
+//        }
+
     }
 }

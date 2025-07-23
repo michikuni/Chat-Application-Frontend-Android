@@ -4,7 +4,8 @@ import android.app.Activity
 import android.util.Log
 import androidx.compose.runtime.*
 import androidx.lifecycle.*
-import com.company.myapplication.data.model.user.UserResponse
+import com.company.myapplication.data.model.response.FriendResponse
+import com.company.myapplication.data.model.response.UserResponse
 import com.company.myapplication.repository.AuthRepository
 import com.company.myapplication.util.UserSharedPreferences
 import kotlinx.coroutines.flow.*
@@ -17,14 +18,15 @@ class AuthViewModel(activity: Activity): ViewModel(){
     var errorMessage by mutableStateOf<String?>(null)
     var registerSuccess by mutableStateOf(false)
     var sendAddSuccess by mutableStateOf(false)
+    var acceptedSuccess by mutableStateOf(false)
     var loginSuccess by mutableStateOf(false)
 
 
     private val _friends = MutableStateFlow<List<UserResponse>>(emptyList())
     val friends: StateFlow<List<UserResponse>> get() = _friends
 
-    private val _friendsPending = MutableStateFlow<List<UserResponse>>(emptyList())
-    val friendsPending: StateFlow<List<UserResponse>> get() = _friendsPending
+    private val _friendsPending = MutableStateFlow<List<FriendResponse>>(emptyList())
+    val friendsPending: StateFlow<List<FriendResponse>> get() = _friendsPending
 
 
     fun login(activity: Activity, account: String, password: String){
@@ -113,6 +115,17 @@ class AuthViewModel(activity: Activity): ViewModel(){
                 _friendsPending.value = friendPending
             } catch (e: Exception){
                 errorMessage = "Lỗi lấy danh sách bạn bè ${e.message}"
+            }
+        }
+    }
+
+    fun acceptedFriendRequest(friendshipId: Long){
+        viewModelScope.launch {
+            try {
+                val success = repo.acceptedFriendRequest(friendshipId)
+                acceptedSuccess = success
+            } catch (e: IllegalArgumentException){
+                errorMessage = "Lỗi chấp nhận lời mời kết bạn ${e.message}"
             }
         }
     }

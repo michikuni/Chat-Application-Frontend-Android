@@ -1,6 +1,7 @@
-package com.company.myapplication.data.model.user
+package com.company.myapplication.data.model.response
 
-data class UserResponse(
+data class FriendResponse (
+    val friendshipId: Long,
     val id: Long,
     val name: String,
     val username: String,

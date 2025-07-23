@@ -1,6 +1,7 @@
 package com.company.myapplication.ui.home.chat.topboxchat
 
 import android.app.Activity
+import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -47,7 +48,6 @@ fun FriendRequestPopup(
     }
     val users by authViewModel.friendsPending.collectAsState()
 
-
     Dialog(onDismissRequest = { onDismiss() }) {
         Surface(
             shape = RoundedCornerShape(16.dp),
@@ -84,7 +84,11 @@ fun FriendRequestPopup(
                 suggestedContacts.forEach { request ->
                     PopupRequest(
                         avatar = request.avatar,
-                        name = request.name
+                        name = request.name,
+                        authViewModel = authViewModel,
+                        friendshipId = request.friendshipId,
+                        activity = activity,
+                        userId = userId
                     )
                 }
             }
@@ -96,6 +100,10 @@ fun FriendRequestPopup(
 fun PopupRequest(
     avatar: String?,
     name: String,
+    authViewModel: AuthViewModel,
+    friendshipId: Long,
+    activity: Activity,
+    userId: Long
     //onClick: () -> Unit
 ){
     Column (
@@ -137,7 +145,12 @@ fun PopupRequest(
                     containerColor = Color.Blue,
                     contentColor = Color.White
                 ),
-                onClick = {}
+                onClick = {
+                    authViewModel.acceptedFriendRequest(friendshipId = friendshipId)
+                    authViewModel.acceptedSuccess.let {
+                        Toast.makeText(activity, "Đã chấp nhận lời mời kết bạn", Toast.LENGTH_SHORT).show()
+                    }
+                }
             ) {
                 Text(text = "Chấp nhận", fontSize = 12.sp)
             }

@@ -6,7 +6,8 @@ import com.company.myapplication.data.api.ApiService
 import com.company.myapplication.data.model.auth.LoginRequest
 import com.company.myapplication.data.model.auth.LoginResponse
 import com.company.myapplication.data.model.auth.RegisterRequest
-import com.company.myapplication.data.model.user.UserResponse
+import com.company.myapplication.data.model.response.FriendResponse
+import com.company.myapplication.data.model.response.UserResponse
 import okhttp3.OkHttpClient
 import okhttp3.RequestBody
 import retrofit2.Retrofit
@@ -57,7 +58,7 @@ class AuthRepository (context: Activity){
         return response.isSuccessful
     }
 
-    suspend fun getPendingFriends(userId: Long): List<UserResponse>{
+    suspend fun getPendingFriends(userId: Long): List<FriendResponse>{
         Log.e("APM", "authrepo id $userId")
         val response = api.getPendingFriends(userId)
         Log.e("APM", "authrepo response $response")
@@ -65,6 +66,15 @@ class AuthRepository (context: Activity){
             return response.body() ?: emptyList()
         } else{
             throw Exception("Lỗi lấy danh sách yêu cầu kết bè: ${response.code()}")
+        }
+    }
+
+    suspend fun acceptedFriendRequest(friendshipId: Long): Boolean{
+        val response = api.acceptedFriendRequest(friendshipId)
+        if (response.isSuccessful){
+            return response.isSuccessful
+        } else {
+            throw IllegalArgumentException(response.body().toString())
         }
     }
 }

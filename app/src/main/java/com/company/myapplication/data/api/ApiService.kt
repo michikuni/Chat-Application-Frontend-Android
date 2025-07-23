@@ -3,7 +3,8 @@ package com.company.myapplication.data.api
 import com.company.myapplication.data.model.auth.LoginRequest
 import com.company.myapplication.data.model.auth.LoginResponse
 import com.company.myapplication.data.model.auth.RegisterRequest
-import com.company.myapplication.data.model.user.UserResponse
+import com.company.myapplication.data.model.response.FriendResponse
+import com.company.myapplication.data.model.response.UserResponse
 import okhttp3.RequestBody
 import retrofit2.Response
 import retrofit2.http.*
@@ -34,5 +35,10 @@ interface ApiService {
     @GET("api/friends/pending/{userId}")
     suspend fun getPendingFriends(
         @Path("userId") userId: Long
-    ): Response<List<UserResponse>>
+    ): Response<List<FriendResponse>>
+
+    @POST("api/friends/accept/{friendshipId}")
+    suspend fun acceptedFriendRequest(
+        @Path("friendshipId") friendshipId: Long
+    ): Response<Void>
 }

@@ -9,7 +9,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.*
 import coil.compose.AsyncImage
-import com.company.myapplication.data.model.user.UserResponse
+import com.company.myapplication.data.model.response.UserResponse
 
 @Composable
 fun ContactItem(

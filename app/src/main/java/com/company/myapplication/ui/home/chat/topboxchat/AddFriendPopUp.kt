@@ -1,7 +1,6 @@
 package com.company.myapplication.ui.home.chat.topboxchat
 
 import android.app.Activity
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -86,7 +85,7 @@ fun AddFriendPopUp (
                     )
                     IconButton(onClick = {
                         authViewModel.sendAddRequest(userId = userId, receiverEmail = query.toRequestBody())
-                        if(authViewModel.sendAddSuccess){
+                        authViewModel.sendAddSuccess.let {
                             Toast.makeText(activity, "Gửi lời mời kết bạn thành công", Toast.LENGTH_SHORT).show()
                             onDismiss()
                         }

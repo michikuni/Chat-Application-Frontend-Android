@@ -23,6 +23,9 @@ class AuthViewModel(activity: Activity): ViewModel(){
     private val _friends = MutableStateFlow<List<UserResponse>>(emptyList())
     val friends: StateFlow<List<UserResponse>> get() = _friends
 
+    private val _friendsPending = MutableStateFlow<List<UserResponse>>(emptyList())
+    val friendsPending: StateFlow<List<UserResponse>> get() = _friendsPending
+
 
     fun login(activity: Activity, account: String, password: String){
         viewModelScope.launch {
@@ -93,6 +96,24 @@ class AuthViewModel(activity: Activity): ViewModel(){
                 errorMessage = "Lỗi gửi lời mời kết bạn${e.message}"
             }
 
+        }
+    }
+
+    fun getPendingFriends(userId: Long){
+        viewModelScope.launch {
+            Log.e("APM", "ID $userId")
+            try {
+                val friendPending = repo.getPendingFriends(userId)
+                if (friendPending.isEmpty()){
+                    Log.e("APM", "roonxg")
+                }
+                for (fr in friendPending){
+                    Log.e("APM", "Tên ${fr.name}")
+                }
+                _friendsPending.value = friendPending
+            } catch (e: Exception){
+                errorMessage = "Lỗi lấy danh sách bạn bè ${e.message}"
+            }
         }
     }
 }

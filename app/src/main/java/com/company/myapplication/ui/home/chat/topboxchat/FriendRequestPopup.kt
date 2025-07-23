@@ -43,9 +43,10 @@ fun FriendRequestPopup(
 ) {
     val userId = UserSharedPreferences.getId(activity)
     LaunchedEffect(Unit) {
-        authViewModel.getAllFriends(userId)
+        authViewModel.getPendingFriends(userId)
     }
-    val users by authViewModel.friends.collectAsState()
+    val users by authViewModel.friendsPending.collectAsState()
+
 
     Dialog(onDismissRequest = { onDismiss() }) {
         Surface(
@@ -76,6 +77,7 @@ fun FriendRequestPopup(
                 }
                 Spacer(modifier = Modifier.height(16.dp))
                 Text("Gợi ý", style = MaterialTheme.typography.labelMedium)
+
 
                 // Giả lập danh sách liên hệ gợi ý
                 val suggestedContacts = users
@@ -141,13 +143,13 @@ fun PopupRequest(
             }
             Button(
                 modifier = Modifier
-                    .width(100.dp)
+                    .width(115.dp)
                     .height(35.dp)
                     .padding(0.dp, 0.dp, 10.dp, 0.dp),
                 shape = RoundedCornerShape(14.dp),
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = Color.Gray,
-                    contentColor = Color.Black
+                    containerColor = Color.LightGray,
+                    contentColor = Color.DarkGray
                 ),
                 onClick = {}
             ) {

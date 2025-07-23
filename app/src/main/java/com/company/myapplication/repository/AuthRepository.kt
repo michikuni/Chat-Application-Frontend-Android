@@ -56,4 +56,15 @@ class AuthRepository (context: Activity){
         val response = api.sendAddRequest(userId, receiverEmail)
         return response.isSuccessful
     }
+
+    suspend fun getPendingFriends(userId: Long): List<UserResponse>{
+        Log.e("APM", "authrepo id $userId")
+        val response = api.getPendingFriends(userId)
+        Log.e("APM", "authrepo response $response")
+        if (response.isSuccessful){
+            return response.body() ?: emptyList()
+        } else{
+            throw Exception("Lỗi lấy danh sách yêu cầu kết bè: ${response.code()}")
+        }
+    }
 }

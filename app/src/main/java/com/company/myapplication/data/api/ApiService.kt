@@ -30,4 +30,9 @@ interface ApiService {
         @Path("userId") userId: Long,
         @Body request: RequestBody
     ): Response <Void>
+
+    @GET("api/friends/pending/{userId}")
+    suspend fun getPendingFriends(
+        @Path("userId") userId: Long
+    ): Response<List<UserResponse>>
 }

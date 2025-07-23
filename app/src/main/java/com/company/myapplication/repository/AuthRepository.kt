@@ -69,6 +69,17 @@ class AuthRepository (context: Activity){
         }
     }
 
+    suspend fun getRequestFriends(userId: Long): List<FriendResponse>{
+        Log.e("APM", "authrepo id $userId")
+        val response = api.getRequestFriends(userId)
+        Log.e("APM", "authrepo response $response")
+        if (response.isSuccessful){
+            return response.body() ?: emptyList()
+        } else{
+            throw Exception("Lỗi lấy danh sách yêu cầu kết bè: ${response.code()}")
+        }
+    }
+
     suspend fun acceptedFriendRequest(friendshipId: Long): Boolean{
         val response = api.acceptedFriendRequest(friendshipId)
         if (response.isSuccessful){

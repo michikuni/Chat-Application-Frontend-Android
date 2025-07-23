@@ -37,6 +37,11 @@ interface ApiService {
         @Path("userId") userId: Long
     ): Response<List<FriendResponse>>
 
+    @GET("api/friends/request/{userId}")
+    suspend fun getRequestFriends(
+        @Path("userId") userId: Long
+    ): Response<List<FriendResponse>>
+
     @POST("api/friends/accept/{friendshipId}")
     suspend fun acceptedFriendRequest(
         @Path("friendshipId") friendshipId: Long

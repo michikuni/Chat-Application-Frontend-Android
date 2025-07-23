@@ -34,6 +34,9 @@ fun CreateConversationPopup(
 
     var showAddDialog by remember { mutableStateOf(false) }
 
+    var showRequestDialog by remember { mutableStateOf(false) }
+
+
     var searchQuery by remember { mutableStateOf("") }
 
     val filterUser = users.filter {
@@ -84,8 +87,12 @@ fun CreateConversationPopup(
                 PopupItem(
                     icon = Icons.Default.Group,
                     text = "Lời mời kết bạn",
-                    onClick = { showAddDialog = true}
+                    onClick = { showRequestDialog = true}
                 )
+
+                if (showRequestDialog){
+                    FriendRequestPopup (activity = activity, authViewModel = authViewModel, onDismiss = { showRequestDialog = false })
+                }
 
                 if (showAddDialog){
                     AddFriendPopUp(activity = activity, authViewModel = authViewModel, onDismiss = { showAddDialog = false })

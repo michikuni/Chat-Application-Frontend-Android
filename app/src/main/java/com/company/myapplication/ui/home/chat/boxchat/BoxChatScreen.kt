@@ -15,14 +15,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.company.myapplication.data.model.chat.BoxChat
+import com.company.myapplication.data.model.chat.UserChatPreview
 
 
 @Composable
-fun BoxChat(
+fun BoxChatScreen(
     contact: String?,
     navHostController: NavHostController,
-    message: List<BoxChat>
+    message: List<UserChatPreview>
 ){
     var chatMessage by remember { mutableStateOf("") }
     Scaffold (

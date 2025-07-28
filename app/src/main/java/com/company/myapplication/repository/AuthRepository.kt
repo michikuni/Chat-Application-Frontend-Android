@@ -6,6 +6,8 @@ import com.company.myapplication.data.api.ApiService
 import com.company.myapplication.data.model.auth.LoginRequest
 import com.company.myapplication.data.model.auth.LoginResponse
 import com.company.myapplication.data.model.auth.RegisterRequest
+import com.company.myapplication.data.model.chat.CreateConversation
+import com.company.myapplication.data.model.chat.GetConversation
 import com.company.myapplication.data.model.response.FriendResponse
 import com.company.myapplication.data.model.response.UserResponse
 import okhttp3.OkHttpClient
@@ -86,6 +88,19 @@ class AuthRepository (context: Activity){
             return response.isSuccessful
         } else {
             throw IllegalArgumentException(response.body().toString())
+        }
+    }
+    suspend fun createConversation(userId: Long, body: CreateConversation): Boolean {
+        val response = api.createConversation(userId, body)
+        return response.isSuccessful
+    }
+
+    suspend fun getAllConversation(userId: Long, friendshipId: Long): List<GetConversation>? {
+        val response = api.getAllConversation(userId, friendshipId)
+        return if (response.isSuccessful){
+            response.body()
+        } else {
+            throw Exception("Lỗi lấy hội thoại: ${response.code()}")
         }
     }
 }

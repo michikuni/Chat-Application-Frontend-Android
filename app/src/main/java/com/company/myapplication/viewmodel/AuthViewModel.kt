@@ -4,6 +4,8 @@ import android.app.Activity
 import android.util.Log
 import androidx.compose.runtime.*
 import androidx.lifecycle.*
+import com.company.myapplication.data.model.chat.CreateConversation
+import com.company.myapplication.data.model.chat.GetConversation
 import com.company.myapplication.data.model.response.FriendResponse
 import com.company.myapplication.data.model.response.UserResponse
 import com.company.myapplication.repository.AuthRepository
@@ -20,6 +22,7 @@ class AuthViewModel(activity: Activity): ViewModel(){
     var sendAddSuccess by mutableStateOf(false)
     var acceptedSuccess by mutableStateOf(false)
     var loginSuccess by mutableStateOf(false)
+    private var createConversationSuccess by mutableStateOf(false)
 
 
     private val _friends = MutableStateFlow<List<UserResponse>>(emptyList())
@@ -30,6 +33,9 @@ class AuthViewModel(activity: Activity): ViewModel(){
 
     private val _friendsRequest = MutableStateFlow<List<FriendResponse>>(emptyList())
     val friendsRequest: StateFlow<List<FriendResponse>> get() = _friendsRequest
+
+    private val _getConversation = MutableStateFlow<List<GetConversation>>(emptyList())
+    val getConversation: StateFlow<List<GetConversation>> get() = _getConversation
 
     fun login(activity: Activity, account: String, password: String){
         viewModelScope.launch {
@@ -146,6 +152,26 @@ class AuthViewModel(activity: Activity): ViewModel(){
                 acceptedSuccess = success
             } catch (e: IllegalArgumentException){
                 errorMessage = "Lỗi chấp nhận lời mời kết bạn ${e.message}"
+            }
+        }
+    }
+
+    fun createConversation(userId: Long, body: CreateConversation){
+        viewModelScope.launch {
+            val success = repo.createConversation(userId, body)
+            createConversationSuccess = success
+        }
+    }
+
+    fun getAllConversation(userId: Long, friendId: Long){
+        viewModelScope.launch {
+            try {
+                val allConversation = repo.getAllConversation(userId, friendId)
+                if (allConversation != null) {
+                    _getConversation.value = allConversation
+                }
+            } catch (e: Exception){
+                errorMessage = e.message
             }
         }
     }

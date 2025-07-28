@@ -3,6 +3,8 @@ package com.company.myapplication.data.api
 import com.company.myapplication.data.model.auth.LoginRequest
 import com.company.myapplication.data.model.auth.LoginResponse
 import com.company.myapplication.data.model.auth.RegisterRequest
+import com.company.myapplication.data.model.chat.CreateConversation
+import com.company.myapplication.data.model.chat.GetConversation
 import com.company.myapplication.data.model.response.FriendResponse
 import com.company.myapplication.data.model.response.UserResponse
 import okhttp3.RequestBody
@@ -46,4 +48,17 @@ interface ApiService {
     suspend fun acceptedFriendRequest(
         @Path("friendshipId") friendshipId: Long
     ): Response<Void>
+
+    @POST("api/chats/createConversation/{userId}")
+    suspend fun createConversation(
+        @Path("userId") userId: Long,
+        @Body request: CreateConversation
+    ): Response<Void>
+
+    @GET("api/chats/allConversations/{userId}")
+    suspend fun getAllConversation(
+        @Path("userId") userId: Long,
+        @Query("friendId") friendshipId: Long
+    ): Response<List<GetConversation>>
+    
 }

@@ -17,7 +17,6 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.*
 import androidx.compose.ui.window.Dialog
 import coil.compose.AsyncImage
-import com.company.myapplication.ui.home.chat.boxchat.BoxChat
 import com.company.myapplication.util.UserSharedPreferences
 import com.company.myapplication.viewmodel.AuthViewModel
 
@@ -95,10 +94,10 @@ fun CreateConversationPopup(
                 if (showRequestDialog){
                     FriendRequestPopup (activity = activity, authViewModel = authViewModel, onDismiss = { showRequestDialog = false })
                 }
-
-                if (showBoxchat) {
-                    BoxChat(contact = )
-                }
+//
+//                if (showBoxchat) {
+//                    BoxChat(contact = )
+//                }
 
                 if (showAddDialog){
                     AddFriendPopUp(activity = activity, authViewModel = authViewModel, onDismiss = { showAddDialog = false })
@@ -113,7 +112,7 @@ fun CreateConversationPopup(
                     PopupSuggestion(
                         avatar = it.avatar,
                         name = it.name,
-                        onClick = BoxChat(it.name, )
+//                        onClick = BoxChat(it.name, )
                     )
                 }
             }
@@ -144,12 +143,12 @@ fun CreateConversationPopup(
     fun PopupSuggestion(
         avatar: String?,
         name: String,
-        onClick: () -> Unit
+//        onClick: () -> Unit
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .clickable { onClick() }
+//                .clickable { onClick() }
                 .padding(vertical = 10.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {

@@ -6,6 +6,7 @@ import androidx.compose.runtime.*
 import androidx.lifecycle.*
 import com.company.myapplication.data.model.chat.CreateConversation
 import com.company.myapplication.data.model.chat.GetConversation
+import com.company.myapplication.data.model.chat.Message
 import com.company.myapplication.data.model.response.FriendResponse
 import com.company.myapplication.data.model.response.UserResponse
 import com.company.myapplication.repository.AuthRepository
@@ -34,8 +35,11 @@ class AuthViewModel(activity: Activity): ViewModel(){
     private val _friendsRequest = MutableStateFlow<List<FriendResponse>>(emptyList())
     val friendsRequest: StateFlow<List<FriendResponse>> get() = _friendsRequest
 
-    private val _getConversation = MutableStateFlow<List<GetConversation>>(emptyList())
-    val getConversation: StateFlow<List<GetConversation>> get() = _getConversation
+    private val _message = MutableStateFlow<List<Message>>(emptyList())
+    val message: StateFlow<List<Message>> get() = _message
+
+    private val _conversation = MutableStateFlow<List<GetConversation>>(emptyList())
+    val conversation: StateFlow<List<GetConversation>> get() = _conversation
 
     fun login(activity: Activity, account: String, password: String){
         viewModelScope.launch {
@@ -163,12 +167,25 @@ class AuthViewModel(activity: Activity): ViewModel(){
         }
     }
 
-    fun getAllConversation(userId: Long, friendId: Long){
+    fun getAllMessage(userId: Long, friendId: Long){
         viewModelScope.launch {
             try {
-                val allConversation = repo.getAllConversation(userId, friendId)
-                if (allConversation != null) {
-                    _getConversation.value = allConversation
+                val allMessage = repo.getAllMessage(userId, friendId)
+                if (allMessage != null) {
+                    _message.value = allMessage
+                }
+            } catch (e: Exception){
+                errorMessage = e.message
+            }
+        }
+    }
+
+    fun getAllConversation(userId: Long){
+        viewModelScope.launch {
+            try {
+                val allConversation = repo.getAllConversation(userId)
+                if (allConversation != null){
+                    _conversation.value = allConversation
                 }
             } catch (e: Exception){
                 errorMessage = e.message

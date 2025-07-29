@@ -1,5 +1,6 @@
 package com.company.myapplication.data.model.chat
 
+import java.sql.Timestamp
 import java.time.Instant
 
 data class CreateConversation(
@@ -8,12 +9,13 @@ data class CreateConversation(
 )
 
 data class GetConversation(
-    val memberIds: List<Long>,
-    val conversationName: String?,
+    val id: Long,
+    val userId: Long,
+    val name: String,
     val avatar: String?,
-    val numberMembers: Int,
-    val message: List<Message>,
-    val createdAt: Instant
+    val content: String,
+    val createdAt: Timestamp,
+    val isRead: Boolean
 )
 data class Conversation(
     val id: Long,
@@ -21,6 +23,5 @@ data class Conversation(
     val conversationName: String?,
     val avatar: String?,
     val numberMembers: Int,
-    val message: List<Message>,
     val createdAt: Instant
 )

@@ -5,6 +5,7 @@ import com.company.myapplication.data.model.auth.LoginResponse
 import com.company.myapplication.data.model.auth.RegisterRequest
 import com.company.myapplication.data.model.chat.CreateConversation
 import com.company.myapplication.data.model.chat.GetConversation
+import com.company.myapplication.data.model.chat.Message
 import com.company.myapplication.data.model.response.FriendResponse
 import com.company.myapplication.data.model.response.UserResponse
 import okhttp3.RequestBody
@@ -55,10 +56,15 @@ interface ApiService {
         @Body request: CreateConversation
     ): Response<Void>
 
-    @GET("api/chats/allConversations/{userId}")
-    suspend fun getAllConversation(
+    @GET("api/chats/allMessage/{userId}")
+    suspend fun getAllMessage(
         @Path("userId") userId: Long,
         @Query("friendId") friendshipId: Long
+    ): Response<List<Message>>
+
+    @GET("api/chats/allConversation/{userId}")
+    suspend fun getAllConversation(
+        @Path("userId") userId: Long
     ): Response<List<GetConversation>>
     
 }

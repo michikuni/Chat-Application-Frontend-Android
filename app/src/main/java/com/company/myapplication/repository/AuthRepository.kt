@@ -8,6 +8,7 @@ import com.company.myapplication.data.model.auth.LoginResponse
 import com.company.myapplication.data.model.auth.RegisterRequest
 import com.company.myapplication.data.model.chat.CreateConversation
 import com.company.myapplication.data.model.chat.GetConversation
+import com.company.myapplication.data.model.chat.Message
 import com.company.myapplication.data.model.response.FriendResponse
 import com.company.myapplication.data.model.response.UserResponse
 import okhttp3.OkHttpClient
@@ -22,7 +23,7 @@ class AuthRepository (context: Activity){
             .build()
 
         return Retrofit.Builder()
-            .baseUrl("http://192.168.5.100:8080")
+            .baseUrl("http://10.0.2.2:8080")
             .addConverterFactory(GsonConverterFactory.create())
             .client(client)
             .build()
@@ -95,8 +96,17 @@ class AuthRepository (context: Activity){
         return response.isSuccessful
     }
 
-    suspend fun getAllConversation(userId: Long, friendshipId: Long): List<GetConversation>? {
-        val response = api.getAllConversation(userId, friendshipId)
+    suspend fun getAllMessage(userId: Long, friendshipId: Long): List<Message>? {
+        val response = api.getAllMessage(userId, friendshipId)
+        return if (response.isSuccessful){
+            response.body()
+        } else {
+            throw Exception("Lỗi lấy tin nhắn: ${response.code()}")
+        }
+    }
+
+    suspend fun getAllConversation(userId: Long): List<GetConversation>? {
+        val response = api.getAllConversation(userId)
         return if (response.isSuccessful){
             response.body()
         } else {

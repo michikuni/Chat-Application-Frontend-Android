@@ -1,5 +1,6 @@
 package com.company.myapplication.ui.home.chat.boxchat
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -17,12 +18,18 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
+import com.company.myapplication.data.model.chat.GetConversation
+import com.company.myapplication.data.model.chat.Message
 import com.company.myapplication.data.model.chat.UserChatPreview
+import com.company.myapplication.viewmodel.AuthViewModel
 
+@SuppressLint("UnrememberedMutableState")
 @Composable
 fun ChatItem(
-    user: UserChatPreview,
-    navHostController: NavHostController
+    user: GetConversation,
+    navHostController: NavHostController,
+    userId: Long,
+    authViewModel: AuthViewModel
 ) {
     var isSelected by remember { mutableStateOf(false) }
     Row(
@@ -33,7 +40,6 @@ fun ChatItem(
             )
             .clickable {
                 isSelected = !isSelected
-                navHostController.navigate("boxchat/${user.name}")
             }
             .fillMaxWidth()
             .padding(12.dp),
@@ -41,13 +47,13 @@ fun ChatItem(
     ) {
         Box{
             AsyncImage(
-                model = user.avatarUrl,
+                model = user.avatar,
                 contentDescription = null,
                 modifier = Modifier
                     .size(50.dp)
                     .clip(CircleShape)
             )
-            if (user.isOnline) {
+            if (user.avatar != null) {
                 Box(
                     Modifier
                         .align(Alignment.BottomEnd)
@@ -58,17 +64,19 @@ fun ChatItem(
             }
         }
         Spacer(modifier = Modifier.width(12.dp))
-
         Column(Modifier.weight(1f)) {
             Text(text = user.name, fontWeight = FontWeight.Bold)
             Text(
-                text = user.lastMessage,
+                text = user.content,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
                 color = Color.Gray,
                 fontSize = 14.sp
             )
         }
-        Text(text = user.time, fontSize = 12.sp, color = Color.Gray)
+        Text(text = user.createdAt.toString(), fontSize = 12.sp, color = Color.Gray)
+    }
+    if (isSelected){
+        BoxChatScreen(contact = user.name, navHostController = navHostController, userId = userId, friendId = user.userId, authViewModel = authViewModel)
     }
 }

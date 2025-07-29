@@ -13,11 +13,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.company.myapplication.data.model.chat.GetConversation
 
 
 @Composable
 fun MessageItem (
-    message: BoxChat
+    message: GetConversation
 ){
     Box (
         modifier = Modifier

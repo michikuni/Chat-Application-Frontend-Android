@@ -1,39 +1,46 @@
 package com.company.myapplication.ui.home.chat.boxchat
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
 import com.company.myapplication.data.model.chat.Message
 
 
 @Composable
-fun MessageItem (
-    message: Message
-){
-    Box (
+fun MessageItem(
+    message: Message,
+    userId: Long
+) {
+    val screenWidth = LocalConfiguration.current.screenWidthDp.dp
+
+    Box(
         modifier = Modifier
             .fillMaxWidth()
-            .height(20.dp)
-            .background(color = Color.Transparent)
-    ){
-        Row (
+            .padding(vertical = 4.dp) // khoảng cách giữa các tin nhắn
+    ) {
+        val isCurrentUser = userId == message.senderId.id
+
+        Row(
             modifier = Modifier
-                .fillMaxWidth()
-                .wrapContentWidth()
-                .fillMaxHeight()
-                .background(color = Color.Blue, shape = RoundedCornerShape(16.dp))
-        ){
-            Text(message.content, color = Color.White)
+                .widthIn(max = screenWidth * 0.5f) // giới hạn tối đa 50% màn hình
+                .align(if (isCurrentUser) Alignment.CenterEnd else Alignment.CenterStart)
+                .background(
+                    color = if (isCurrentUser) Color.Blue else Color.LightGray,
+                    shape = RoundedCornerShape(16.dp)
+                )
+                .padding(12.dp)
+        ) {
+            Text(
+                text = message.content,
+                color = if (isCurrentUser) Color.White else Color.Black
+            )
         }
     }
 }

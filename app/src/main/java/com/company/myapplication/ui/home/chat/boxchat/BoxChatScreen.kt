@@ -43,7 +43,7 @@ fun BoxChatScreen(
             contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp)
         ) {
             items(messages) { ms ->
-                MessageItem(message = ms)
+                MessageItem(message = ms, userId = userId)
             }
         }
     }

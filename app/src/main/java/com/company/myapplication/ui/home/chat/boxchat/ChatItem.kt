@@ -29,7 +29,6 @@ fun ChatItem(
     user: GetConversation,
     navHostController: NavHostController,
     userId: Long,
-    authViewModel: AuthViewModel
 ) {
     var isSelected by remember { mutableStateOf(false) }
     Row(
@@ -40,6 +39,9 @@ fun ChatItem(
             )
             .clickable {
                 isSelected = !isSelected
+                navHostController.navigate(
+                    "box_chat/${user.name}/${userId}/${user.userId}"
+                )
             }
             .fillMaxWidth()
             .padding(12.dp),
@@ -75,8 +77,5 @@ fun ChatItem(
             )
         }
         Text(text = user.createdAt.toString(), fontSize = 12.sp, color = Color.Gray)
-    }
-    if (isSelected){
-        BoxChatScreen(contact = user.name, navHostController = navHostController, userId = userId, friendId = user.userId, authViewModel = authViewModel)
     }
 }

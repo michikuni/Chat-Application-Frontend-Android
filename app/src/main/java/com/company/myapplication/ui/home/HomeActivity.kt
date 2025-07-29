@@ -4,6 +4,7 @@ import android.app.Activity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -55,20 +56,25 @@ fun HomeScreen(
             BottomNavigationBar(navController = navHostController, currentRoute = currentRoute)
         }
     ) { paddingValues ->
-        Column (modifier = Modifier
-            .fillMaxWidth()
-            .padding(paddingValues)){
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues)
+        ) {
             SearchBar(
                 query = searchQuery,
-                onQueryChange = { searchQuery = it},
+                onQueryChange = { searchQuery = it },
                 modifier = Modifier
                     .background(color = topAppBarColor)
             )
-            LazyColumn (
+            LazyColumn(
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxWidth(),
                 contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp)
-            ){
+            ) {
                 items(filterUser) { user ->
-                    ChatItem(user, navHostController, userId, authViewModel = authViewModel)
+                    ChatItem(user, navHostController, userId)
                     HorizontalDivider(
                         color = lineBreakMessage,
                         thickness = 0.75.dp,
@@ -77,6 +83,5 @@ fun HomeScreen(
                 }
             }
         }
-
     }
 }

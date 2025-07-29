@@ -96,11 +96,13 @@ class AuthRepository (context: Activity){
         return response.isSuccessful
     }
 
-    suspend fun getAllMessage(userId: Long, friendshipId: Long): List<Message>? {
-        val response = api.getAllMessage(userId, friendshipId)
+    suspend fun getAllMessage(userId: Long, friendId: Long): List<Message>? {
+        val response = api.getAllMessage(userId, friendId)
         return if (response.isSuccessful){
+            Log.e("authREP", "succcccccc response code: ${response.code()}, success: ${response.isSuccessful}")
             response.body()
         } else {
+            Log.e("authREP", "faill ll lll l lresponse code: ${response.code()}, success: ${response.isSuccessful}")
             throw Exception("Lỗi lấy tin nhắn: ${response.code()}")
         }
     }

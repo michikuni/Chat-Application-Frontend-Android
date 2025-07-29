@@ -59,7 +59,7 @@ interface ApiService {
     @GET("api/chats/allMessage/{userId}")
     suspend fun getAllMessage(
         @Path("userId") userId: Long,
-        @Query("friendId") friendshipId: Long
+        @Query("friendId") friendId: Long
     ): Response<List<Message>>
 
     @GET("api/chats/allConversation/{userId}")

@@ -14,21 +14,28 @@ import androidx.compose.material.icons.filled.Attachment
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
+import com.company.myapplication.data.model.chat.CreateConversation
 import com.company.myapplication.util.themeColor
 import com.company.myapplication.ui.home.util.TextField
 import com.company.myapplication.util.topAppBarColor
+import com.company.myapplication.viewmodel.AuthViewModel
 
 
 @Composable
 fun BottomBoxChat(
-    query: String,
-    onQueryChange: (String) -> Unit,
+    authViewModel: AuthViewModel,
+    userId: Long,
+    friendId: Long
 ){
+    var chatMessage by remember { mutableStateOf("") }
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -51,14 +58,17 @@ fun BottomBoxChat(
                 )
             }
 
-            TextField(query = query,
-                onQueryChange = onQueryChange,
+            TextField(query = chatMessage,
+                onQueryChange = { chatMessage = it},
                 text = "Nhập tin nhắn ...",
                 multiLine = true,
                 color = topAppBarColor,
                 modifier = Modifier.weight(0.75f))
 
-            IconButton(onClick = {},
+            IconButton(onClick = {
+                authViewModel.createConversation(userId = userId, body = CreateConversation(friendId = friendId, message = chatMessage))
+                chatMessage = ""
+            },
                 modifier = Modifier.weight(0.125f)) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.Send,

@@ -1,5 +1,6 @@
 package com.company.myapplication.ui.home.chat.boxchat
 
+import android.util.Log
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -30,10 +31,10 @@ fun BoxChatScreen(
         authViewModel.getAllMessage(userId = userId, friendId = friendId)
     }
     val messages by authViewModel.message.collectAsState()
-    var chatMessage by remember { mutableStateOf("") }
+
     Scaffold(
         topBar = { TopBoxChat(contact = contact, navHostController = navHostController) },
-        bottomBar = { BottomBoxChat(query = chatMessage, onQueryChange = { chatMessage = it }) }
+        bottomBar = { BottomBoxChat(authViewModel = authViewModel, userId = userId, friendId = friendId) }
     ) { paddingValues ->
         LazyColumn(
             modifier = Modifier

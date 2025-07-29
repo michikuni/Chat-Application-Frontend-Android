@@ -170,9 +170,19 @@ class AuthViewModel(activity: Activity): ViewModel(){
     fun getAllMessage(userId: Long, friendId: Long){
         viewModelScope.launch {
             try {
+                Log.e("gettt", "user id: $userId, friendId: $friendId")
                 val allMessage = repo.getAllMessage(userId, friendId)
+                Log.e("MSSSSS", "Tổng số tin nhắn: ${allMessage?.size ?: "null"}")
+                if (allMessage == null) {
+                    Log.e("MSSSSS", "khoong okk")
+                }
                 if (allMessage != null) {
                     _message.value = allMessage
+                }
+                if (allMessage != null) {
+                    for (fr in allMessage){
+                        Log.e("MSSSSS", "TIN NHAWNS : ${fr.content}")
+                    }
                 }
             } catch (e: Exception){
                 errorMessage = e.message

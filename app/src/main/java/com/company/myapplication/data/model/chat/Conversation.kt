@@ -1,7 +1,6 @@
 package com.company.myapplication.data.model.chat
 
 import java.sql.Timestamp
-import java.time.Instant
 
 data class CreateConversation(
     val friendId: Long,
@@ -23,5 +22,5 @@ data class Conversation(
     val conversationName: String?,
     val avatar: String?,
     val numberMembers: Int,
-    val createdAt: Instant
+    val createdAt: Timestamp
 )

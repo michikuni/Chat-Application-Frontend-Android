@@ -19,9 +19,6 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.company.myapplication.data.model.chat.GetConversation
-import com.company.myapplication.data.model.chat.Message
-import com.company.myapplication.data.model.chat.UserChatPreview
-import com.company.myapplication.viewmodel.AuthViewModel
 
 @SuppressLint("UnrememberedMutableState")
 @Composable

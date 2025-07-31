@@ -18,9 +18,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.SecondaryTabRow
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
@@ -133,10 +131,7 @@ fun TabRequest(
         suggestedContacts.forEach { request ->
             PopupRequest(
                 avatar = request.avatar,
-                name = request.name,
-                authViewModel = authViewModel,
-                friendshipId = request.friendshipId,
-                activity = activity
+                name = request.name
             )
         }
     }
@@ -262,10 +257,7 @@ fun PopupPending(
 @Composable
 fun PopupRequest(
     avatar: String?,
-    name: String,
-    authViewModel: AuthViewModel,
-    friendshipId: Long,
-    activity: Activity
+    name: String
     //onClick: () -> Unit
 ){
     Column (

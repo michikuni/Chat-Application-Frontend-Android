@@ -16,7 +16,6 @@ fun SearchBar(
 ) {
     val configuration = LocalConfiguration.current
     val screenWidth = configuration.screenWidthDp
-    val screenHeight = configuration.screenHeightDp
     val tfWidth = (screenWidth / 10 * 7.5)
     Box (
         modifier = modifier

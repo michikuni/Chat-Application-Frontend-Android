@@ -36,8 +36,6 @@ fun CreateConversationPopup(
 
     var showRequestDialog by remember { mutableStateOf(false) }
 
-    var showBoxchat by remember { mutableStateOf(false) }
-
     var searchQuery by remember { mutableStateOf("") }
 
     val filterUser = users.filter {

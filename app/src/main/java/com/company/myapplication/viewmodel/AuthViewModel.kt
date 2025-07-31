@@ -25,7 +25,6 @@ class AuthViewModel(activity: Activity): ViewModel(){
     var loginSuccess by mutableStateOf(false)
     private var createConversationSuccess by mutableStateOf(false)
 
-
     private val _friends = MutableStateFlow<List<UserResponse>>(emptyList())
     val friends: StateFlow<List<UserResponse>> get() = _friends
 

@@ -1,6 +1,5 @@
 package com.company.myapplication.ui.home.util
 
-import android.graphics.drawable.Icon
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape

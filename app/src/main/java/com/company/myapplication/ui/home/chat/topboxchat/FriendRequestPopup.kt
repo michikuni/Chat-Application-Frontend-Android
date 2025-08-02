@@ -246,7 +246,12 @@ fun PopupPending(
                     containerColor = Color.LightGray,
                     contentColor = Color.DarkGray
                 ),
-                onClick = {}
+                onClick = {
+                    authViewModel.canceledFriendRequest(friendshipId)
+                    authViewModel.canceledSuccess.let {
+                        Toast.makeText(activity, "Đã từ chối lời mời kết bạn", Toast.LENGTH_SHORT).show()
+                    }
+                }
             ) {
                 Text(text = "Từ chối", fontSize = 12.sp)
             }
@@ -257,7 +262,10 @@ fun PopupPending(
 @Composable
 fun PopupRequest(
     avatar: String?,
-    name: String
+    name: String,
+    authViewModel: AuthViewModel,
+    friendshipId: Long,
+    activity: Activity
     //onClick: () -> Unit
 ){
     Column (
@@ -300,7 +308,12 @@ fun PopupRequest(
                     containerColor = Color.LightGray,
                     contentColor = Color.DarkGray
                 ),
-                onClick = {}
+                onClick = {
+                    authViewModel.canceledFriendRequest(friendshipId)
+                    authViewModel.canceledSuccess.let {
+                        Toast.makeText(activity, "Đã từ chối lời mời kết bạn", Toast.LENGTH_SHORT).show()
+                    }
+                }
             ) {
                 Text(text = "Thu hồi", fontSize = 12.sp)
             }

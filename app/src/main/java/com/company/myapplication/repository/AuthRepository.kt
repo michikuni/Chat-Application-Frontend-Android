@@ -62,9 +62,7 @@ class AuthRepository (context: Activity){
     }
 
     suspend fun getPendingFriends(userId: Long): List<FriendResponse>{
-        Log.e("APM", "authrepo id $userId")
         val response = api.getPendingFriends(userId)
-        Log.e("APM", "authrepo response $response")
         if (response.isSuccessful){
             return response.body() ?: emptyList()
         } else{
@@ -73,9 +71,7 @@ class AuthRepository (context: Activity){
     }
 
     suspend fun getRequestFriends(userId: Long): List<FriendResponse>{
-        Log.e("APM", "authrepo id $userId")
         val response = api.getRequestFriends(userId)
-        Log.e("APM", "authrepo response $response")
         if (response.isSuccessful){
             return response.body() ?: emptyList()
         } else{
@@ -99,10 +95,8 @@ class AuthRepository (context: Activity){
     suspend fun getAllMessage(userId: Long, friendId: Long): List<Message>? {
         val response = api.getAllMessage(userId, friendId)
         return if (response.isSuccessful){
-            Log.e("authREP", "succcccccc response code: ${response.code()}, success: ${response.isSuccessful}")
             response.body()
         } else {
-            Log.e("authREP", "faill ll lll l lresponse code: ${response.code()}, success: ${response.isSuccessful}")
             throw Exception("Lỗi lấy tin nhắn: ${response.code()}")
         }
     }
@@ -113,6 +107,15 @@ class AuthRepository (context: Activity){
             response.body()
         } else {
             throw Exception("Lỗi lấy hội thoại: ${response.code()}")
+        }
+    }
+
+    suspend fun cancelFriendRequest(friendshipId: Long): Boolean{
+        val response = api.cancelFriendRequest(friendshipId)
+        if (response.isSuccessful){
+            return response.isSuccessful
+        } else {
+            throw IllegalArgumentException(response.body().toString())
         }
     }
 }

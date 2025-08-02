@@ -22,6 +22,7 @@ class AuthViewModel(activity: Activity): ViewModel(){
     var registerSuccess by mutableStateOf(false)
     var sendAddSuccess by mutableStateOf(false)
     var acceptedSuccess by mutableStateOf(false)
+    var canceledSuccess by mutableStateOf(false)
     var loginSuccess by mutableStateOf(false)
     private var createConversationSuccess by mutableStateOf(false)
 
@@ -155,6 +156,17 @@ class AuthViewModel(activity: Activity): ViewModel(){
                 acceptedSuccess = success
             } catch (e: IllegalArgumentException){
                 errorMessage = "Lỗi chấp nhận lời mời kết bạn ${e.message}"
+            }
+        }
+    }
+
+    fun canceledFriendRequest(friendshipId: Long){
+        viewModelScope.launch {
+            try {
+                val success = repo.cancelFriendRequest(friendshipId)
+                canceledSuccess = success
+            } catch (e: IllegalArgumentException){
+                errorMessage = "Lỗi hủy kết bạn ${e.message}"
             }
         }
     }

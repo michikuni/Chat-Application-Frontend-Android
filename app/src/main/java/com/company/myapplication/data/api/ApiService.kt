@@ -66,5 +66,9 @@ interface ApiService {
     suspend fun getAllConversation(
         @Path("userId") userId: Long
     ): Response<List<GetConversation>>
-    
+
+    @POST("api/friends/cancel/{friendshipId}")
+    suspend fun cancelFriendRequest(
+        @Path("friendshipId") friendshipId: Long
+    ): Response<Void>
 }

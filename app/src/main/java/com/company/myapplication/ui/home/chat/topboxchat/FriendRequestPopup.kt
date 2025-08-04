@@ -131,7 +131,10 @@ fun TabRequest(
         suggestedContacts.forEach { request ->
             PopupRequest(
                 avatar = request.avatar,
-                name = request.name
+                name = request.name,
+                authViewModel = authViewModel,
+                activity = activity,
+                friendshipId = request.friendshipId
             )
         }
     }
@@ -311,7 +314,7 @@ fun PopupRequest(
                 onClick = {
                     authViewModel.canceledFriendRequest(friendshipId)
                     authViewModel.canceledSuccess.let {
-                        Toast.makeText(activity, "Đã từ chối lời mời kết bạn", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(activity, "Đã thu hồi lời mời kết bạn", Toast.LENGTH_SHORT).show()
                     }
                 }
             ) {

@@ -167,7 +167,6 @@ fun TabPending(
         Spacer(modifier = Modifier.height(16.dp))
         Text("Gợi ý", style = MaterialTheme.typography.labelMedium)
 
-
         // Giả lập danh sách liên hệ gợi ý
         val suggestedContacts = users
         suggestedContacts.forEach { request ->
@@ -189,7 +188,6 @@ fun PopupPending(
     authViewModel: AuthViewModel,
     friendshipId: Long,
     activity: Activity
-    //onClick: () -> Unit
 ){
     Column (
         modifier = Modifier
@@ -199,7 +197,6 @@ fun PopupPending(
         Row(
         modifier = Modifier
             .fillMaxWidth()
-//                .clickable { onClick() }
             .padding(vertical = 10.dp),
         verticalAlignment = Alignment.CenterVertically
         ) {
@@ -216,7 +213,6 @@ fun PopupPending(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-//                .clickable { onClick() }
                 .padding(vertical = 5.dp),
             verticalAlignment = Alignment.CenterVertically
         ){
@@ -269,7 +265,6 @@ fun PopupRequest(
     authViewModel: AuthViewModel,
     friendshipId: Long,
     activity: Activity
-    //onClick: () -> Unit
 ){
     Column (
         modifier = Modifier
@@ -279,7 +274,6 @@ fun PopupRequest(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-//                .clickable { onClick() }
                 .padding(vertical = 10.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {

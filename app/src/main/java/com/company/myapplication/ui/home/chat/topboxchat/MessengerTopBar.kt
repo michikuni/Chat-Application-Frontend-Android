@@ -11,6 +11,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.navigation.NavHostController
 import com.company.myapplication.util.*
 import com.company.myapplication.viewmodel.AuthViewModel
 
@@ -19,8 +20,9 @@ import com.company.myapplication.viewmodel.AuthViewModel
 fun MessengerTopBar(
     activity: Activity,
     authViewModel: AuthViewModel,
-    onLogoutSuccess: () -> Unit
-    ) {
+    onLogoutSuccess: () -> Unit,
+    navHostController: NavHostController
+) {
     var showDialog by remember { mutableStateOf(false) }
     Box(
         modifier = Modifier
@@ -62,7 +64,7 @@ fun MessengerTopBar(
             )
         )
         if (showDialog) {
-            CreateConversationPopup(activity = activity, authViewModel = authViewModel, onDismiss = { showDialog = false })
+            CreateConversationPopup(activity = activity, authViewModel = authViewModel, onDismiss = { showDialog = false }, navHostController = navHostController)
         }
     }
 

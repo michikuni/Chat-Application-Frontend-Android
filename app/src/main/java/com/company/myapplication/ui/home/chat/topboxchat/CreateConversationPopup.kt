@@ -16,6 +16,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.*
 import androidx.compose.ui.window.Dialog
+import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.company.myapplication.util.UserSharedPreferences
 import com.company.myapplication.viewmodel.AuthViewModel
@@ -24,7 +25,8 @@ import com.company.myapplication.viewmodel.AuthViewModel
 fun CreateConversationPopup(
     activity: Activity,
     authViewModel: AuthViewModel,
-    onDismiss: () -> Unit
+    onDismiss: () -> Unit,
+    navHostController: NavHostController
 ) {
     val userId = UserSharedPreferences.getId(activity)
     LaunchedEffect(Unit) {
@@ -92,10 +94,6 @@ fun CreateConversationPopup(
                 if (showRequestDialog){
                     FriendRequestPopup (activity = activity, authViewModel = authViewModel, onDismiss = { showRequestDialog = false })
                 }
-//
-//                if (showBoxchat) {
-//                    BoxChat(contact = )
-//                }
 
                 if (showAddDialog){
                     AddFriendPopUp(activity = activity, authViewModel = authViewModel, onDismiss = { showAddDialog = false })
@@ -110,7 +108,9 @@ fun CreateConversationPopup(
                     PopupSuggestion(
                         avatar = it.avatar,
                         name = it.name,
-//                        onClick = BoxChat(it.name, )
+                        userId = userId,
+                        friendId = it.id,
+                        navHostController = navHostController
                     )
                 }
             }
@@ -141,12 +141,18 @@ fun CreateConversationPopup(
     fun PopupSuggestion(
         avatar: String?,
         name: String,
-//        onClick: () -> Unit
+        userId: Long,
+        friendId: Long,
+        navHostController: NavHostController
     ) {
+        var isSelected by remember { mutableStateOf(false) }
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-//                .clickable { onClick() }
+                .clickable {
+                    isSelected = !isSelected
+                    navHostController.navigate("box_chat/${name}/${userId}/${friendId}")
+                }
                 .padding(vertical = 10.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {

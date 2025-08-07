@@ -1,5 +1,6 @@
 package com.company.myapplication.ui.home.chat.boxchat
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -65,11 +66,20 @@ fun BottomBoxChat(
                 color = topAppBarColor,
                 modifier = Modifier.weight(0.75f))
 
-            IconButton(onClick = {
-                authViewModel.createConversation(userId = userId, body = CreateConversation(friendId = friendId, message = chatMessage))
-                chatMessage = ""
-            },
-                modifier = Modifier.weight(0.125f)) {
+            IconButton(
+                onClick = {
+                    Log.e(">>> ChatMessage:", chatMessage)
+                    if (chatMessage.isNotBlank()) {
+                        Log.e(">>> ChatMessage111ooooo:", chatMessage)
+                        authViewModel.createConversation(
+                            userId = userId,
+                            body = CreateConversation(friendId = friendId, message = chatMessage)
+                        )
+                    }
+                    chatMessage = ""
+                },
+                modifier = Modifier.weight(0.125f)
+            ) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.Send,
                     contentDescription = "Send",

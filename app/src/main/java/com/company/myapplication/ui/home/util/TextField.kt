@@ -42,7 +42,7 @@ fun TextField (
                         icon()
                 }
                 Box(
-                    modifier = modifier.fillMaxWidth().padding(horizontal = 10.dp),
+                    modifier = Modifier.fillMaxWidth().padding(horizontal = 10.dp),
                     contentAlignment = Alignment.CenterStart
                 ) {
                     if (query.isEmpty()) {

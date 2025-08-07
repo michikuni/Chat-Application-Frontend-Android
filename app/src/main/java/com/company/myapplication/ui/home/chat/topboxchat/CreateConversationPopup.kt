@@ -1,6 +1,7 @@
 package com.company.myapplication.ui.home.chat.topboxchat
 
 import android.app.Activity
+import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.*
 import androidx.compose.foundation.shape.CircleShape
@@ -152,6 +153,7 @@ fun CreateConversationPopup(
                 .clickable {
                     isSelected = !isSelected
                     navHostController.navigate("box_chat/${name}/${userId}/${friendId}")
+                    Log.e("Popup suggest", "user: $userId friend: $friendId")
                 }
                 .padding(vertical = 10.dp),
             verticalAlignment = Alignment.CenterVertically

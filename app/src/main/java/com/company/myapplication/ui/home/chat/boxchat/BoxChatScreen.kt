@@ -1,5 +1,6 @@
 package com.company.myapplication.ui.home.chat.boxchat
 
+import android.util.Log
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -29,9 +30,14 @@ fun BoxChatScreen(
 
     LaunchedEffect(Unit) {
         while (true){
-            authViewModel.getAllMessage(userId, friendId)
+            authViewModel.getAllMessage(userId = userId, friendId = friendId)
             delay(3000)
         }
+    }
+    Log.e("boxchat sc", "user: $userId friend: $friendId")
+
+    for (ms in messages){
+        Log.e("boxchat sc", "$ms")
     }
 
     Scaffold(

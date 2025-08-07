@@ -51,8 +51,6 @@ class AuthViewModel(activity: Activity): ViewModel(){
                     val username = result.username
                     val token = result.token
                     errorMessage = null
-
-                    Log.e("Auth ViewModel", "ID: $id, USERNAME $username, TOKEN $token")
                     UserSharedPreferences.saveUser(activity, id = id, username = username, token = token)
                     loginSuccess = true
                 } else{
@@ -86,13 +84,9 @@ class AuthViewModel(activity: Activity): ViewModel(){
 
     fun getAllFriends(userId: Long){
         viewModelScope.launch {
-            Log.e("AVM", "ID $userId")
             try {
                 val friendList = repo.getAllFriendsById(userId)
                 _friends.value = friendList
-                for (fr in friendList){
-                    Log.e("AVM", "Tên: ${fr.name}")
-                }
             } catch (e: Exception){
                 errorMessage = "Lỗi lấy danh sách bạn bè ${e.message}"
             }
@@ -104,7 +98,6 @@ class AuthViewModel(activity: Activity): ViewModel(){
             try {
                 val success = repo.sendAddRequest(userId, receiverEmail)
                 sendAddSuccess = success
-                Log.e("SENDDDD", "$sendAddSuccess")
                 errorMessage = if (success) null else "Gửi lời mời kết bạn thất bại"
             } catch (e: IllegalArgumentException){
                 errorMessage = "Lỗi gửi lời mời kết bạn${e.message}"
@@ -115,15 +108,8 @@ class AuthViewModel(activity: Activity): ViewModel(){
 
     fun getPendingFriends(userId: Long){
         viewModelScope.launch {
-            Log.e("APM", "ID $userId")
             try {
                 val friendPending = repo.getPendingFriends(userId)
-                if (friendPending.isEmpty()){
-                    Log.e("APM", "roonxg")
-                }
-                for (fr in friendPending){
-                    Log.e("APM", "Tên ${fr.name}")
-                }
                 _friendsPending.value = friendPending
             } catch (e: Exception){
                 errorMessage = "Lỗi lấy danh sách bạn bè ${e.message}"
@@ -133,15 +119,8 @@ class AuthViewModel(activity: Activity): ViewModel(){
 
     fun getRequestFriends(userId: Long){
         viewModelScope.launch {
-            Log.e("APM", "ID $userId")
             try {
                 val friendRequest = repo.getRequestFriends(userId)
-                if (friendRequest.isEmpty()){
-                    Log.e("APM", "roonxg")
-                }
-                for (fr in friendRequest){
-                    Log.e("APM", "Tên ${fr.name}")
-                }
                 _friendsRequest.value = friendRequest
             } catch (e: Exception){
                 errorMessage = "Lỗi lấy danh sách bạn bè ${e.message}"
@@ -181,19 +160,9 @@ class AuthViewModel(activity: Activity): ViewModel(){
     fun getAllMessage(userId: Long, friendId: Long){
         viewModelScope.launch {
             try {
-                Log.e("gettt", "user id: $userId, friendId: $friendId")
                 val allMessage = repo.getAllMessage(userId, friendId)
-                Log.e("MSSSSS", "Tổng số tin nhắn: ${allMessage?.size ?: "null"}")
-                if (allMessage == null) {
-                    Log.e("MSSSSS", "khoong okk")
-                }
                 if (allMessage != null) {
                     _message.value = allMessage
-                }
-                if (allMessage != null) {
-                    for (fr in allMessage){
-                        Log.e("MSSSSS", "TIN NHAWNS : ${fr.content}")
-                    }
                 }
             } catch (e: Exception){
                 errorMessage = e.message

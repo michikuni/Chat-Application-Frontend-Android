@@ -36,7 +36,7 @@ fun BottomBoxChat(
     userId: Long,
     friendId: Long
 ){
-    var chatMessage by remember { mutableStateOf("") }
+    var chatMessage by remember(userId, friendId) { mutableStateOf("") }
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -49,7 +49,7 @@ fun BottomBoxChat(
                 .fillMaxHeight()
                 .background(color = Color.Transparent),
             verticalAlignment = Alignment.CenterVertically
-            ) {
+        ) {
             IconButton(onClick = {},
                 modifier = Modifier.weight(0.125f)) {
                 Icon(
@@ -64,7 +64,8 @@ fun BottomBoxChat(
                 text = "Nhập tin nhắn ...",
                 multiLine = true,
                 color = topAppBarColor,
-                modifier = Modifier.weight(0.75f))
+                modifier = Modifier.weight(0.75f)
+            )
 
             IconButton(
                 onClick = {

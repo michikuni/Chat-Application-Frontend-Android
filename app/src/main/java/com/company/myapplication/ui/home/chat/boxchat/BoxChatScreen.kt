@@ -29,10 +29,11 @@ fun BoxChatScreen(
     val messages by authViewModel.message.collectAsState()
 
     LaunchedEffect(Unit) {
-        while (true){
-            authViewModel.getAllMessage(userId = userId, friendId = friendId)
-            delay(3000)
-        }
+        authViewModel.getAllMessage(userId = userId, friendId = friendId)
+//        while (true){
+//            delay(3000)
+//            authViewModel.getAllMessage(userId = userId, friendId = friendId)
+//        }
     }
     Log.e("boxchat sc", "user: $userId friend: $friendId")
 

@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     id("org.jetbrains.kotlin.plugin.serialization") version "1.9.23"
+    alias(libs.plugins.google.gms.google.services)
 }
 
 android {
@@ -45,6 +46,7 @@ dependencies {
     implementation("org.hildan.krossbow:krossbow-stomp-kxserialization-json:7.0.0")
     implementation("org.hildan.krossbow:krossbow-stomp-core:7.0.0")
     implementation("org.hildan.krossbow:krossbow-websocket-builtin:7.0.0")
+    implementation(libs.firebase.messaging)
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.4")
 
     implementation(libs.androidx.material)

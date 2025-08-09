@@ -30,10 +30,6 @@ fun BoxChatScreen(
 
     LaunchedEffect(Unit) {
         authViewModel.getAllMessage(userId = userId, friendId = friendId)
-//        while (true){
-//            delay(3000)
-//            authViewModel.getAllMessage(userId = userId, friendId = friendId)
-//        }
     }
     Log.e("boxchat sc", "user: $userId friend: $friendId")
 

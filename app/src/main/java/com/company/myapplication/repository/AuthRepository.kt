@@ -1,6 +1,7 @@
 package com.company.myapplication.repository
 
 import android.app.Activity
+import android.content.Context
 import android.util.Log
 import com.company.myapplication.data.api.ApiService
 import com.company.myapplication.data.model.auth.LoginRequest
@@ -9,16 +10,21 @@ import com.company.myapplication.data.model.auth.RegisterRequest
 import com.company.myapplication.data.model.chat.CreateConversation
 import com.company.myapplication.data.model.chat.GetConversation
 import com.company.myapplication.data.model.chat.Message
+import com.company.myapplication.data.model.fcm.fcmTokenResponse
 import com.company.myapplication.data.model.response.FriendResponse
 import com.company.myapplication.data.model.response.UserResponse
 import okhttp3.OkHttpClient
 import okhttp3.RequestBody
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
 
-class AuthRepository (context: Activity){
-    private fun createRetrofit(context: Activity): Retrofit {
+class AuthRepository (context: Context){
+    private fun createRetrofit(context: Context): Retrofit {
         val client = OkHttpClient.Builder()
+            .connectTimeout(10, TimeUnit.SECONDS)
+            .readTimeout(30, TimeUnit.SECONDS) // tăng thời gian đọc
+            .writeTimeout(30, TimeUnit.SECONDS)
             .addInterceptor(AuthInterceptor(context))
             .build()
 
@@ -118,4 +124,16 @@ class AuthRepository (context: Activity){
             throw IllegalArgumentException(response.body().toString())
         }
     }
+
+    suspend fun sendToken(fcmTokenResponse: fcmTokenResponse): Boolean {
+        val response = api.sendTokenFcm(fcmTokenResponse)
+        return if (response.isSuccessful) {
+            true
+        } else {
+            val errorMsg = response.errorBody()?.string() ?: "Unknown error"
+            Log.e("FCM", "Send token failed: HTTP ${response.code()} - $errorMsg")
+            false
+        }
+    }
+
 }

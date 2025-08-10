@@ -1,5 +1,6 @@
 package com.company.myapplication.ui.home.chat.boxchat
 
+import android.app.Activity
 import android.util.Log
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,6 +15,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.company.myapplication.util.DataChangeHelper
 import com.company.myapplication.viewmodel.AuthViewModel
 import kotlinx.coroutines.delay
 
@@ -23,13 +25,18 @@ fun BoxChatScreen(
     navHostController: NavHostController,
     userId: Long,
     friendId: Long,
-    authViewModel: AuthViewModel
+    authViewModel: AuthViewModel,
+    activity: Activity
 ){
 
     val messages by authViewModel.message.collectAsState()
 
     LaunchedEffect(Unit) {
         authViewModel.getAllMessage(userId = userId, friendId = friendId)
+        if (DataChangeHelper.hasDataChanged(activity)) {
+            authViewModel.getAllMessage(userId = userId, friendId = friendId)
+            DataChangeHelper.setDataChanged(activity, false) // reset flag
+        }
     }
     Log.e("boxchat sc", "user: $userId friend: $friendId")
 

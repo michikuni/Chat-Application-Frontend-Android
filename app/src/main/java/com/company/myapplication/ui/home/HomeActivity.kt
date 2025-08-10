@@ -26,6 +26,7 @@ import com.company.myapplication.ui.home.util.SearchBar
 import com.company.myapplication.ui.home.util.BottomNavigationBar
 import com.company.myapplication.ui.home.chat.boxchat.ChatItem
 import com.company.myapplication.ui.home.chat.topboxchat.MessengerTopBar
+import com.company.myapplication.util.DataChangeHelper
 import com.company.myapplication.util.UserSharedPreferences
 import com.company.myapplication.util.lineBreakMessage
 import com.company.myapplication.util.topAppBarColor
@@ -41,6 +42,10 @@ fun HomeScreen(
     val userId = UserSharedPreferences.getId(activity)
     LaunchedEffect (Unit){
         authViewModel.getAllConversation(userId)
+        if (DataChangeHelper.hasDataChanged(activity)) {
+            authViewModel.getAllConversation(userId)
+            DataChangeHelper.setDataChanged(activity, false) // reset flag
+        }
     }
 
     val listConversation by authViewModel.conversation.collectAsState()

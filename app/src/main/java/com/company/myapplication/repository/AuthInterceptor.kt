@@ -1,10 +1,11 @@
 package com.company.myapplication.repository
 
 import android.app.Activity
+import android.content.Context
 import com.company.myapplication.util.UserSharedPreferences
 import okhttp3.*
 
-class AuthInterceptor(private val context: Activity) : Interceptor {
+class AuthInterceptor(private val context: Context) : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val token = UserSharedPreferences.getToken(context)
 

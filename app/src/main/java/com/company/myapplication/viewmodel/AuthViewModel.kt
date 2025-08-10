@@ -7,6 +7,7 @@ import androidx.lifecycle.*
 import com.company.myapplication.data.model.chat.CreateConversation
 import com.company.myapplication.data.model.chat.GetConversation
 import com.company.myapplication.data.model.chat.Message
+import com.company.myapplication.data.model.fcm.fcmTokenResponse
 import com.company.myapplication.data.model.response.FriendResponse
 import com.company.myapplication.data.model.response.UserResponse
 import com.company.myapplication.repository.AuthRepository
@@ -46,11 +47,15 @@ class AuthViewModel(activity: Activity): ViewModel(){
             try {
                 UserSharedPreferences.clearSession(activity)
                 val result = repo.login(account, password)
+                val fcmToken = UserSharedPreferences.getFcmToken(activity)
+                Log.d("FCM", "Send token success: $result")
                 if (result != null){
                     val id = result.id
                     val username = result.username
                     val token = result.token
                     errorMessage = null
+                    fcmToken?.let { fcmTokenResponse(userId = id, token = it) }
+                        ?.let { repo.sendToken(it) }
                     UserSharedPreferences.saveUser(activity, id = id, username = username, token = token)
                     loginSuccess = true
                 } else{

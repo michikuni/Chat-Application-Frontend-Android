@@ -71,7 +71,8 @@ fun AppNavigation(activity: Activity) {
                 navHostController = navController,
                 userId = userId,
                 friendId = friendId,
-                authViewModel = authViewModel
+                authViewModel = authViewModel,
+                activity = activity
             )
         }
 

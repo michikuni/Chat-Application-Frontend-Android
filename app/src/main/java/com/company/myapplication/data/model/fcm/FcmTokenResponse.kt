@@ -1,6 +1,6 @@
 package com.company.myapplication.data.model.fcm
 
-data class fcmTokenResponse (
+data class FcmTokenResponse (
     val userId: Long,
     val token: String
 )

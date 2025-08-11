@@ -1,6 +1,8 @@
 package com.company.myapplication.ui.home
 
 import android.app.Activity
+import android.content.Context
+import android.content.SharedPreferences
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -12,6 +14,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -40,11 +43,28 @@ fun HomeScreen(
     onLogoutSuccess: () -> Unit
 ){
     val userId = UserSharedPreferences.getId(activity)
-    LaunchedEffect (Unit){
+    val prefs = activity.getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
+    var dataChanged by remember { mutableStateOf(DataChangeHelper.hasDataChanged(activity)) }
+
+    // Lắng nghe SharedPreferences thay đổi
+    DisposableEffect(prefs) {
+        val listener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
+            if (key == "data_changed") {
+                dataChanged = DataChangeHelper.hasDataChanged(activity)
+            }
+        }
+        prefs.registerOnSharedPreferenceChangeListener(listener)
+        onDispose {
+            prefs.unregisterOnSharedPreferenceChangeListener(listener)
+        }
+    }
+
+    // Khi dataChanged = true → reload
+    LaunchedEffect(dataChanged) {
         authViewModel.getAllConversation(userId)
-        if (DataChangeHelper.hasDataChanged(activity)) {
+        if (dataChanged) {
             authViewModel.getAllConversation(userId)
-            DataChangeHelper.setDataChanged(activity, false) // reset flag
+            DataChangeHelper.setDataChanged(activity, false)
         }
     }
 

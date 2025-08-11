@@ -6,7 +6,7 @@ import com.company.myapplication.data.model.auth.RegisterRequest
 import com.company.myapplication.data.model.chat.CreateConversation
 import com.company.myapplication.data.model.chat.GetConversation
 import com.company.myapplication.data.model.chat.Message
-import com.company.myapplication.data.model.fcm.fcmTokenResponse
+import com.company.myapplication.data.model.fcm.FcmTokenResponse
 import com.company.myapplication.data.model.response.FriendResponse
 import com.company.myapplication.data.model.response.UserResponse
 import okhttp3.RequestBody
@@ -75,6 +75,6 @@ interface ApiService {
 
     @POST("/api/fcm/save-token")
     suspend fun sendTokenFcm(
-        @Body sendToken: fcmTokenResponse
+        @Body sendToken: FcmTokenResponse
     ): Response<Void>
 }

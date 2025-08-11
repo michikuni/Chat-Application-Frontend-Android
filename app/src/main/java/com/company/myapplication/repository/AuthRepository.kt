@@ -1,6 +1,5 @@
 package com.company.myapplication.repository
 
-import android.app.Activity
 import android.content.Context
 import android.util.Log
 import com.company.myapplication.data.api.ApiService
@@ -10,7 +9,7 @@ import com.company.myapplication.data.model.auth.RegisterRequest
 import com.company.myapplication.data.model.chat.CreateConversation
 import com.company.myapplication.data.model.chat.GetConversation
 import com.company.myapplication.data.model.chat.Message
-import com.company.myapplication.data.model.fcm.fcmTokenResponse
+import com.company.myapplication.data.model.fcm.FcmTokenResponse
 import com.company.myapplication.data.model.response.FriendResponse
 import com.company.myapplication.data.model.response.UserResponse
 import okhttp3.OkHttpClient
@@ -125,7 +124,7 @@ class AuthRepository (context: Context){
         }
     }
 
-    suspend fun sendToken(fcmTokenResponse: fcmTokenResponse): Boolean {
+    suspend fun sendToken(fcmTokenResponse: FcmTokenResponse): Boolean {
         val response = api.sendTokenFcm(fcmTokenResponse)
         return if (response.isSuccessful) {
             true

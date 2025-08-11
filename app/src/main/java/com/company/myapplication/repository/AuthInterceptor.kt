@@ -1,6 +1,5 @@
 package com.company.myapplication.repository
 
-import android.app.Activity
 import android.content.Context
 import com.company.myapplication.util.UserSharedPreferences
 import okhttp3.*

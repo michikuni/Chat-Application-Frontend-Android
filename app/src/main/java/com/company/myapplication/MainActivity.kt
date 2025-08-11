@@ -26,14 +26,12 @@ class MainActivity : ComponentActivity() {
                 Log.e("Permission", "Đã cấp quyền POST_NOTIFICATIONS")
             } else {
                 Log.e("Permission", "Người dùng từ chối quyền POST_NOTIFICATIONS")
-                // Có thể cho hiện Snackbar/Tôiểu toast giải thích hoặc dẫn vào Settings
             }
         }
 
     private fun askNotificationPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             when {
-                // Đã có quyền
                 ContextCompat.checkSelfPermission(
                     this,
                     Manifest.permission.POST_NOTIFICATIONS
@@ -54,8 +52,6 @@ class MainActivity : ComponentActivity() {
                         }
                         .show()
                 }
-
-                // Xin trực tiếp
                 else -> {
                     requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
                 }

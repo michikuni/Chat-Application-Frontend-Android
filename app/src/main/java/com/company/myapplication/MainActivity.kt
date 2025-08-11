@@ -2,8 +2,10 @@ package com.company.myapplication
 
 import android.content.pm.PackageManager
 import android.Manifest
+import android.app.AlertDialog
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
@@ -16,34 +18,49 @@ class MainActivity : ComponentActivity() {
         setContent {
             AppNavigation(this)
         }
-        requestPermissionLauncher
+        askNotificationPermission()
     }
-    private val requestPermissionLauncher = registerForActivityResult(
-        ActivityResultContracts.RequestPermission(),
-    ) { isGranted: Boolean ->
-        if (isGranted) {
-            // FCM SDK (and your app) can post notifications.
-        } else {
-            askNotificationPermission()
+    private val requestPermissionLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
+            if (isGranted) {
+                Log.e("Permission", "Đã cấp quyền POST_NOTIFICATIONS")
+            } else {
+                Log.e("Permission", "Người dùng từ chối quyền POST_NOTIFICATIONS")
+                // Có thể cho hiện Snackbar/Tôiểu toast giải thích hoặc dẫn vào Settings
+            }
         }
-    }
 
     private fun askNotificationPermission() {
-        // This is only necessary for API level >= 33 (TIRAMISU)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) ==
-                PackageManager.PERMISSION_GRANTED
-            ) {
-                // FCM SDK (and your app) can post notifications.
-            } else if (shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS)) {
-                // TODO: display an educational UI explaining to the user the features that will be enabled
-                //       by them granting the POST_NOTIFICATION permission. This UI should provide the user
-                //       "OK" and "No thanks" buttons. If the user selects "OK," directly request the permission.
-                //       If the user selects "No thanks," allow the user to continue without notifications.
-            } else {
-                // Directly ask for the permission
-                requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+            when {
+                // Đã có quyền
+                ContextCompat.checkSelfPermission(
+                    this,
+                    Manifest.permission.POST_NOTIFICATIONS
+                ) == PackageManager.PERMISSION_GRANTED -> {
+                    Log.e("Permission", "Quyền thông báo đã được cấp")
+                }
+
+                // Nên giải thích trước khi xin
+                shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS) -> {
+                    AlertDialog.Builder(this)
+                        .setTitle("Quyền thông báo")
+                        .setMessage("Ứng dụng cần quyền thông báo để gửi tin nhắn đến bạn ngay khi có hoạt động mới.")
+                        .setPositiveButton("Cho phép") { _, _ ->
+                            requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+                        }
+                        .setNegativeButton("Không") { dialog, _ ->
+                            dialog.dismiss()
+                        }
+                        .show()
+                }
+
+                // Xin trực tiếp
+                else -> {
+                    requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+                }
             }
         }
     }
+
 }

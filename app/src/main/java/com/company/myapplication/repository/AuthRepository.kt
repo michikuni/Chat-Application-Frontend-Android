@@ -15,6 +15,7 @@ import com.company.myapplication.data.model.chat.Message
 import com.company.myapplication.data.model.fcm.FcmTokenResponse
 import com.company.myapplication.data.model.response.FriendResponse
 import com.company.myapplication.data.model.response.UserResponse
+import com.company.myapplication.repository.apiconfig.ApiConfig
 import com.company.myapplication.repository.interceptor.AuthInterceptor
 import okhttp3.OkHttpClient
 import okhttp3.RequestBody
@@ -32,7 +33,7 @@ class AuthRepository (context: Context){
             .build()
 
         return Retrofit.Builder()
-            .baseUrl("http://10.0.2.2:8080")
+            .baseUrl(ApiConfig.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .client(client)
             .build()

@@ -4,6 +4,7 @@ import android.content.Context
 import com.company.myapplication.data.api.FriendApi
 import com.company.myapplication.data.model.response.FriendResponse
 import com.company.myapplication.data.model.response.UserResponse
+import com.company.myapplication.repository.apiconfig.ApiConfig
 import com.company.myapplication.repository.interceptor.AuthInterceptor
 import okhttp3.OkHttpClient
 import okhttp3.RequestBody
@@ -21,7 +22,7 @@ class FriendRepository (context: Context){
             .build()
 
         return Retrofit.Builder()
-            .baseUrl("http://10.0.2.2:8080")
+            .baseUrl(ApiConfig.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .client(client)
             .build()

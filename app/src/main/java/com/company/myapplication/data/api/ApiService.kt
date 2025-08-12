@@ -51,6 +51,11 @@ interface ApiService {
         @Path("friendshipId") friendshipId: Long
     ): Response<Void>
 
+    @POST("api/friends/cancel/{friendshipId}")
+    suspend fun cancelFriendRequest(
+        @Path("friendshipId") friendshipId: Long
+    ): Response<Void>
+
     @POST("api/chats/createConversation/{userId}")
     suspend fun createConversation(
         @Path("userId") userId: Long,
@@ -67,11 +72,6 @@ interface ApiService {
     suspend fun getAllConversation(
         @Path("userId") userId: Long
     ): Response<List<GetConversation>>
-
-    @POST("api/friends/cancel/{friendshipId}")
-    suspend fun cancelFriendRequest(
-        @Path("friendshipId") friendshipId: Long
-    ): Response<Void>
 
     @POST("/api/fcm/save-token")
     suspend fun sendTokenFcm(

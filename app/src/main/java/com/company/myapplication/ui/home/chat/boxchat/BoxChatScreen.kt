@@ -64,7 +64,7 @@ fun BoxChatScreen(
 
     Scaffold(
         topBar = { TopBoxChat(contact = contact, navHostController = navHostController) },
-        bottomBar = { BottomBoxChat(authViewModel = authViewModel, userId = userId, friendId = friendId) }
+        bottomBar = { BottomBoxChat(authViewModel = authViewModel, userId = userId, friendId = friendId, activity = activity) }
     ) { paddingValues ->
         LazyColumn(
             state = listState,

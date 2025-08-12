@@ -1,4 +1,4 @@
-package com.company.myapplication.repository
+package com.company.myapplication.repository.interceptor
 
 import android.content.Context
 import com.company.myapplication.util.UserSharedPreferences

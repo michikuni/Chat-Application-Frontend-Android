@@ -1,5 +1,6 @@
 package com.company.myapplication.ui.home.chat.boxchat
 
+import android.app.Activity
 import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -26,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import com.company.myapplication.data.model.chat.CreateConversation
 import com.company.myapplication.util.themeColor
 import com.company.myapplication.ui.home.util.TextField
+import com.company.myapplication.util.DataChangeHelper
 import com.company.myapplication.util.topAppBarColor
 import com.company.myapplication.viewmodel.AuthViewModel
 
@@ -34,7 +36,8 @@ import com.company.myapplication.viewmodel.AuthViewModel
 fun BottomBoxChat(
     authViewModel: AuthViewModel,
     userId: Long,
-    friendId: Long
+    friendId: Long,
+    activity: Activity
 ){
     var chatMessage by remember(userId, friendId) { mutableStateOf("") }
     Box(
@@ -78,6 +81,7 @@ fun BottomBoxChat(
                         )
                     }
                     chatMessage = ""
+                    DataChangeHelper.setDataChanged(activity, true)
                 },
                 modifier = Modifier.weight(0.125f)
             ) {

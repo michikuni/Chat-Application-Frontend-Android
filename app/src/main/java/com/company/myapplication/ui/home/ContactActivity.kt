@@ -55,7 +55,7 @@ fun ContactScreen(
             val currentRoute = currentBackStackEntry?.destination?.route?: ""
             BottomNavigationBar(navController = navHostController, currentRoute = currentRoute)
         }
-    ) { paddingValues ->
+        ) { paddingValues ->
         Column (modifier = Modifier
             .fillMaxWidth()
             .padding(paddingValues)){

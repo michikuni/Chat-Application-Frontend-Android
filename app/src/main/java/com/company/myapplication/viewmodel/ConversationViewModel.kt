@@ -17,15 +17,15 @@ import kotlinx.coroutines.launch
 class ConversationViewModel(activity: Activity): ViewModel(){
     private val repo = ConversationRepository(activity)
 
-    var errorMsg by mutableStateOf<String?>(null)
+    private var errorMsg by mutableStateOf<String?>(null)
 
     private val _messages = MutableStateFlow<List<Message>>(emptyList())
     val messages: StateFlow<List<Message>> get() = _messages
 
     private var createConversationSuccess by mutableStateOf(false)
 
-    private val _conversation = MutableStateFlow<List<GetConversation>?>(emptyList())
-    val conversation: StateFlow<List<GetConversation>?> get() = _conversation
+    private val _conversation = MutableStateFlow<List<GetConversation>>(emptyList())
+    val conversation: StateFlow<List<GetConversation>> get() = _conversation
 
     fun getAllMessage(userId: Long, friendId: Long){
         viewModelScope.launch {
@@ -51,7 +51,9 @@ class ConversationViewModel(activity: Activity): ViewModel(){
         viewModelScope.launch {
             try {
                 val conversation = repo.getAllConversation(userId)
-                _conversation.value = conversation
+                if (conversation != null) {
+                    _conversation.value = conversation
+                }
             } catch (e: Exception){
                 errorMsg = e.message
             }

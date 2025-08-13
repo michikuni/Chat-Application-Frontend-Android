@@ -20,20 +20,20 @@ import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.company.myapplication.util.UserSharedPreferences
-import com.company.myapplication.viewmodel.AuthViewModel
+import com.company.myapplication.viewmodel.FriendViewModel
 
 @Composable
 fun CreateConversationPopup(
     activity: Activity,
-    authViewModel: AuthViewModel,
+    friendViewModel: FriendViewModel,
     onDismiss: () -> Unit,
     navHostController: NavHostController
 ) {
     val userId = UserSharedPreferences.getId(activity)
     LaunchedEffect(Unit) {
-        authViewModel.getAllFriends(userId)
+        friendViewModel.getAllFriendsById(userId)
     }
-    val users by authViewModel.friends.collectAsState()
+    val users by friendViewModel.allFriends.collectAsState()
 
     var showAddDialog by remember { mutableStateOf(false) }
 
@@ -93,11 +93,11 @@ fun CreateConversationPopup(
                 )
 
                 if (showRequestDialog){
-                    FriendRequestPopup (activity = activity, authViewModel = authViewModel, onDismiss = { showRequestDialog = false })
+                    FriendRequestPopup (activity = activity, friendViewModel = friendViewModel, onDismiss = { showRequestDialog = false })
                 }
 
                 if (showAddDialog){
-                    AddFriendPopUp(activity = activity, authViewModel = authViewModel, onDismiss = { showAddDialog = false })
+                    AddFriendPopUp(activity = activity, friendViewModel = friendViewModel, onDismiss = { showAddDialog = false })
                 }
 
                 Spacer(modifier = Modifier.height(16.dp))

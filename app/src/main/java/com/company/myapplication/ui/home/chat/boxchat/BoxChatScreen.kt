@@ -3,7 +3,6 @@ package com.company.myapplication.ui.home.chat.boxchat
 import android.app.Activity
 import android.content.Context
 import android.content.SharedPreferences
-import android.util.Log
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -23,7 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.company.myapplication.util.DataChangeHelper
-import com.company.myapplication.viewmodel.AuthViewModel
+import com.company.myapplication.viewmodel.ConversationViewModel
 
 @Composable
 fun BoxChatScreen(
@@ -31,12 +30,12 @@ fun BoxChatScreen(
     navHostController: NavHostController,
     userId: Long,
     friendId: Long,
-    authViewModel: AuthViewModel,
+    conversationViewModel: ConversationViewModel,
     activity: Activity
 ){
 
     val listState = rememberLazyListState()
-    val messages by authViewModel.message.collectAsState()
+    val messages by conversationViewModel.messages.collectAsState()
     val prefs = activity.getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
     var dataChanged by remember { mutableStateOf(DataChangeHelper.hasDataChanged(activity)) }
 
@@ -55,16 +54,16 @@ fun BoxChatScreen(
 
     // Khi dataChanged = true → reload
     LaunchedEffect(dataChanged) {
-        authViewModel.getAllMessage(userId = userId, friendId = friendId)
+        conversationViewModel.getAllMessage(userId = userId, friendId = friendId)
         if (dataChanged) {
-            authViewModel.getAllMessage(userId = userId, friendId = friendId)
+            conversationViewModel.getAllMessage(userId = userId, friendId = friendId)
             DataChangeHelper.setDataChanged(activity, false)
         }
     }
 
     Scaffold(
         topBar = { TopBoxChat(contact = contact, navHostController = navHostController) },
-        bottomBar = { BottomBoxChat(authViewModel = authViewModel, userId = userId, friendId = friendId, activity = activity) }
+        bottomBar = { BottomBoxChat(conversationViewModel = conversationViewModel, userId = userId, friendId = friendId, activity = activity) }
     ) { paddingValues ->
         LazyColumn(
             state = listState,

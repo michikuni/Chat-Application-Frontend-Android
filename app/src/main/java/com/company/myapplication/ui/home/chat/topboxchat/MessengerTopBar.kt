@@ -14,12 +14,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.navigation.NavHostController
 import com.company.myapplication.util.*
 import com.company.myapplication.viewmodel.AuthViewModel
+import com.company.myapplication.viewmodel.FriendViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MessengerTopBar(
     activity: Activity,
     authViewModel: AuthViewModel,
+    friendViewModel: FriendViewModel,
     onLogoutSuccess: () -> Unit,
     navHostController: NavHostController
 ) {
@@ -64,7 +66,7 @@ fun MessengerTopBar(
             )
         )
         if (showDialog) {
-            CreateConversationPopup(activity = activity, authViewModel = authViewModel, onDismiss = { showDialog = false }, navHostController = navHostController)
+            CreateConversationPopup(activity = activity, friendViewModel = friendViewModel, onDismiss = { showDialog = false }, navHostController = navHostController)
         }
     }
 

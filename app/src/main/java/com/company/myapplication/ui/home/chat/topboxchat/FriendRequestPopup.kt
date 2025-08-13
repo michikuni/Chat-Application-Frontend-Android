@@ -27,7 +27,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -40,25 +40,25 @@ import androidx.compose.ui.window.Dialog
 import coil.compose.AsyncImage
 import com.company.myapplication.data.model.response.FriendResponse
 import com.company.myapplication.util.UserSharedPreferences
-import com.company.myapplication.viewmodel.AuthViewModel
+import com.company.myapplication.viewmodel.FriendViewModel
 
 @Composable
 fun FriendRequestPopup(
     activity: Activity,
-    authViewModel: AuthViewModel,
+    friendViewModel: FriendViewModel,
     onDismiss: () -> Unit
 ) {
     val userId = UserSharedPreferences.getId(activity)
     LaunchedEffect(Unit) {
-        authViewModel.getPendingFriends(userId)
+        friendViewModel.getPendingFriendRequest(userId)
     }
-    val usersPending by authViewModel.friendsPending.collectAsState()
+    val usersPending by friendViewModel.pendingFriends.collectAsState()
     LaunchedEffect(Unit) {
-        authViewModel.getRequestFriends(userId)
+        friendViewModel.getRequestFriendRequest(userId)
     }
-    val usersRequest by authViewModel.friendsRequest.collectAsState()
+    val usersRequest by friendViewModel.requestFriends.collectAsState()
 
-    var selectedTabIndex by remember { mutableStateOf(0) }
+    var selectedTabIndex by remember { mutableIntStateOf(0) }
     val tabTitles = listOf("Đã nhận", "Đã gửi")
 
     Dialog(onDismissRequest = { onDismiss() }) {
@@ -89,8 +89,8 @@ fun FriendRequestPopup(
                 Spacer(modifier = Modifier.height(16.dp))
 
                 when (selectedTabIndex) {
-                    0 -> TabPending(users = usersPending, onDismiss = onDismiss, activity = activity, authViewModel = authViewModel)
-                    1 -> TabRequest(users = usersRequest, onDismiss = onDismiss, activity = activity, authViewModel = authViewModel)
+                    0 -> TabPending(users = usersPending, onDismiss = onDismiss, activity = activity, friendViewModel = friendViewModel)
+                    1 -> TabRequest(users = usersRequest, onDismiss = onDismiss, activity = activity, friendViewModel = friendViewModel)
                 }
                 Spacer(modifier = Modifier.height(16.dp))
             }
@@ -103,7 +103,7 @@ fun TabRequest(
     users: List<FriendResponse>,
     onDismiss: () -> Unit,
     activity: Activity,
-    authViewModel: AuthViewModel
+    friendViewModel: FriendViewModel
 
 ){
     Column {
@@ -132,7 +132,7 @@ fun TabRequest(
             PopupRequest(
                 avatar = request.avatar,
                 name = request.name,
-                authViewModel = authViewModel,
+                friendViewModel = friendViewModel,
                 activity = activity,
                 friendshipId = request.friendshipId
             )
@@ -145,7 +145,7 @@ fun TabPending(
     users: List<FriendResponse>,
     onDismiss: () -> Unit,
     activity: Activity,
-    authViewModel: AuthViewModel
+    friendViewModel: FriendViewModel
 
 ){
     Column {
@@ -173,7 +173,7 @@ fun TabPending(
             PopupPending(
                 avatar = request.avatar,
                 name = request.name,
-                authViewModel = authViewModel,
+                friendViewModel = friendViewModel,
                 friendshipId = request.friendshipId,
                 activity = activity
             )
@@ -185,7 +185,7 @@ fun TabPending(
 fun PopupPending(
     avatar: String?,
     name: String,
-    authViewModel: AuthViewModel,
+    friendViewModel: FriendViewModel,
     friendshipId: Long,
     activity: Activity
 ){
@@ -227,8 +227,8 @@ fun PopupPending(
                     contentColor = Color.White
                 ),
                 onClick = {
-                    authViewModel.acceptedFriendRequest(friendshipId = friendshipId)
-                    authViewModel.acceptedSuccess.let {
+                    friendViewModel.acceptedFriendRequest(friendshipId = friendshipId)
+                    friendViewModel.acceptedFriendSuccess.let {
                         Toast.makeText(activity, "Đã chấp nhận lời mời kết bạn", Toast.LENGTH_SHORT).show()
                     }
                 }
@@ -246,8 +246,8 @@ fun PopupPending(
                     contentColor = Color.DarkGray
                 ),
                 onClick = {
-                    authViewModel.canceledFriendRequest(friendshipId)
-                    authViewModel.canceledSuccess.let {
+                    friendViewModel.cancelFriendRequest(friendshipId)
+                    friendViewModel.canceledFriendSuccess.let {
                         Toast.makeText(activity, "Đã từ chối lời mời kết bạn", Toast.LENGTH_SHORT).show()
                     }
                 }
@@ -262,7 +262,7 @@ fun PopupPending(
 fun PopupRequest(
     avatar: String?,
     name: String,
-    authViewModel: AuthViewModel,
+    friendViewModel: FriendViewModel,
     friendshipId: Long,
     activity: Activity
 ){
@@ -306,8 +306,8 @@ fun PopupRequest(
                     contentColor = Color.DarkGray
                 ),
                 onClick = {
-                    authViewModel.canceledFriendRequest(friendshipId)
-                    authViewModel.canceledSuccess.let {
+                    friendViewModel.cancelFriendRequest(friendshipId)
+                    friendViewModel.canceledFriendSuccess.let {
                         Toast.makeText(activity, "Đã thu hồi lời mời kết bạn", Toast.LENGTH_SHORT).show()
                     }
                 }

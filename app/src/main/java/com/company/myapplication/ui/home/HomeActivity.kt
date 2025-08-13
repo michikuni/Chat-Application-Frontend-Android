@@ -34,11 +34,15 @@ import com.company.myapplication.util.UserSharedPreferences
 import com.company.myapplication.util.lineBreakMessage
 import com.company.myapplication.util.topAppBarColor
 import com.company.myapplication.viewmodel.AuthViewModel
+import com.company.myapplication.viewmodel.ConversationViewModel
+import com.company.myapplication.viewmodel.FriendViewModel
 
 @Composable
 fun HomeScreen(
     activity: Activity,
     authViewModel: AuthViewModel,
+    friendViewModel: FriendViewModel,
+    conversationViewModel: ConversationViewModel,
     navHostController: NavHostController,
     onLogoutSuccess: () -> Unit
 ){
@@ -61,20 +65,20 @@ fun HomeScreen(
 
     // Khi dataChanged = true → reload
     LaunchedEffect(dataChanged) {
-        authViewModel.getAllConversation(userId)
+        conversationViewModel.getAllConversation(userId)
         if (dataChanged) {
-            authViewModel.getAllConversation(userId)
+            conversationViewModel.getAllConversation(userId)
             DataChangeHelper.setDataChanged(activity, false)
         }
     }
 
-    val listConversation by authViewModel.conversation.collectAsState()
+    val listConversation by conversationViewModel.conversation.collectAsState()
     var searchQuery by remember { mutableStateOf("") }
     val filterUser = listConversation.filter {
         it.name.contains(searchQuery, ignoreCase = true)
     }
     Scaffold (
-        topBar = { MessengerTopBar(activity = activity, authViewModel = authViewModel, onLogoutSuccess = onLogoutSuccess, navHostController = navHostController) },
+        topBar = { MessengerTopBar(activity = activity, authViewModel = authViewModel, friendViewModel = friendViewModel, onLogoutSuccess = onLogoutSuccess, navHostController = navHostController) },
         bottomBar = {
             val currentBackStackEntry = navHostController.currentBackStackEntryAsState().value
             val currentRoute = currentBackStackEntry?.destination?.route?: ""

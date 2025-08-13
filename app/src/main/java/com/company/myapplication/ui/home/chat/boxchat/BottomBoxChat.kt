@@ -29,12 +29,12 @@ import com.company.myapplication.util.themeColor
 import com.company.myapplication.ui.home.util.TextField
 import com.company.myapplication.util.DataChangeHelper
 import com.company.myapplication.util.topAppBarColor
-import com.company.myapplication.viewmodel.AuthViewModel
+import com.company.myapplication.viewmodel.ConversationViewModel
 
 
 @Composable
 fun BottomBoxChat(
-    authViewModel: AuthViewModel,
+    conversationViewModel: ConversationViewModel,
     userId: Long,
     friendId: Long,
     activity: Activity
@@ -75,7 +75,7 @@ fun BottomBoxChat(
                     Log.e(">>> ChatMessage:", chatMessage)
                     if (chatMessage.isNotBlank()) {
                         Log.e(">>> ChatMessage111ooooo:", chatMessage)
-                        authViewModel.createConversation(
+                        conversationViewModel.createConversation(
                             userId = userId,
                             body = CreateConversation(friendId = friendId, message = chatMessage)
                         )

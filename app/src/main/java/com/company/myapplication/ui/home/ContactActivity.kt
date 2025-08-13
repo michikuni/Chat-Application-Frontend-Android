@@ -23,19 +23,19 @@ import com.company.myapplication.ui.home.contact.ContactItem
 import com.company.myapplication.util.UserSharedPreferences
 import com.company.myapplication.util.lineBreakMessage
 import com.company.myapplication.util.topAppBarColor
-import com.company.myapplication.viewmodel.AuthViewModel
+import com.company.myapplication.viewmodel.FriendViewModel
 
 @Composable
 fun ContactScreen(
     activity: Activity,
-    authViewModel: AuthViewModel,
+    friendViewModel: FriendViewModel,
     navHostController: NavHostController
 ){
     val userId = UserSharedPreferences.getId(activity)
     LaunchedEffect(Unit) {
-        authViewModel.getAllFriends(userId)
+        friendViewModel.getAllFriendsById(userId = userId)
     }
-    val contacts by authViewModel.friends.collectAsState()
+    val contacts by friendViewModel.allFriends.collectAsState()
     var searchQuery by remember { mutableStateOf("") }
     val filterContact = contacts.filter {
         it.name.contains(searchQuery, ignoreCase = true)

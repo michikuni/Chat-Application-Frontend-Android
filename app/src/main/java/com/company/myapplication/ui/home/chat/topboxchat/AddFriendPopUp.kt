@@ -32,13 +32,13 @@ import com.company.myapplication.ui.home.util.TextField
 import com.company.myapplication.util.UserSharedPreferences
 import com.company.myapplication.util.themeColor
 import com.company.myapplication.util.topAppBarColor
-import com.company.myapplication.viewmodel.AuthViewModel
+import com.company.myapplication.viewmodel.FriendViewModel
 import okhttp3.RequestBody.Companion.toRequestBody
 
 @Composable
 fun AddFriendPopUp (
     activity: Activity,
-    authViewModel: AuthViewModel,
+    friendViewModel: FriendViewModel,
     onDismiss: () -> Unit
 ){
     val userId = UserSharedPreferences.getId(activity)
@@ -84,13 +84,13 @@ fun AddFriendPopUp (
                         modifier = Modifier.weight(0.875f).align(Alignment.CenterVertically)
                     )
                     IconButton(onClick = {
-                        authViewModel.sendAddRequest(userId = userId, receiverEmail = query.toRequestBody())
-                        authViewModel.sendAddSuccess.let {
+                        friendViewModel.sendAddRequest(userId = userId, receiverEmail = query.toRequestBody())
+                        friendViewModel.sendAddFriendSuccess.let {
                             Toast.makeText(activity, "Gửi lời mời kết bạn thành công", Toast.LENGTH_SHORT).show()
                             onDismiss()
                         }
-                        authViewModel.errorMessage?.let {
-                            Toast.makeText(activity, "${authViewModel.errorMessage}", Toast.LENGTH_SHORT).show()
+                        friendViewModel.errorMsg?.let {
+                            Toast.makeText(activity, "${friendViewModel.errorMsg}", Toast.LENGTH_SHORT).show()
                         }
                     },
                         modifier = Modifier.weight(0.125f)) {

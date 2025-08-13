@@ -17,16 +17,16 @@ import okhttp3.RequestBody
 class FriendViewModel (activity: Activity): ViewModel(){
     private val repo = FriendRepository(activity)
 
-    private var errorMsg by mutableStateOf<String?>(null)
+    var errorMsg by mutableStateOf<String?>(null)
 
     private val _allFriends = MutableStateFlow<List<UserResponse>>(emptyList())
     val allFriends: StateFlow<List<UserResponse>> = _allFriends
 
-    private var sendAddFriendSuccess by mutableStateOf(false)
+    var sendAddFriendSuccess by mutableStateOf(false)
 
-    private var acceptedFriendSuccess by mutableStateOf(false)
+    var acceptedFriendSuccess by mutableStateOf(false)
 
-    private var canceledFriendSuccess by mutableStateOf(false)
+    var canceledFriendSuccess by mutableStateOf(false)
 
     private val _pendingFriends = MutableStateFlow<List<FriendResponse>>(emptyList())
     val pendingFriends: StateFlow<List<FriendResponse>> get() = _pendingFriends

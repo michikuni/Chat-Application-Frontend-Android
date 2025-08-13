@@ -14,10 +14,14 @@ import com.company.myapplication.ui.home.chat.boxchat.BoxChatScreen
 import com.company.myapplication.ui.login.LoginScreen
 import com.company.myapplication.ui.register.RegisterScreen
 import com.company.myapplication.viewmodel.AuthViewModel
+import com.company.myapplication.viewmodel.ConversationViewModel
+import com.company.myapplication.viewmodel.FriendViewModel
 
 @Composable
 fun AppNavigation(activity: Activity) {
     val navController = rememberNavController()
+    val conversationViewModel = remember { ConversationViewModel(activity) }
+    val friendViewModel = remember { FriendViewModel(activity) }
     val authViewModel = remember { AuthViewModel(activity) }
 
     NavHost(navController = navController, startDestination = "login") {
@@ -40,6 +44,8 @@ fun AppNavigation(activity: Activity) {
             HomeScreen(
                 activity = activity,
                 authViewModel = authViewModel,
+                conversationViewModel = conversationViewModel,
+                friendViewModel = friendViewModel,
                 navHostController = navController,
                 onLogoutSuccess = { navController.navigate("login"){
                     popUpTo(0){ inclusive = true }
@@ -50,7 +56,7 @@ fun AppNavigation(activity: Activity) {
         composable("contact") {
             ContactScreen(
                 activity = activity,
-                authViewModel = authViewModel,
+                friendViewModel = friendViewModel,
                 navHostController = navController
             )
         }
@@ -71,7 +77,7 @@ fun AppNavigation(activity: Activity) {
                 navHostController = navController,
                 userId = userId,
                 friendId = friendId,
-                authViewModel = authViewModel,
+                conversationViewModel = conversationViewModel,
                 activity = activity
             )
         }

@@ -30,7 +30,7 @@ fun SplashScreen(onSplashFinished: () -> Unit) {
     Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
         Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
             Image(
-                painter = painterResource(id = R.drawable.),
+                painter = painterResource(id = R.mipmap.ic_launcher_foreground),
                 contentDescription = "Logo",
                 modifier = Modifier
                     .size(120.dp)

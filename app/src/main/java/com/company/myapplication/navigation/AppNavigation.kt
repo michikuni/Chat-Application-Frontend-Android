@@ -13,6 +13,7 @@ import com.company.myapplication.ui.home.HomeScreen
 import com.company.myapplication.ui.home.chat.boxchat.BoxChatScreen
 import com.company.myapplication.ui.login.LoginScreen
 import com.company.myapplication.ui.register.RegisterScreen
+import com.company.myapplication.ui.splash.SplashScreen
 import com.company.myapplication.viewmodel.AuthViewModel
 import com.company.myapplication.viewmodel.ConversationViewModel
 import com.company.myapplication.viewmodel.FriendViewModel
@@ -24,7 +25,8 @@ fun AppNavigation(activity: Activity) {
     val friendViewModel = remember { FriendViewModel(activity) }
     val authViewModel = remember { AuthViewModel(activity) }
 
-    NavHost(navController = navController, startDestination = "login") {
+    NavHost(navController = navController, startDestination = "splash") {
+        composable("splash") { SplashScreen(onSplashFinished = { navController.navigate("login") }) }
         composable("login") {
             LoginScreen(
                 activity = activity,

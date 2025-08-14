@@ -48,7 +48,7 @@ dependencies {
     implementation("org.hildan.krossbow:krossbow-websocket-builtin:7.0.0")
     implementation(libs.firebase.messaging)
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.4")
-
+    implementation("androidx.navigation:navigation-compose:2.9.3")
     implementation(libs.androidx.material)
     implementation (libs.androidx.material.icons.extended)
 

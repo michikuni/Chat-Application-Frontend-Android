@@ -10,6 +10,7 @@ import com.company.myapplication.repository.interceptor.AuthInterceptor
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
+import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -34,30 +35,30 @@ class UserRepository (context: Context){
     private val retrofit = createRetrofit(context)
     private val userApi = retrofit.create(UserApi::class.java)
 
-    suspend fun uploadImage(context: Context, uri: Uri, userId: Long) {
-        val contentResolver = context.contentResolver
+    fun uriToFile(context: Context, uri: Uri): File {
+        val inputStream = context.contentResolver.openInputStream(uri)
+        val file = File(context.cacheDir, "temp_${System.currentTimeMillis()}.jpg")
+        val outputStream = file.outputStream()
+        inputStream?.copyTo(outputStream)
+        inputStream?.close()
+        outputStream.close()
+        return file
+    }
 
-        // Mở input stream từ Uri
-        val inputStream = contentResolver.openInputStream(uri) ?: return
-        val tempFile = File(context.cacheDir, "temp_image.jpg")
-        tempFile.outputStream().use { outputStream ->
-            inputStream.copyTo(outputStream)
-        }
+    suspend fun uploadImage(context: Context, uri: Uri) {
+        val file = uriToFile(context, uri)
 
-        // Tạo RequestBody từ file
-        val requestFile = tempFile
-            .asRequestBody("image/*".toMediaTypeOrNull())
+        val requestFile = file.asRequestBody("image/*".toMediaTypeOrNull())
+        val body = MultipartBody.Part.createFormData("file", file.name, requestFile)
 
-        val body = MultipartBody.Part.createFormData(
-            "file", tempFile.name, requestFile
-        )
+        val response = userApi.uploadAvatar(body)
 
-        val response = userApi.uploadAvatar(userId, body)
         if (response.isSuccessful) {
-            Log.d("UPLOAD", "Thành công: ${response.body()?.string()}")
+            Log.e("✅ Upload thành công:", "${response.body()?.string()}")
         } else {
-            Log.e("UPLOAD", "Lỗi: ${response.errorBody()?.string()}")
+            Log.e("❌ Upload thất bại: ", "${response.errorBody()?.string()}")
         }
     }
+
 
 }

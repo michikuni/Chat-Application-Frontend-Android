@@ -6,9 +6,8 @@ import retrofit2.Response
 
 interface UserApi {
     @Multipart
-    @POST("api/users/upload_avatar/{userId}")
+    @POST("api/users/upload_avatar")
     suspend fun uploadAvatar(
-        @Path("userId") userId: Long,
         @Part file: MultipartBody.Part
     ): Response<ResponseBody>
 }

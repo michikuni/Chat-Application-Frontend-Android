@@ -66,6 +66,7 @@ fun AppNavigation(activity: Activity) {
 
         composable("setting") {
             SettingScreen(
+                navHostController = navController,
                 activity = activity
             )
         }

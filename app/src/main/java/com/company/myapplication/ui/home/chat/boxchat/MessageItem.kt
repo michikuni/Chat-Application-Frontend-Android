@@ -11,6 +11,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
 import com.company.myapplication.data.model.chat.Message
+import com.company.myapplication.util.titleFont
 
 
 @Composable
@@ -42,7 +43,8 @@ fun MessageItem(
         ) {
             Text(
                 text = message.content,
-                color = if (isCurrentUser) Color.White else Color.Black
+                color = if (isCurrentUser) Color.White else Color.Black,
+                fontFamily = titleFont
             )
         }
     }

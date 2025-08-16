@@ -10,6 +10,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.*
 import coil.compose.AsyncImage
 import com.company.myapplication.data.model.response.UserResponse
+import com.company.myapplication.util.titleFont
 
 @Composable
 fun ContactItem(
@@ -37,9 +38,10 @@ fun ContactItem(
         ){
             Text(text = contact.name,
                 fontWeight = FontWeight.Bold,
+                fontFamily = titleFont,
                 fontSize = 14.sp)
             Box{
-                Text("Online", fontSize = 12.sp)
+                Text("Online", fontSize = 12.sp, fontFamily = titleFont)
             }
         }
     }

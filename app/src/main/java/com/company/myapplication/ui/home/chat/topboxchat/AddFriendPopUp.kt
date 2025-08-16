@@ -31,6 +31,7 @@ import androidx.compose.ui.window.Dialog
 import com.company.myapplication.ui.home.util.TextField
 import com.company.myapplication.util.UserSharedPreferences
 import com.company.myapplication.util.themeColor
+import com.company.myapplication.util.titleFont
 import com.company.myapplication.util.topAppBarColor
 import com.company.myapplication.viewmodel.FriendViewModel
 import okhttp3.RequestBody.Companion.toRequestBody
@@ -63,11 +64,13 @@ fun AddFriendPopUp (
                     Text(
                         text = "Thêm bạn",
                         style = MaterialTheme.typography.titleMedium,
+                        fontFamily = titleFont,
                         modifier = Modifier.align(Alignment.CenterVertically)
                     )
                     Text(
                         text = "Hủy",
                         color = Color.Blue,
+                        fontFamily = titleFont,
                         modifier = Modifier.clickable { onDismiss() }
                     )
                 }

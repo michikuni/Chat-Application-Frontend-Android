@@ -26,7 +26,6 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.company.myapplication.ui.home.util.SearchBar
-import com.company.myapplication.ui.home.util.BottomNavigationBar
 import com.company.myapplication.ui.home.chat.boxchat.ChatItem
 import com.company.myapplication.ui.home.chat.topboxchat.MessengerTopBar
 import com.company.myapplication.util.DataChangeHelper

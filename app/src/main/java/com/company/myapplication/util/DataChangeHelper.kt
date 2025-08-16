@@ -1,6 +1,7 @@
 package com.company.myapplication.util
 
 import android.content.Context
+import androidx.core.content.edit
 
 object DataChangeHelper {
     private const val PREF_NAME = "app_prefs"
@@ -8,7 +9,7 @@ object DataChangeHelper {
 
     fun setDataChanged(context: Context, changed: Boolean) {
         val prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
-        prefs.edit().putBoolean(KEY_DATA_CHANGED, changed).apply()
+        prefs.edit { putBoolean(KEY_DATA_CHANGED, changed) }
     }
 
     fun hasDataChanged(context: Context): Boolean {

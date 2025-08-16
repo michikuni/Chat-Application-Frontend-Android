@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.company.myapplication.data.model.chat.GetConversation
+import com.company.myapplication.util.titleFont
 
 @SuppressLint("UnrememberedMutableState")
 @Composable
@@ -64,15 +65,16 @@ fun ChatItem(
         }
         Spacer(modifier = Modifier.width(12.dp))
         Column(Modifier.weight(1f)) {
-            Text(text = user.name, fontWeight = FontWeight.Bold)
+            Text(text = user.name, fontWeight = FontWeight.Bold, fontFamily = titleFont)
             Text(
                 text = user.content,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
                 color = Color.Gray,
-                fontSize = 14.sp
+                fontSize = 14.sp,
+                fontFamily = titleFont
             )
         }
-        Text(text = user.createdAt.toString(), fontSize = 12.sp, color = Color.Gray)
+        Text(text = user.createdAt.toString(), fontSize = 12.sp, color = Color.Gray, fontFamily = titleFont)
     }
 }

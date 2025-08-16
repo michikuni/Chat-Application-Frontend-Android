@@ -13,6 +13,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.*
 import androidx.compose.ui.unit.dp
 import com.company.myapplication.R
+import com.company.myapplication.util.titleFont
 import com.company.myapplication.viewmodel.AuthViewModel
 import kotlinx.coroutines.delay
 
@@ -49,14 +50,14 @@ fun RegisterScreen(
                 contentScale = ContentScale.Crop
             )
         }
-        Text(text = "Đăng ký", style = MaterialTheme.typography.headlineMedium)
+        Text(text = "Đăng ký", style = MaterialTheme.typography.headlineMedium, fontFamily = titleFont)
 
         Spacer(modifier = Modifier.height(16.dp))
 
         OutlinedTextField(
             value = name,
             onValueChange = { name = it},
-            label = { Text("Name") },
+            label = { Text(text = "Name", fontFamily = titleFont) },
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(16.dp)
         )
@@ -66,7 +67,7 @@ fun RegisterScreen(
         OutlinedTextField(
             value = account,
             onValueChange = { account = it},
-            label = { Text("Username") },
+            label = { Text(text = "Username", fontFamily = titleFont) },
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(16.dp)
         )
@@ -76,7 +77,7 @@ fun RegisterScreen(
         OutlinedTextField(
             value = email,
             onValueChange = { email = it },
-            label = { Text("Email") },
+            label = { Text(text = "Email", fontFamily = titleFont) },
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(16.dp)
         )
@@ -86,7 +87,7 @@ fun RegisterScreen(
         OutlinedTextField(
             value = password,
             onValueChange = { password = it },
-            label = { Text("Mật khẩu") },
+            label = { Text(text = "Mật khẩu", fontFamily = titleFont) },
             visualTransformation = PasswordVisualTransformation(),
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(16.dp)
@@ -97,7 +98,7 @@ fun RegisterScreen(
         OutlinedTextField(
             value = confirmPassword,
             onValueChange = { confirmPassword = it },
-            label = { Text("Xác nhận mật khẩu") },
+            label = { Text(text = "Xác nhận mật khẩu", fontFamily = titleFont) },
             visualTransformation = PasswordVisualTransformation(),
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(16.dp)
@@ -107,20 +108,20 @@ fun RegisterScreen(
 
         Button(onClick = { viewModel.register(name, account, email, password) },modifier = Modifier.fillMaxWidth().height(45.dp)
         ) {
-            Text("Đăng ký")
+            Text(text = "Đăng ký", fontFamily = titleFont)
         }
 
         Spacer(modifier = Modifier.height(8.dp))
 
         TextButton(onClick = { onNavigateToLogin() }) {
-            Text("Đã có tài khoản? Đăng nhập")
+            Text(text = "Đã có tài khoản? Đăng nhập", fontFamily = titleFont)
         }
         viewModel.errorMessage?.let {
-            Text("Đăng ký thất bại, mã lỗi: $it", color = Color.Red)
+            Text(text = it, color = Color.Red, fontFamily = titleFont)
         }
 
         if (viewModel.registerSuccess) {
-            Text("Đăng ký thành công!", color = Color.Green)
+            Text(text = "Đăng ký thành công!", color = Color.Green, fontFamily = titleFont)
             LaunchedEffect(Unit) {
                 delay(1000)
                 onRegisterSuccess()

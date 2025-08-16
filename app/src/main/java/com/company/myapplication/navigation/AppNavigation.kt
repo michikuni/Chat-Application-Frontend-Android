@@ -10,6 +10,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.company.myapplication.ui.home.ContactScreen
 import com.company.myapplication.ui.home.HomeScreen
+import com.company.myapplication.ui.home.SettingScreen
 import com.company.myapplication.ui.home.chat.boxchat.BoxChatScreen
 import com.company.myapplication.ui.login.LoginScreen
 import com.company.myapplication.ui.register.RegisterScreen
@@ -63,6 +64,11 @@ fun AppNavigation(activity: Activity) {
             )
         }
 
+        composable("setting") {
+            SettingScreen(
+                activity = activity
+            )
+        }
         composable(
             "box_chat/{contact}/{userId}/{friendId}",
             arguments = listOf(

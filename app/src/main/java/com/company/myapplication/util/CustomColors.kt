@@ -2,8 +2,12 @@ package com.company.myapplication.util
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.company.myapplication.R
 
 val topAppBarColor = Color(0xFFEEEEEE) //Top
 val searchBackgroundColor = Color(0xFFD9D9D9)
@@ -11,5 +15,10 @@ val lineBreakMessage = Color(0xFFAFAFAF)
 val themeColor = Color(0xFF0084FF).copy(alpha = 0.6f)
 val topAppBarHeight = 50.dp
 val topAppBarPadding = PaddingValues(0.dp, 10.dp, 0.dp, 10.dp)
-val topTitleFontSize = 24.sp
-val topTitleBoxchatFontsize = 20.sp
+val topTitleFontSize = 28.sp
+val topTitleBoxChatFontSize = 20.sp
+val titleFont = FontFamily(
+    Font(R.font.libertinus_sans_regular, FontWeight.Normal),
+    Font(R.font.libertinus_sans_bold, FontWeight.Bold),
+    Font(R.font.libertinus_sans_italic, FontWeight.Thin)
+)

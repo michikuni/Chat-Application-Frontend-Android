@@ -3,13 +3,11 @@ package com.company.myapplication.ui.login
 import android.app.Activity
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -18,6 +16,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.*
 import androidx.compose.ui.unit.dp
 import com.company.myapplication.R
+import com.company.myapplication.util.titleFont
 import com.company.myapplication.viewmodel.AuthViewModel
 
 @Composable
@@ -34,8 +33,7 @@ fun LoginScreen(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.SpaceBetween
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Spacer(modifier = Modifier.height(50.dp))
 
@@ -56,14 +54,14 @@ fun LoginScreen(
 
         Spacer(modifier = Modifier.height(50.dp))
 
-        Text(text = "Đăng nhập", style = MaterialTheme.typography.headlineMedium)
+        Text(text = "Đăng nhập", style = MaterialTheme.typography.headlineMedium, fontFamily = titleFont)
 
         Spacer(modifier = Modifier.height(50.dp))
 
         OutlinedTextField(
             value = username,
             onValueChange = { username = it },
-            label = { Text("Email") },
+            label = { Text(text = "Email", fontFamily = titleFont) },
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(16.dp)
         )
@@ -73,7 +71,7 @@ fun LoginScreen(
         OutlinedTextField(
             value = password,
             onValueChange = { password = it },
-            label = { Text("Mật khẩu") },
+            label = { Text(text = "Mật khẩu", fontFamily = titleFont) },
             visualTransformation = PasswordVisualTransformation(),
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(16.dp)
@@ -87,32 +85,33 @@ fun LoginScreen(
                       },
             modifier = Modifier.fillMaxWidth().height(45.dp))
         {
-            Text("Đăng nhập")
+            Text("Đăng nhập", fontFamily = titleFont)
         }
 
         if (viewModel.loginSuccess){
-            Text("Đăng nhập thành công!", color = Color.Green)
+            Text("Đăng nhập thành công!", color = Color.Green, fontFamily = titleFont)
             LaunchedEffect(Unit) {
                 onLoginSuccess()
             }
         }
 
         viewModel.errorMessage?.let {
-            Text("Error login token: $it", color = Color.Red)
+            Text(text = it, color = Color.Red, fontFamily = titleFont)
         }
         Spacer(modifier = Modifier.height(8.dp))
 
         TextButton(onClick = {  }) {
-            Text("Quên mật khẩu")
+            Text(text = "Quên mật khẩu", fontFamily = titleFont)
         }
 
-        Spacer(modifier = Modifier.height(130.dp))
+        Spacer(modifier = Modifier.weight(1f))
 
         Button(
             onClick = { onNavigateToRegister() },
             modifier = Modifier
                 .fillMaxWidth()
-                .height(45.dp),
+                .height(45.dp)
+                .align(alignment = Alignment.End),
             colors = ButtonDefaults.buttonColors(
                 containerColor = Color.White,        // Nền trắng
                 contentColor = Color(0xFF673AB7)     // Màu chữ tím
@@ -125,6 +124,7 @@ fun LoginScreen(
         ) {
             Text(
                 text = "Tạo tài khoản mới",
+                fontFamily = titleFont,
                 color = Color(0xFF673AB7)             // Chữ tím
             )
         }

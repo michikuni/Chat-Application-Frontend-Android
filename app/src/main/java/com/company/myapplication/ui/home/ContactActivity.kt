@@ -1,7 +1,6 @@
 package com.company.myapplication.ui.home
 
 import android.app.Activity
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -17,7 +16,6 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.company.myapplication.ui.home.contact.ContactTopBar
-import com.company.myapplication.ui.home.util.BottomNavigationBar
 import com.company.myapplication.ui.home.util.SearchBar
 import com.company.myapplication.ui.home.contact.ContactItem
 import com.company.myapplication.util.UserSharedPreferences
@@ -40,14 +38,6 @@ fun ContactScreen(
     val filterContact = contacts.filter {
         it.name.contains(searchQuery, ignoreCase = true)
     }
-    if (contacts.isEmpty()){
-        Log.e("List", "KO OK")
-    }
-    for (fr in contacts){
-        Log.e("List", "OK4 ${fr.name}")
-
-    }
-    Log.e("ContactScreen", "OK4")
     Scaffold (
         topBar = {ContactTopBar()},
         bottomBar = {

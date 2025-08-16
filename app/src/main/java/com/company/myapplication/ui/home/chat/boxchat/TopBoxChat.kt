@@ -20,10 +20,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.navigation.NavHostController
 import com.company.myapplication.util.themeColor
+import com.company.myapplication.util.titleFont
 import com.company.myapplication.util.topAppBarColor
 import com.company.myapplication.util.topAppBarHeight
 import com.company.myapplication.util.topAppBarPadding
-import com.company.myapplication.util.topTitleBoxchatFontsize
+import com.company.myapplication.util.topTitleBoxChatFontSize
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -44,7 +45,8 @@ fun TopBoxChat(
                     Text(contact,
                         fontWeight = FontWeight.Bold,
                         color = Color.Black,
-                        fontSize = topTitleBoxchatFontsize
+                        fontSize = topTitleBoxChatFontSize,
+                        fontFamily = titleFont
                     )
                 }
             },

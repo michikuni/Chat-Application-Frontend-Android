@@ -38,8 +38,9 @@ fun MessengerTopBar(
                 Text("Tin nhắn",
                     fontWeight = FontWeight.Bold,
                     color = themeColor,
-                    fontSize = topTitleFontSize
-                    )
+                    fontSize = topTitleFontSize,
+                    fontFamily = titleFont
+                )
             },
             navigationIcon = {
                 IconButton(onClick = {

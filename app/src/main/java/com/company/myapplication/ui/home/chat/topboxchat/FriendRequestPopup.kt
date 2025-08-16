@@ -40,6 +40,7 @@ import androidx.compose.ui.window.Dialog
 import coil.compose.AsyncImage
 import com.company.myapplication.data.model.response.FriendResponse
 import com.company.myapplication.util.UserSharedPreferences
+import com.company.myapplication.util.titleFont
 import com.company.myapplication.viewmodel.FriendViewModel
 
 @Composable
@@ -82,7 +83,7 @@ fun FriendRequestPopup(
                         Tab(
                             selected = selectedTabIndex == index,
                             onClick = { selectedTabIndex = index },
-                            text = { Text(title ) }
+                            text = { Text(title , fontFamily = titleFont) }
                         )
                     }
                 }
@@ -114,16 +115,18 @@ fun TabRequest(
             Text(
                 text = "Đã yêu cầu",
                 style = MaterialTheme.typography.titleMedium,
+                fontFamily = titleFont,
                 modifier = Modifier.align(Alignment.CenterVertically)
             )
             Text(
                 text = "Hủy",
                 color = Color.Blue,
+                fontFamily = titleFont,
                 modifier = Modifier.clickable { onDismiss() }
             )
         }
         Spacer(modifier = Modifier.height(16.dp))
-        Text("Gợi ý", style = MaterialTheme.typography.labelMedium)
+        Text("Gợi ý", style = MaterialTheme.typography.labelMedium, fontFamily = titleFont)
 
 
         // Giả lập danh sách liên hệ gợi ý
@@ -156,16 +159,18 @@ fun TabPending(
             Text(
                 text = "Lời mời kết bạn",
                 style = MaterialTheme.typography.titleMedium,
+                fontFamily = titleFont,
                 modifier = Modifier.align(Alignment.CenterVertically)
             )
             Text(
                 text = "Hủy",
                 color = Color.Blue,
+                fontFamily = titleFont,
                 modifier = Modifier.clickable { onDismiss() }
             )
         }
         Spacer(modifier = Modifier.height(16.dp))
-        Text("Gợi ý", style = MaterialTheme.typography.labelMedium)
+        Text("Gợi ý", style = MaterialTheme.typography.labelMedium, fontFamily = titleFont)
 
         // Giả lập danh sách liên hệ gợi ý
         val suggestedContacts = users
@@ -208,7 +213,7 @@ fun PopupPending(
                     .clip(CircleShape)
             )
             Spacer(modifier = Modifier.width(12.dp))
-            Text(name, fontSize = 15.sp)
+            Text(name, fontSize = 15.sp, fontFamily = titleFont)
         }
         Row(
             modifier = Modifier
@@ -233,7 +238,7 @@ fun PopupPending(
                     }
                 }
             ) {
-                Text(text = "Chấp nhận", fontSize = 12.sp)
+                Text(text = "Chấp nhận", fontSize = 12.sp, fontFamily = titleFont)
             }
             Button(
                 modifier = Modifier
@@ -252,7 +257,7 @@ fun PopupPending(
                     }
                 }
             ) {
-                Text(text = "Từ chối", fontSize = 12.sp)
+                Text(text = "Từ chối", fontSize = 12.sp, fontFamily = titleFont)
             }
         }
     }
@@ -285,7 +290,7 @@ fun PopupRequest(
                     .clip(CircleShape)
             )
             Spacer(modifier = Modifier.width(12.dp))
-            Text(name, fontSize = 15.sp)
+            Text(name, fontSize = 15.sp, fontFamily = titleFont)
         }
         Row(
             modifier = Modifier
@@ -312,7 +317,7 @@ fun PopupRequest(
                     }
                 }
             ) {
-                Text(text = "Thu hồi", fontSize = 12.sp)
+                Text(text = "Thu hồi", fontSize = 12.sp, fontFamily = titleFont)
             }
         }
     }

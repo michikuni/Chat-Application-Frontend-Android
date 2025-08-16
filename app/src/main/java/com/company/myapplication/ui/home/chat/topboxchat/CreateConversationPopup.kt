@@ -20,6 +20,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.company.myapplication.util.UserSharedPreferences
+import com.company.myapplication.util.titleFont
 import com.company.myapplication.viewmodel.FriendViewModel
 
 @Composable
@@ -64,11 +65,13 @@ fun CreateConversationPopup(
                     Text(
                         text = "Tin nhắn mới",
                         style = MaterialTheme.typography.titleMedium,
+                        fontFamily = titleFont,
                         modifier = Modifier.align(Alignment.CenterVertically)
                     )
                     Text(
                         text = "Hủy",
                         color = Color.Blue,
+                        fontFamily = titleFont,
                         modifier = Modifier.clickable { onDismiss() }
                     )
                 }
@@ -101,7 +104,7 @@ fun CreateConversationPopup(
                 }
 
                 Spacer(modifier = Modifier.height(16.dp))
-                Text("Gợi ý", style = MaterialTheme.typography.labelMedium)
+                Text("Gợi ý", style = MaterialTheme.typography.labelMedium, fontFamily = titleFont)
 
                 // Giả lập danh sách liên hệ gợi ý
                 val suggestedContacts = filterUser
@@ -134,7 +137,7 @@ fun CreateConversationPopup(
         ) {
             Icon(icon, contentDescription = null, modifier = Modifier.size(24.dp))
             Spacer(modifier = Modifier.width(12.dp))
-            Text(text, fontSize = 16.sp)
+            Text(text, fontSize = 16.sp, fontFamily = titleFont)
         }
     }
 
@@ -166,7 +169,7 @@ fun CreateConversationPopup(
                     .clip(CircleShape)
             )
             Spacer(modifier = Modifier.width(12.dp))
-            Text(name, fontSize = 15.sp)
+            Text(name, fontSize = 15.sp, fontFamily = titleFont)
         }
     }
 

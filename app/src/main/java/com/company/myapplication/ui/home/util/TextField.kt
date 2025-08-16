@@ -11,6 +11,7 @@ import androidx.compose.ui.*
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.*
+import com.company.myapplication.util.titleFont
 
 @Composable
 fun TextField (
@@ -50,7 +51,8 @@ fun TextField (
                             text = text,
                             color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f),
                             fontSize = 14.sp,
-                            style = MaterialTheme.typography.bodyMedium
+                            style = MaterialTheme.typography.bodyMedium,
+                            fontFamily = titleFont
                         )
                     }
                     innerTextField()

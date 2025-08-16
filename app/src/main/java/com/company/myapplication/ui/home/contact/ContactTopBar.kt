@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import com.company.myapplication.util.themeColor
+import com.company.myapplication.util.titleFont
 import com.company.myapplication.util.topAppBarColor
 import com.company.myapplication.util.topAppBarHeight
 import com.company.myapplication.util.topAppBarPadding
@@ -38,6 +39,7 @@ fun ContactTopBar(){
                 Text("Danh bạ",
                     fontWeight = FontWeight.Bold,
                     color = themeColor,
+                    fontFamily = titleFont,
                     fontSize = topTitleFontSize
                 )
             },

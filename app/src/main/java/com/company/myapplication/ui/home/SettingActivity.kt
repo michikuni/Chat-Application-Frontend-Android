@@ -80,7 +80,7 @@ fun SettingScreen(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(200.dp),
+                    .height(300.dp),
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -92,7 +92,7 @@ fun SettingScreen(
                             model = selectedImageUri,
                             contentDescription = "preview avatar",
                             modifier = Modifier
-                                .size(80.dp)
+                                .size(150.dp)
                                 .clip(CircleShape)
                         )
                     } else {
@@ -101,7 +101,7 @@ fun SettingScreen(
                             model = avatarUrl,
                             contentDescription = "avatar",
                             modifier = Modifier
-                                .size(80.dp)
+                                .size(150.dp)
                                 .clip(CircleShape)
                         )
                     }
@@ -125,6 +125,7 @@ fun SettingScreen(
                     }
                 }
             }
+
         }
     }
 }

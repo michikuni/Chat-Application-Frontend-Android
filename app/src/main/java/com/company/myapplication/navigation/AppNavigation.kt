@@ -50,9 +50,11 @@ fun AppNavigation(activity: Activity) {
                 conversationViewModel = conversationViewModel,
                 friendViewModel = friendViewModel,
                 navHostController = navController,
-                onLogoutSuccess = { navController.navigate("login"){
-                    popUpTo(0){ inclusive = true }
-                } }
+                onLogoutSuccess = {
+                    navController.navigate("login"){
+                        popUpTo(0){ inclusive = true }
+                    }
+                }
             )
         }
 
@@ -67,7 +69,13 @@ fun AppNavigation(activity: Activity) {
         composable("setting") {
             SettingScreen(
                 navHostController = navController,
-                activity = activity
+                activity = activity,
+                onLogoutSuccess = {
+                    navController.navigate("login") {
+                        popUpTo(0) { inclusive = true }
+                    }
+                },
+                authViewModel = authViewModel
             )
         }
         composable(

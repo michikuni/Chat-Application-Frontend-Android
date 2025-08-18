@@ -1,6 +1,8 @@
 package com.company.myapplication.util
 
 import android.content.Context
+import androidx.core.content.edit
+import com.company.myapplication.MainActivity
 
 object UserSharedPreferences{
     private const val PREF_NAME = "auth_session"
@@ -13,7 +15,7 @@ object UserSharedPreferences{
 
     fun saveUser(context: Context, id: Long, username: String, token: String) {
         val prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
-        with(prefs.edit()) {
+        prefs.edit{
             putLong(KEY_ID, id)
             putString(KEY_USERNAME, username)
             putString(KEY_TOKEN, token)
@@ -23,7 +25,7 @@ object UserSharedPreferences{
 
     fun saveFcmToken(context: Context, fcmToken: String) {
         val prefs = context.getSharedPreferences(PREF_FCM_NAME, Context.MODE_PRIVATE)
-        with(prefs.edit()) {
+        prefs.edit{
             putString(KEY_FCM_TOKEN, fcmToken)
             apply()
         }
@@ -51,6 +53,6 @@ object UserSharedPreferences{
 
     fun clearSession(context: Context) {
         context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
-            .edit().clear().apply()
+            .edit { clear() }
     }
 }

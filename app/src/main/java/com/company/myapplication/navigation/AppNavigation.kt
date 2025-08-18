@@ -27,12 +27,19 @@ fun AppNavigation(activity: Activity) {
     val authViewModel = remember { AuthViewModel(activity) }
 
     NavHost(navController = navController, startDestination = "splash") {
-        composable("splash") { SplashScreen(onSplashFinished = { navController.navigate("login") }) }
+        composable("splash") {
+            SplashScreen(
+                context = activity,
+                navHostController = navController
+            )
+        }
         composable("login") {
             LoginScreen(
                 activity = activity,
                 viewModel = authViewModel,
-                onLoginSuccess = {navController.navigate("home")},
+                onLoginSuccess = {navController.navigate("home"){
+                    popUpTo("login"){ inclusive = true }
+                } },
                 onNavigateToRegister = { navController.navigate("register")}
             )
         }

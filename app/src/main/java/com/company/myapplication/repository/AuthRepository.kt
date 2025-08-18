@@ -13,6 +13,7 @@ import com.company.myapplication.data.model.chat.CreateConversation
 import com.company.myapplication.data.model.chat.GetConversation
 import com.company.myapplication.data.model.chat.Message
 import com.company.myapplication.data.model.fcm.FcmTokenResponse
+import com.company.myapplication.data.model.response.AuthResponse
 import com.company.myapplication.data.model.response.FriendResponse
 import com.company.myapplication.data.model.response.UserResponse
 import com.company.myapplication.repository.apiconfig.ApiConfig
@@ -61,88 +62,17 @@ class AuthRepository (context: Context){
         }
     }
 
-    suspend fun getAllFriendsById(userId: Long): List<UserResponse> {
-        val response = friendApi.getAllFriendsById(userId)
-        if (response.isSuccessful){
-            return response.body() ?: emptyList()
-        } else{
-            throw Exception("Lỗi lấy danh sách bạn bè: ${response.code()}")
-        }
-    }
-
-    suspend fun sendAddRequest(userId: Long, receiverEmail: RequestBody): Boolean{
-        val response = friendApi.sendAddRequest(userId, receiverEmail)
-        return response.isSuccessful
-    }
-
-    suspend fun getPendingFriends(userId: Long): List<FriendResponse>{
-        val response = friendApi.getPendingFriends(userId)
-        if (response.isSuccessful){
-            return response.body() ?: emptyList()
-        } else{
-            throw Exception("Lỗi lấy danh sách yêu cầu kết bè: ${response.code()}")
-        }
-    }
-
-    suspend fun getRequestFriends(userId: Long): List<FriendResponse>{
-        val response = friendApi.getRequestFriends(userId)
-        if (response.isSuccessful){
-            return response.body() ?: emptyList()
-        } else{
-            throw Exception("Lỗi lấy danh sách yêu cầu kết bè: ${response.code()}")
-        }
-    }
-
-    suspend fun acceptedFriendRequest(friendshipId: Long): Boolean{
-        val response = friendApi.acceptedFriendRequest(friendshipId)
-        if (response.isSuccessful){
-            return response.isSuccessful
+    suspend fun checkTokenValid(): AuthResponse? {
+        val response = authApi.checkTokenValid()
+        if (response.isSuccessful) {
+            val body = response.body()
+            Log.d("API", "Success body=$body")
+            return body
         } else {
-            throw IllegalArgumentException(response.body().toString())
+            Log.e("API", "Fail code=${response.code()}, error=${response.errorBody()?.string()}")
+            return null
         }
     }
 
-    suspend fun cancelFriendRequest(friendshipId: Long): Boolean{
-        val response = friendApi.cancelFriendRequest(friendshipId)
-        if (response.isSuccessful){
-            return response.isSuccessful
-        } else {
-            throw IllegalArgumentException(response.body().toString())
-        }
-    }
-
-    suspend fun createConversation(userId: Long, body: CreateConversation): Boolean {
-        val response = conversationApi.createConversation(userId, body)
-        return response.isSuccessful
-    }
-
-    suspend fun getAllMessage(userId: Long, friendId: Long): List<Message>? {
-        val response = conversationApi.getAllMessage(userId, friendId)
-        return if (response.isSuccessful){
-            response.body()
-        } else {
-            throw Exception("Lỗi lấy tin nhắn: ${response.code()}")
-        }
-    }
-
-    suspend fun getAllConversation(userId: Long): List<GetConversation>? {
-        val response = conversationApi.getAllConversation(userId)
-        return if (response.isSuccessful){
-            response.body()
-        } else {
-            throw Exception("Lỗi lấy hội thoại: ${response.code()}")
-        }
-    }
-
-    suspend fun sendToken(fcmTokenResponse: FcmTokenResponse): Boolean {
-        val response = fcmApi.sendTokenFcm(fcmTokenResponse)
-        return if (response.isSuccessful) {
-            true
-        } else {
-            val errorMsg = response.errorBody()?.string() ?: "Unknown error"
-            Log.e("FCM", "Send token failed: HTTP ${response.code()} - $errorMsg")
-            false
-        }
-    }
 
 }

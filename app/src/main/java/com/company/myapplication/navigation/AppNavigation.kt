@@ -18,6 +18,7 @@ import com.company.myapplication.ui.splash.SplashScreen
 import com.company.myapplication.viewmodel.AuthViewModel
 import com.company.myapplication.viewmodel.ConversationViewModel
 import com.company.myapplication.viewmodel.FriendViewModel
+import com.company.myapplication.viewmodel.UserViewModel
 
 @Composable
 fun AppNavigation(activity: Activity) {
@@ -25,6 +26,7 @@ fun AppNavigation(activity: Activity) {
     val conversationViewModel = remember { ConversationViewModel(activity) }
     val friendViewModel = remember { FriendViewModel(activity) }
     val authViewModel = remember { AuthViewModel(activity) }
+    val userViewModel = remember { UserViewModel(activity) }
 
     NavHost(navController = navController, startDestination = "splash") {
         composable("splash") {
@@ -76,7 +78,8 @@ fun AppNavigation(activity: Activity) {
                         popUpTo(0) { inclusive = true }
                     }
                 },
-                authViewModel = authViewModel
+                authViewModel = authViewModel,
+                userViewModel = userViewModel
             )
         }
         composable(

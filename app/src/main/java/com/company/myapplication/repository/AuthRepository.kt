@@ -41,10 +41,6 @@ class AuthRepository (context: Context){
     }
     private val retrofit = createRetrofit(context)
     private val authApi = retrofit.create(AuthApi::class.java)
-    private val friendApi = retrofit.create(FriendApi::class.java)
-    private val conversationApi = retrofit.create(ConversationApi::class.java)
-    private val fcmApi = retrofit.create(FcmApi::class.java)
-
 
     suspend fun register(name: String, account: String, email:String, password: String): Boolean{
         val response = authApi.register(RegisterRequest(name, account, email, password))

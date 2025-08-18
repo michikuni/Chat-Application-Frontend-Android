@@ -15,13 +15,15 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import com.company.myapplication.ui.home.setting.FeatureButton
 import com.company.myapplication.ui.home.setting.TopSection
 import com.company.myapplication.viewmodel.AuthViewModel
+import com.company.myapplication.viewmodel.UserViewModel
 
 @Composable
 fun SettingScreen(
     navHostController: NavHostController,
     activity: Activity,
     onLogoutSuccess: () -> Unit,
-    authViewModel: AuthViewModel
+    authViewModel: AuthViewModel,
+    userViewModel: UserViewModel
 ){
     Scaffold (
         bottomBar = {
@@ -35,7 +37,7 @@ fun SettingScreen(
                 .fillMaxSize()
                 .padding(paddingValues)
         ){
-           TopSection(context = activity)
+            TopSection(context = activity, userViewModel = userViewModel)
             Column (
                 modifier = Modifier
                     .fillMaxWidth()

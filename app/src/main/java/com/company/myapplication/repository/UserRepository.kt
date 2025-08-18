@@ -5,6 +5,7 @@ import android.net.Uri
 import android.util.Log
 import com.company.myapplication.data.api.FriendApi
 import com.company.myapplication.data.api.UserApi
+import com.company.myapplication.data.model.response.UserResponse
 import com.company.myapplication.repository.apiconfig.ApiConfig
 import com.company.myapplication.repository.interceptor.AuthInterceptor
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -60,5 +61,12 @@ class UserRepository (context: Context){
         }
     }
 
-
+    suspend fun getUserInfo(userId: Long): UserResponse?{
+        val response = userApi.getUserInfo(userId = userId)
+        return if (response.isSuccessful){
+            response.body()
+        } else {
+            null
+        }
+    }
 }

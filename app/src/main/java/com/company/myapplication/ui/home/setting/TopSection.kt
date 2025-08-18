@@ -16,6 +16,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -26,16 +27,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.company.myapplication.repository.UserRepository
 import com.company.myapplication.repository.apiconfig.ApiConfig
 import com.company.myapplication.util.UserSharedPreferences
 import com.company.myapplication.util.titleFont
+import com.company.myapplication.viewmodel.UserViewModel
 import kotlinx.coroutines.launch
 
 @Composable
 fun TopSection(
-    context: Context
+    context: Context,
+    userViewModel: UserViewModel
 ){
     val repo = UserRepository(context = context)
     val userId = UserSharedPreferences.getId(context = context)
@@ -54,6 +58,12 @@ fun TopSection(
             avatarUrl = "${ApiConfig.BASE_URL}/api/users/get_avatar/$userId?ts=${System.currentTimeMillis()}"
         }
     }
+
+    LaunchedEffect(Unit) {
+        userViewModel.getUserInfo(userId = userId)
+    }
+    val userInfo by userViewModel.user_info.collectAsState()
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -64,7 +74,7 @@ fun TopSection(
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
 
             if (selectedImageUri != null) {
-                // ✅ Preview ảnh vừa chọn từ gallery
+                // Preview ảnh vừa chọn từ gallery
                 AsyncImage(
                     model = selectedImageUri,
                     contentDescription = "preview avatar",
@@ -73,7 +83,7 @@ fun TopSection(
                         .clip(CircleShape)
                 )
             } else {
-                // ✅ Load avatar từ API
+                // Load avatar từ API
                 AsyncImage(
                     model = avatarUrl,
                     contentDescription = "avatar",
@@ -82,6 +92,9 @@ fun TopSection(
                         .clip(CircleShape)
                 )
             }
+
+            Text(text = userInfo?.name ?: "Unknown", fontFamily = titleFont, fontSize = 20.sp)
+            Text(text = userInfo?.email ?: "Unknown", fontFamily = titleFont, fontSize = 16.sp)
 
             TextButton(onClick = { launcher.launch("image/*") }) {
                 Text(text = "Thay ảnh mới", fontFamily = titleFont)
@@ -92,7 +105,7 @@ fun TopSection(
                     onClick = {
                         scope.launch {
                             repo.uploadImage(context, uri)
-                            selectedImageUri = null // reset -> LaunchedEffect sẽ reload ảnh từ API
+                            selectedImageUri = null
                         }
                     },
                     modifier = Modifier.height(50.dp)

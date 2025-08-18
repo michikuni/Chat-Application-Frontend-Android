@@ -1,10 +1,8 @@
-package com.company.myapplication.ui.home.chat.topbar
+package com.company.myapplication.ui.home.chat.topbar.action
 
 import android.app.Activity
-import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.*
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import com.company.myapplication.ui.home.util.SearchBar
 import androidx.compose.material.icons.Icons
@@ -12,13 +10,14 @@ import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.*
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.*
 import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavHostController
-import coil.compose.AsyncImage
+import com.company.myapplication.ui.home.chat.topbar.action.component.FeatureItem
+import com.company.myapplication.ui.home.chat.topbar.action.component.SuggestionFriend
+import com.company.myapplication.ui.home.chat.topbar.action.component.functionfeature.AddFriendPopUp
+import com.company.myapplication.ui.home.chat.topbar.action.component.functionfeature.FriendRequestPopup
 import com.company.myapplication.util.UserSharedPreferences
 import com.company.myapplication.util.titleFont
 import com.company.myapplication.viewmodel.FriendViewModel
@@ -79,28 +78,34 @@ fun CreateConversationPopup(
                     onQueryChange = {searchQuery = it},)
 
                 // Danh sách các item
-                PopupItem(
+                FeatureItem(
                     icon = Icons.Default.PersonAdd,
                     text = "Thêm bạn",
-                    onClick = { showAddDialog = true}
+                    onClick = { showAddDialog = true }
                 )
-                PopupItem(
+                FeatureItem(
                     icon = Icons.Default.GroupAdd,
                     text = "Tạo nhóm mới",
-                    onClick = { showAddDialog = true}
+                    onClick = { showAddDialog = true }
                 )
-                PopupItem(
+                FeatureItem(
                     icon = Icons.Default.Group,
                     text = "Lời mời kết bạn",
-                    onClick = { showRequestDialog = true}
+                    onClick = { showRequestDialog = true }
                 )
 
                 if (showRequestDialog){
-                    FriendRequestPopup (activity = activity, friendViewModel = friendViewModel, onDismiss = { showRequestDialog = false })
+                    FriendRequestPopup(
+                        activity = activity,
+                        friendViewModel = friendViewModel,
+                        onDismiss = { showRequestDialog = false })
                 }
 
                 if (showAddDialog){
-                    AddFriendPopUp(activity = activity, friendViewModel = friendViewModel, onDismiss = { showAddDialog = false })
+                    AddFriendPopUp(
+                        activity = activity,
+                        friendViewModel = friendViewModel,
+                        onDismiss = { showAddDialog = false })
                 }
 
                 Spacer(modifier = Modifier.height(16.dp))
@@ -109,7 +114,7 @@ fun CreateConversationPopup(
                 // Giả lập danh sách liên hệ gợi ý
                 val suggestedContacts = filterUser
                 suggestedContacts.forEach {
-                    PopupSuggestion(
+                    SuggestionFriend(
                         avatar = it.avatar,
                         name = it.name,
                         userId = userId,
@@ -121,55 +126,3 @@ fun CreateConversationPopup(
         }
     }
 }
-
-    @Composable
-    fun PopupItem(
-        icon: ImageVector,
-        text: String,
-        onClick: () -> Unit
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .clickable { onClick() }
-                .padding(vertical = 12.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Icon(icon, contentDescription = null, modifier = Modifier.size(24.dp))
-            Spacer(modifier = Modifier.width(12.dp))
-            Text(text, fontSize = 16.sp, fontFamily = titleFont)
-        }
-    }
-
-    @Composable
-    fun PopupSuggestion(
-        avatar: String?,
-        name: String,
-        userId: Long,
-        friendId: Long,
-        navHostController: NavHostController
-    ) {
-        var isSelected by remember { mutableStateOf(false) }
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .clickable {
-                    isSelected = !isSelected
-                    navHostController.navigate("box_chat/${name}/${userId}/${friendId}")
-                    Log.e("Popup suggest", "user: $userId friend: $friendId")
-                }
-                .padding(vertical = 10.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            AsyncImage(
-                model = avatar,
-                contentDescription = null,
-                modifier = Modifier
-                    .size(50.dp)
-                    .clip(CircleShape)
-            )
-            Spacer(modifier = Modifier.width(12.dp))
-            Text(name, fontSize = 15.sp, fontFamily = titleFont)
-        }
-    }
-

@@ -21,8 +21,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.company.myapplication.ui.home.chat.bottombar.BottomBoxChat
-import com.company.myapplication.ui.home.chat.topbar.TopBoxChat
+import com.company.myapplication.ui.home.chat.boxchat.bottombar.BottomBoxChat
+import com.company.myapplication.ui.home.chat.boxchat.topbar.TopBoxChat
 import com.company.myapplication.util.DataChangeHelper
 import com.company.myapplication.viewmodel.ConversationViewModel
 

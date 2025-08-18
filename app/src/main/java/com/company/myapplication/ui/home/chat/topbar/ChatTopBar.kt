@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.navigation.NavHostController
+import com.company.myapplication.ui.home.chat.topbar.action.CreateConversationPopup
 import com.company.myapplication.util.*
 import com.company.myapplication.viewmodel.FriendViewModel
 
@@ -60,7 +61,12 @@ fun MessengerTopBar(
             )
         )
         if (showDialog) {
-            CreateConversationPopup(activity = activity, friendViewModel = friendViewModel, onDismiss = { showDialog = false }, navHostController = navHostController)
+            CreateConversationPopup(
+                activity = activity,
+                friendViewModel = friendViewModel,
+                onDismiss = { showDialog = false },
+                navHostController = navHostController
+            )
         }
     }
 

@@ -1,4 +1,4 @@
-package com.company.myapplication.ui.home.chat.topbar
+package com.company.myapplication.ui.home.chat.boxchat.topbar
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box

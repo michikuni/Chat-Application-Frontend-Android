@@ -21,6 +21,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.company.myapplication.ui.home.chat.bottombar.BottomBoxChat
+import com.company.myapplication.ui.home.chat.topbar.TopBoxChat
 import com.company.myapplication.util.DataChangeHelper
 import com.company.myapplication.viewmodel.ConversationViewModel
 
@@ -63,7 +65,14 @@ fun BoxChatScreen(
 
     Scaffold(
         topBar = { TopBoxChat(contact = contact, navHostController = navHostController) },
-        bottomBar = { BottomBoxChat(conversationViewModel = conversationViewModel, userId = userId, friendId = friendId, activity = activity) }
+        bottomBar = {
+            BottomBoxChat(
+                conversationViewModel = conversationViewModel,
+                userId = userId,
+                friendId = friendId,
+                activity = activity
+            )
+        }
     ) { paddingValues ->
         LazyColumn(
             state = listState,

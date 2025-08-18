@@ -1,4 +1,4 @@
-package com.company.myapplication.ui.home.chat.topboxchat
+package com.company.myapplication.ui.home.chat.topbar
 
 import android.app.Activity
 import androidx.compose.foundation.background
@@ -13,16 +13,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.navigation.NavHostController
 import com.company.myapplication.util.*
-import com.company.myapplication.viewmodel.AuthViewModel
 import com.company.myapplication.viewmodel.FriendViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MessengerTopBar(
     activity: Activity,
-    authViewModel: AuthViewModel,
     friendViewModel: FriendViewModel,
-    onLogoutSuccess: () -> Unit,
     navHostController: NavHostController
 ) {
     var showDialog by remember { mutableStateOf(false) }
@@ -43,11 +40,7 @@ fun MessengerTopBar(
                 )
             },
             navigationIcon = {
-                IconButton(onClick = {
-                    authViewModel.logout(activity = activity)
-                    authViewModel.loginSuccess = false
-                    onLogoutSuccess ()
-                }) {
+                IconButton(onClick = {}) {
                     Icon(
                         imageVector = Icons.Outlined.DisabledByDefault,
                         contentDescription = null,

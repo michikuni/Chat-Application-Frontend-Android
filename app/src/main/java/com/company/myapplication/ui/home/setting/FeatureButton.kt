@@ -1,4 +1,4 @@
-package com.company.myapplication.ui.home.util
+package com.company.myapplication.ui.home.setting
 
 import androidx.compose.ui.graphics.Color
 import androidx.compose.foundation.background

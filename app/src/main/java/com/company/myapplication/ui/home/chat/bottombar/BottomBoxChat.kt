@@ -1,4 +1,4 @@
-package com.company.myapplication.ui.home.chat.boxchat
+package com.company.myapplication.ui.home.chat.bottombar
 
 import android.app.Activity
 import android.util.Log

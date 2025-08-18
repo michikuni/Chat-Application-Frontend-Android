@@ -26,24 +26,21 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.company.myapplication.ui.home.util.SearchBar
-import com.company.myapplication.ui.home.chat.boxchat.ChatItem
-import com.company.myapplication.ui.home.chat.topboxchat.MessengerTopBar
+import com.company.myapplication.ui.home.chat.ChatItem
+import com.company.myapplication.ui.home.chat.topbar.MessengerTopBar
 import com.company.myapplication.util.DataChangeHelper
 import com.company.myapplication.util.UserSharedPreferences
 import com.company.myapplication.util.lineBreakMessage
 import com.company.myapplication.util.topAppBarColor
-import com.company.myapplication.viewmodel.AuthViewModel
 import com.company.myapplication.viewmodel.ConversationViewModel
 import com.company.myapplication.viewmodel.FriendViewModel
 
 @Composable
 fun HomeScreen(
     activity: Activity,
-    authViewModel: AuthViewModel,
     friendViewModel: FriendViewModel,
     conversationViewModel: ConversationViewModel,
-    navHostController: NavHostController,
-    onLogoutSuccess: () -> Unit
+    navHostController: NavHostController
 ){
     val userId = UserSharedPreferences.getId(activity)
     val prefs = activity.getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
@@ -77,11 +74,18 @@ fun HomeScreen(
         it.name.contains(searchQuery, ignoreCase = true)
     }
     Scaffold (
-        topBar = { MessengerTopBar(activity = activity, authViewModel = authViewModel, friendViewModel = friendViewModel, onLogoutSuccess = onLogoutSuccess, navHostController = navHostController) },
+        topBar = {
+            MessengerTopBar(
+                activity = activity,
+                friendViewModel = friendViewModel,
+                navHostController = navHostController
+            ) },
         bottomBar = {
             val currentBackStackEntry = navHostController.currentBackStackEntryAsState().value
             val currentRoute = currentBackStackEntry?.destination?.route?: ""
-            BottomNavigationBar(navController = navHostController, currentRoute = currentRoute)
+            BottomNavigationBar(
+                navController = navHostController,
+                currentRoute = currentRoute)
         }
     ) { paddingValues ->
         Column(

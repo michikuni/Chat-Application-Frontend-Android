@@ -53,15 +53,9 @@ fun AppNavigation(activity: Activity) {
         composable("home") {
             HomeScreen(
                 activity = activity,
-                authViewModel = authViewModel,
                 conversationViewModel = conversationViewModel,
                 friendViewModel = friendViewModel,
-                navHostController = navController,
-                onLogoutSuccess = {
-                    navController.navigate("login"){
-                        popUpTo(0){ inclusive = true }
-                    }
-                }
+                navHostController = navController
             )
         }
 

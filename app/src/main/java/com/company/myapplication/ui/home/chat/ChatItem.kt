@@ -1,4 +1,4 @@
-package com.company.myapplication.ui.home.chat.boxchat
+package com.company.myapplication.ui.home.chat
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background

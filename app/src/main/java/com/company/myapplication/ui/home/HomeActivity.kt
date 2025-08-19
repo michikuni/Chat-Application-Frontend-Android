@@ -27,7 +27,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.company.myapplication.ui.home.util.SearchBar
 import com.company.myapplication.ui.home.chat.ChatItem
-import com.company.myapplication.ui.home.chat.topbar.MessengerTopBar
+import com.company.myapplication.ui.home.chat.topbar.ChatTopBar
 import com.company.myapplication.util.DataChangeHelper
 import com.company.myapplication.util.UserSharedPreferences
 import com.company.myapplication.util.lineBreakMessage
@@ -75,7 +75,7 @@ fun HomeScreen(
     }
     Scaffold (
         topBar = {
-            MessengerTopBar(
+            ChatTopBar(
                 activity = activity,
                 friendViewModel = friendViewModel,
                 navHostController = navHostController

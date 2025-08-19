@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -17,7 +16,9 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import com.company.myapplication.R
 import com.company.myapplication.util.themeColor
 import com.company.myapplication.util.titleFont
 import com.company.myapplication.util.topAppBarColor
@@ -47,7 +48,7 @@ fun ContactTopBar(){
             navigationIcon = {
                 IconButton(onClick = {}) {
                     Icon(
-                        imageVector = Icons.Default.Edit,
+                        painter = painterResource(id = R.drawable.filter_square),
                         contentDescription = null,
                         tint = themeColor
                     )
@@ -56,7 +57,7 @@ fun ContactTopBar(){
             actions = {
                 IconButton(onClick = {}) {
                     Icon(
-                        imageVector = Icons.Default.AddCircle,
+                        painter = painterResource(id = R.drawable.plus_square),
                         contentDescription = null,
                         tint = themeColor
                     )

@@ -10,15 +10,17 @@ import androidx.compose.material.icons.outlined.DisabledByDefault
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.navigation.NavHostController
+import com.company.myapplication.R
 import com.company.myapplication.ui.home.chat.topbar.action.CreateConversationPopup
 import com.company.myapplication.util.*
 import com.company.myapplication.viewmodel.FriendViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MessengerTopBar(
+fun ChatTopBar(
     activity: Activity,
     friendViewModel: FriendViewModel,
     navHostController: NavHostController
@@ -51,7 +53,8 @@ fun MessengerTopBar(
             },
             actions = {
                 IconButton(onClick = { showDialog = true }) {
-                    Icon(Icons.Outlined.AddBox,
+                    Icon(
+                        painter = painterResource(id = R.drawable.pencil_square),
                         contentDescription = "Thêm",
                         tint = themeColor)
                 }

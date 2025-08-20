@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.company.myapplication.data.model.chat.GetConversation
+import com.company.myapplication.ui.home.util.convertTimestamp
 import com.company.myapplication.util.titleFont
 
 @SuppressLint("UnrememberedMutableState")
@@ -29,6 +30,7 @@ fun ChatItem(
     userId: Long,
 ) {
     var isSelected by remember { mutableStateOf(false) }
+    val time = convertTimestamp(user.createdAt.toString())
     Row(
         modifier = Modifier
             .background(
@@ -75,6 +77,6 @@ fun ChatItem(
                 fontFamily = titleFont
             )
         }
-        Text(text = user.createdAt.toString(), fontSize = 12.sp, color = Color.Gray, fontFamily = titleFont)
+        Text(text = time, fontSize = 12.sp, color = Color.Gray, fontFamily = titleFont)
     }
 }

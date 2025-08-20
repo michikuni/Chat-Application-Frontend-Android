@@ -41,12 +41,13 @@ fun SettingScreen(
                 .padding(paddingValues)
                 .background(color = backgroundColor)
         ){
-            TopSection(context = activity, userViewModel = userViewModel)
             Column (
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 15.dp, vertical = 0.dp)
             ) {
+                TopSection(context = activity, userViewModel = userViewModel)
+                Spacer(modifier = Modifier.padding(4.dp))
                 FeatureButton(text = "Trang cá nhân", onClick = {})
                 Spacer(modifier = Modifier.padding(2.dp))
                 FeatureButton(text = "Đăng xuất", onClick = {

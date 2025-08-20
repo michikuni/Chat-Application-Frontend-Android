@@ -42,15 +42,7 @@ fun ChatTopBar(
                     fontFamily = titleFont
                 )
             },
-            navigationIcon = {
-                IconButton(onClick = {}) {
-                    Icon(
-                        imageVector = Icons.Outlined.DisabledByDefault,
-                        contentDescription = null,
-                        tint = themeColor
-                    )
-                }
-            },
+            navigationIcon = {},
             actions = {
                 IconButton(onClick = { showDialog = true }) {
                     Icon(

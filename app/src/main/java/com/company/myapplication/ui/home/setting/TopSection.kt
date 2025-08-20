@@ -7,11 +7,16 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -28,12 +33,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.company.myapplication.repository.UserRepository
 import com.company.myapplication.repository.apiconfig.ApiConfig
 import com.company.myapplication.util.UserSharedPreferences
+import com.company.myapplication.util.backgroundColor
 import com.company.myapplication.util.titleFont
 import com.company.myapplication.viewmodel.UserViewModel
 import kotlinx.coroutines.launch
@@ -66,44 +73,49 @@ fun TopSection(
     }
     val userInfo by userViewModel.user_info.collectAsState()
 
+    Spacer(modifier = Modifier.padding(10.dp))
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .height(300.dp),
-        horizontalArrangement = Arrangement.Center,
-        verticalAlignment = Alignment.CenterVertically
+            .height(150.dp)
+            .background(color = Color.White, shape = RoundedCornerShape(10.dp))
+            .padding(horizontal = 16.dp),
+        verticalAlignment = Alignment.CenterVertically,
     ) {
-        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        if (selectedImageUri != null) {
+            // Preview ảnh vừa chọn từ gallery
+            AsyncImage(
+                model = selectedImageUri,
+                contentDescription = "preview avatar",
+                modifier = Modifier
+                    .width(100.dp)
+                    .height(100.dp)
+                    .background(color = backgroundColor, RoundedCornerShape(16.dp))
+            )
+        } else {
+            // Load avatar từ API
+            AsyncImage(
+                model = avatarUrl,
+                contentDescription = "avatar",
+                modifier = Modifier
+                    .width(100.dp)
+                    .height(100.dp)
+                    .background(color = backgroundColor, RoundedCornerShape(16.dp))
+            )
+        }
 
-            if (selectedImageUri != null) {
-                // Preview ảnh vừa chọn từ gallery
-                AsyncImage(
-                    model = selectedImageUri,
-                    contentDescription = "preview avatar",
-                    modifier = Modifier
-                        .size(150.dp)
-                        .clip(CircleShape)
-                        .background(color = Color.White)
-                )
-            } else {
-                // Load avatar từ API
-                AsyncImage(
-                    model = avatarUrl,
-                    contentDescription = "avatar",
-                    modifier = Modifier
-                        .size(150.dp)
-                        .clip(CircleShape)
-                        .background(color = Color.White)
-                )
-            }
-
+        Column (
+            modifier = Modifier.padding(top = 0.dp, bottom = 0.dp, start = 16.dp, end = 0.dp)
+        ){
             Text(text = userInfo?.name ?: "Unknown", fontFamily = titleFont, fontSize = 20.sp)
-            Text(text = userInfo?.username ?: "Unknown", fontFamily = titleFont, fontSize = 16.sp)
-
-            TextButton(onClick = { launcher.launch("image/*") }) {
+            Text(text = "Korat ID: ${userInfo?.username}", fontFamily = titleFont, fontSize = 16.sp)
+            TextButton(
+                onClick = { launcher.launch("image/*") },
+                modifier = Modifier.height(30.dp),
+                contentPadding = PaddingValues(horizontal = 8.dp, vertical = 0.dp)
+            ) {
                 Text(text = "Thay ảnh mới", fontFamily = titleFont)
             }
-
             selectedImageUri?.let { uri ->
                 Button(
                     onClick = {
@@ -112,9 +124,10 @@ fun TopSection(
                             selectedImageUri = null
                         }
                     },
-                    modifier = Modifier.height(50.dp)
+                    modifier = Modifier.height(30.dp),
+                    contentPadding = PaddingValues(horizontal = 8.dp, vertical = 0.dp),
                 ) {
-                    Text("Upload ảnh", fontFamily = titleFont)
+                    Text("Upload ảnh", fontFamily = titleFont, fontSize = 10.sp, textAlign = TextAlign.Center)
                 }
             }
         }

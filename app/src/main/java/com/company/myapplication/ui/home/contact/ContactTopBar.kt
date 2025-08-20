@@ -45,19 +45,11 @@ fun ContactTopBar(){
                 )
             },
 
-            navigationIcon = {
-                IconButton(onClick = {}) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.filter_square),
-                        contentDescription = null,
-                        tint = themeColor
-                    )
-                }
-            },
+            navigationIcon = {},
             actions = {
                 IconButton(onClick = {}) {
                     Icon(
-                        painter = painterResource(id = R.drawable.plus_square),
+                        painter = painterResource(id = R.drawable.person_plus),
                         contentDescription = null,
                         tint = themeColor
                     )

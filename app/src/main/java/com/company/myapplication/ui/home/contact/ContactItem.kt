@@ -1,15 +1,20 @@
 package com.company.myapplication.ui.home.contact
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.*
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.*
 import coil.compose.AsyncImage
+import coil.compose.rememberAsyncImagePainter
+import com.company.myapplication.R
 import com.company.myapplication.data.model.response.UserResponse
+import com.company.myapplication.repository.apiconfig.ApiConfig
 import com.company.myapplication.util.titleFont
 
 @Composable
@@ -23,12 +28,16 @@ fun ContactItem(
         verticalAlignment = Alignment.CenterVertically
     ){
         Box{
-            AsyncImage(
+            Image(
                 modifier = Modifier
                     .size(50.dp)
                     .clip(CircleShape),
                 contentDescription = null,
-                model = contact.avatar
+                painter = rememberAsyncImagePainter(
+                    model = "${ApiConfig.BASE_URL}/api/users/get_avatar/${contact.id}",
+                    error = painterResource(R.drawable.person),
+                    fallback = painterResource(R.drawable.person)
+                )
             )
                     }
         Spacer(modifier = Modifier.width(12.dp))

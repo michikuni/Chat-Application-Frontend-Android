@@ -1,6 +1,8 @@
 package com.company.myapplication.ui.home.chat
 
 import android.annotation.SuppressLint
+import android.net.Uri
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -9,17 +11,24 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.*
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
+import coil.compose.rememberAsyncImagePainter
+import com.company.myapplication.R
 import com.company.myapplication.data.model.chat.GetConversation
+import com.company.myapplication.repository.apiconfig.ApiConfig
 import com.company.myapplication.ui.home.util.convertTimestamp
+import com.company.myapplication.util.backgroundColor
 import com.company.myapplication.util.titleFont
 
 @SuppressLint("UnrememberedMutableState")
@@ -29,6 +38,7 @@ fun ChatItem(
     navHostController: NavHostController,
     userId: Long,
 ) {
+    var avatarUrl by remember { mutableStateOf("${ApiConfig.BASE_URL}/api/users/get_avatar/${user.userId}") }
     var isSelected by remember { mutableStateOf(false) }
     val time = convertTimestamp(user.createdAt.toString())
     Row(
@@ -48,12 +58,17 @@ fun ChatItem(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Box{
-            AsyncImage(
-                model = user.avatar,
+            Image(
+                painter = rememberAsyncImagePainter(
+                    model = "${ApiConfig.BASE_URL}/api/users/get_avatar/${user.userId}",
+                    error = painterResource(R.drawable.person),
+                    fallback = painterResource(R.drawable.person)
+                ),
                 contentDescription = null,
                 modifier = Modifier
                     .size(50.dp)
                     .clip(CircleShape)
+                    .background(color = backgroundColor)
             )
             if (user.avatar != null) {
                 Box(

@@ -38,7 +38,7 @@ fun ChatItem(
             .clickable {
                 isSelected = !isSelected
                 navHostController.navigate(
-                    "box_chat/${user.name}/${userId}/${user.userId}"
+                    route = "box_chat/${user.name}/${userId}/${user.userId}"
                 )
             }
             .fillMaxWidth()

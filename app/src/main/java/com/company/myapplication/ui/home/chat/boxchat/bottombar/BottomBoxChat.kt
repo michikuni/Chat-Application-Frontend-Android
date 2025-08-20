@@ -23,7 +23,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import com.company.myapplication.R
 import com.company.myapplication.data.model.chat.CreateConversation
 import com.company.myapplication.util.themeColor
 import com.company.myapplication.ui.home.util.TextField
@@ -56,7 +58,7 @@ fun BottomBoxChat(
             IconButton(onClick = {},
                 modifier = Modifier.weight(0.125f)) {
                 Icon(
-                    imageVector = Icons.Default.Attachment,
+                    painter = painterResource(id = R.drawable.paperclip),
                     contentDescription = "Attach",
                     tint = themeColor
                 )
@@ -72,9 +74,7 @@ fun BottomBoxChat(
 
             IconButton(
                 onClick = {
-                    Log.e(">>> ChatMessage:", chatMessage)
                     if (chatMessage.isNotBlank()) {
-                        Log.e(">>> ChatMessage111ooooo:", chatMessage)
                         conversationViewModel.createConversation(
                             userId = userId,
                             body = CreateConversation(friendId = friendId, message = chatMessage)
@@ -86,7 +86,7 @@ fun BottomBoxChat(
                 modifier = Modifier.weight(0.125f)
             ) {
                 Icon(
-                    imageVector = Icons.AutoMirrored.Filled.Send,
+                    painter = painterResource(id = R.drawable.arrow_up_circle_fill),
                     contentDescription = "Send",
                     tint = themeColor
                 )

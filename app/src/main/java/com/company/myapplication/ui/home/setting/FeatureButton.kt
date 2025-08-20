@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.company.myapplication.util.buttonColor
 import com.company.myapplication.util.titleFont
 
 @Composable
@@ -21,7 +22,7 @@ fun FeatureButton(
         modifier = Modifier
             .fillMaxWidth()
             .height(40.dp)
-            .background(Color.LightGray, shape = RoundedCornerShape(10.dp))
+            .background(color = buttonColor, shape = RoundedCornerShape(10.dp))
             .clickable { onClick() }  // thêm sự kiện bấm
             .padding(horizontal = 16.dp),
         verticalAlignment = Alignment.CenterVertically

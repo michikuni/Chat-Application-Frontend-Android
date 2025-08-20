@@ -5,9 +5,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -17,11 +14,12 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.navigation.NavHostController
+import com.company.myapplication.R
 import com.company.myapplication.util.themeColor
 import com.company.myapplication.util.titleFont
-import com.company.myapplication.util.topAppBarColor
 import com.company.myapplication.util.topAppBarHeight
 import com.company.myapplication.util.topAppBarPadding
 import com.company.myapplication.util.topTitleBoxChatFontSize
@@ -30,12 +28,13 @@ import com.company.myapplication.util.topTitleBoxChatFontSize
 @Composable
 fun TopBoxChat(
     contact: String?,
-    navHostController: NavHostController
+    navHostController: NavHostController,
+    friendId: Long
 ){
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .background(color = topAppBarColor)
+            .background(color = Color.Transparent)
             .height(topAppBarHeight)
             .padding(topAppBarPadding)
     ){
@@ -53,19 +52,21 @@ fun TopBoxChat(
             navigationIcon = {
                 IconButton(onClick = {navHostController.popBackStack()}) {
                     Icon(
-                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                        painter = painterResource(id = R.drawable.arrow_left_short),
                         contentDescription = null,
-                        tint = themeColor
+                        tint = Color.White
                     )
                 }
             },
             actions = {
-                IconButton(onClick = { }
+                IconButton(onClick = {
+                    navHostController.navigate(route = "chat_friend_info/$friendId")
+                }
                 ) {
                     Icon(
-                        imageVector = Icons.Default.Info,
+                        painter = painterResource(id = R.drawable.info_circle),
                         contentDescription = null,
-                        tint = themeColor
+                        tint = Color.White
                     )
                 }
             },

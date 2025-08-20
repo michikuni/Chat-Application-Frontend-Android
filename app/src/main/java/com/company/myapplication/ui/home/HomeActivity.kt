@@ -30,6 +30,7 @@ import com.company.myapplication.ui.home.chat.ChatItem
 import com.company.myapplication.ui.home.chat.topbar.ChatTopBar
 import com.company.myapplication.util.DataChangeHelper
 import com.company.myapplication.util.UserSharedPreferences
+import com.company.myapplication.util.backgroundColor
 import com.company.myapplication.util.lineBreakMessage
 import com.company.myapplication.util.topAppBarColor
 import com.company.myapplication.viewmodel.ConversationViewModel
@@ -85,7 +86,9 @@ fun HomeScreen(
             val currentRoute = currentBackStackEntry?.destination?.route?: ""
             BottomNavigationBar(
                 navController = navHostController,
-                currentRoute = currentRoute)
+                currentRoute = currentRoute,
+                color = backgroundColor
+            )
         }
     ) { paddingValues ->
         Column(

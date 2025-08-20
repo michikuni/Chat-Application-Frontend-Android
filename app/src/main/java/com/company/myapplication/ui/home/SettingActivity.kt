@@ -1,6 +1,7 @@
 package com.company.myapplication.ui.home
 
 import android.app.Activity
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -9,11 +10,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.company.myapplication.ui.home.setting.FeatureButton
 import com.company.myapplication.ui.home.setting.TopSection
+import com.company.myapplication.util.backgroundColor
 import com.company.myapplication.viewmodel.AuthViewModel
 import com.company.myapplication.viewmodel.UserViewModel
 
@@ -29,13 +32,14 @@ fun SettingScreen(
         bottomBar = {
             val currentBackStackEntry = navHostController.currentBackStackEntryAsState().value
             val currentRoute = currentBackStackEntry?.destination?.route?: ""
-            BottomNavigationBar(navController = navHostController, currentRoute = currentRoute)
-        }
+            BottomNavigationBar(navController = navHostController, currentRoute = currentRoute, color = Color.White)
+        },
     ){ paddingValues ->
         Column (
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
+                .background(color = backgroundColor)
         ){
             TopSection(context = activity, userViewModel = userViewModel)
             Column (

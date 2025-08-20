@@ -4,6 +4,7 @@ import android.content.Context
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -25,6 +26,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -81,6 +83,7 @@ fun TopSection(
                     modifier = Modifier
                         .size(150.dp)
                         .clip(CircleShape)
+                        .background(color = Color.White)
                 )
             } else {
                 // Load avatar từ API
@@ -90,11 +93,12 @@ fun TopSection(
                     modifier = Modifier
                         .size(150.dp)
                         .clip(CircleShape)
+                        .background(color = Color.White)
                 )
             }
 
             Text(text = userInfo?.name ?: "Unknown", fontFamily = titleFont, fontSize = 20.sp)
-            Text(text = userInfo?.email ?: "Unknown", fontFamily = titleFont, fontSize = 16.sp)
+            Text(text = userInfo?.username ?: "Unknown", fontFamily = titleFont, fontSize = 16.sp)
 
             TextButton(onClick = { launcher.launch("image/*") }) {
                 Text(text = "Thay ảnh mới", fontFamily = titleFont)

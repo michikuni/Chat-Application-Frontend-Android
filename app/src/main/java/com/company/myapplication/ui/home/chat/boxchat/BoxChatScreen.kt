@@ -3,6 +3,7 @@ package com.company.myapplication.ui.home.chat.boxchat
 import android.app.Activity
 import android.content.Context
 import android.content.SharedPreferences
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -19,6 +20,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.company.myapplication.ui.home.chat.boxchat.bottombar.BottomBoxChat
@@ -64,7 +67,21 @@ fun BoxChatScreen(
     }
 
     Scaffold(
-        topBar = { TopBoxChat(contact = contact, navHostController = navHostController) },
+        modifier = Modifier
+            .fillMaxSize()
+            .background(
+                brush = Brush.verticalGradient(
+                    colors = listOf(Color(0xFF2196F3), Color(0xFFA3D1FF), Color(0xFFFFFFFF)) // xanh đậm → xanh nhạt
+                )
+            ),
+        containerColor = Color.Transparent,
+        topBar = {
+            TopBoxChat(
+                contact = contact,
+                navHostController = navHostController,
+                friendId = friendId
+            )
+        },
         bottomBar = {
             BottomBoxChat(
                 conversationViewModel = conversationViewModel,

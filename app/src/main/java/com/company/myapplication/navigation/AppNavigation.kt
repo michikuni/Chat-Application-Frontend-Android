@@ -12,6 +12,7 @@ import com.company.myapplication.ui.home.ContactScreen
 import com.company.myapplication.ui.home.HomeScreen
 import com.company.myapplication.ui.home.SettingScreen
 import com.company.myapplication.ui.home.chat.boxchat.BoxChatScreen
+import com.company.myapplication.ui.home.chat.boxchat.topbar.info.InfoScreen
 import com.company.myapplication.ui.login.LoginScreen
 import com.company.myapplication.ui.register.RegisterScreen
 import com.company.myapplication.ui.splash.SplashScreen
@@ -29,13 +30,13 @@ fun AppNavigation(activity: Activity) {
     val userViewModel = remember { UserViewModel(activity) }
 
     NavHost(navController = navController, startDestination = "splash") {
-        composable("splash") {
+        composable(route = "splash") {
             SplashScreen(
                 context = activity,
                 navHostController = navController
             )
         }
-        composable("login") {
+        composable(route = "login") {
             LoginScreen(
                 activity = activity,
                 viewModel = authViewModel,
@@ -45,14 +46,14 @@ fun AppNavigation(activity: Activity) {
                 onNavigateToRegister = { navController.navigate("register")}
             )
         }
-        composable("register") {
+        composable(route = "register") {
             RegisterScreen(
                 viewModel = authViewModel,
                 onNavigateToLogin = { navController.navigate("login")},
                 onRegisterSuccess = { navController.navigate("login")}
             )
         }
-        composable("home") {
+        composable(route = "home") {
             HomeScreen(
                 activity = activity,
                 conversationViewModel = conversationViewModel,
@@ -61,7 +62,7 @@ fun AppNavigation(activity: Activity) {
             )
         }
 
-        composable("contact") {
+        composable(route = "contact") {
             ContactScreen(
                 activity = activity,
                 friendViewModel = friendViewModel,
@@ -82,12 +83,13 @@ fun AppNavigation(activity: Activity) {
                 userViewModel = userViewModel
             )
         }
+
         composable(
-            "box_chat/{contact}/{userId}/{friendId}",
+            route = "box_chat/{contact}/{userId}/{friendId}",
             arguments = listOf(
-                navArgument("contact") { type = NavType.StringType },
-                navArgument("userId") { type = NavType.LongType },
-                navArgument("friendId") { type = NavType.LongType }
+                navArgument(name = "contact") { type = NavType.StringType },
+                navArgument(name = "userId") { type = NavType.LongType },
+                navArgument(name = "friendId") { type = NavType.LongType }
             )
         ) { backStackEntry ->
             val contact = backStackEntry.arguments?.getString("contact") ?: ""
@@ -103,6 +105,16 @@ fun AppNavigation(activity: Activity) {
             )
         }
 
+        composable (
+            route = "chat_friend_info/{friendId}",
+            arguments = listOf(navArgument(name = "friendId"){ type = NavType.LongType })
+        ){backStackEntry ->
+            val friendId = backStackEntry.arguments?.getLong("friendId") ?: -1
+            InfoScreen(
+                userViewModel = userViewModel,
+                friendId = friendId
+            )
+        }
 
     }
 }

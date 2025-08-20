@@ -19,6 +19,7 @@ import com.company.myapplication.ui.home.contact.ContactTopBar
 import com.company.myapplication.ui.home.util.SearchBar
 import com.company.myapplication.ui.home.contact.ContactItem
 import com.company.myapplication.util.UserSharedPreferences
+import com.company.myapplication.util.backgroundColor
 import com.company.myapplication.util.lineBreakMessage
 import com.company.myapplication.util.topAppBarColor
 import com.company.myapplication.viewmodel.FriendViewModel
@@ -43,7 +44,7 @@ fun ContactScreen(
         bottomBar = {
             val currentBackStackEntry = navHostController.currentBackStackEntryAsState().value
             val currentRoute = currentBackStackEntry?.destination?.route?: ""
-            BottomNavigationBar(navController = navHostController, currentRoute = currentRoute)
+            BottomNavigationBar(navController = navHostController, currentRoute = currentRoute, color = backgroundColor)
         }
         ) { paddingValues ->
         Column (modifier = Modifier

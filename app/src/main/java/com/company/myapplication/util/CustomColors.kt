@@ -9,8 +9,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.company.myapplication.R
 
-val topAppBarColor = Color(0xFFEEEEEE) //Top
-val searchBackgroundColor = Color(0xFFD9D9D9)
+val backgroundColor = Color(red = 244, green = 243, blue = 248)
+val buttonColor = Color.White
+val topAppBarColor = Color.Transparent //Top
+val searchBackgroundColor = Color(red = 244, green = 243, blue = 248)
 val lineBreakMessage = Color(0xFFAFAFAF)
 val themeColor = Color(0xFF0084FF).copy(alpha = 0.6f)
 val topAppBarHeight = 50.dp

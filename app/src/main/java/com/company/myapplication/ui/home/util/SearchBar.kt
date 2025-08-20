@@ -7,6 +7,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
+import com.company.myapplication.util.searchBackgroundColor
 
 @Composable
 fun SearchBar(
@@ -32,7 +33,7 @@ fun SearchBar(
                 onQueryChange = onQueryChange,
                 text = "Tìm kiếm",
                 multiLine = false,
-                color = Color.White,
+                color = searchBackgroundColor,
                 icon = { SearchIcon() }
             )
         }

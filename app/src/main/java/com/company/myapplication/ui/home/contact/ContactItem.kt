@@ -10,7 +10,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.*
-import coil.compose.AsyncImage
 import coil.compose.rememberAsyncImagePainter
 import com.company.myapplication.R
 import com.company.myapplication.data.model.response.UserResponse

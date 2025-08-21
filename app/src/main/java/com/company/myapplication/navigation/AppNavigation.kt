@@ -112,7 +112,8 @@ fun AppNavigation(activity: Activity) {
             val friendId = backStackEntry.arguments?.getLong("friendId") ?: -1
             InfoScreen(
                 userViewModel = userViewModel,
-                friendId = friendId
+                friendId = friendId,
+                navHostController = navController
             )
         }
 

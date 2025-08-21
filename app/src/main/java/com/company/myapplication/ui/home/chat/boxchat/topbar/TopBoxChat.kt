@@ -18,7 +18,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.navigation.NavHostController
 import com.company.myapplication.R
-import com.company.myapplication.util.themeColor
 import com.company.myapplication.util.titleFont
 import com.company.myapplication.util.topAppBarHeight
 import com.company.myapplication.util.topAppBarPadding

@@ -1,5 +1,6 @@
 package com.company.myapplication.ui.home.chat.boxchat.topbar.info
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -29,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
+import com.company.myapplication.R
 import com.company.myapplication.repository.apiconfig.ApiConfig
 import com.company.myapplication.ui.home.chat.boxchat.topbar.info.topbar.InfoTopBar
 import com.company.myapplication.util.backgroundColor
@@ -86,11 +88,11 @@ fun InfoScreen(
                     .padding(horizontal = 16.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(
-                    text = "text",
-                    fontFamily = titleFont,
-                    color = Color.Black
-                )
+                Row {
+                    Image(
+                        imageVector = R.drawable.person,
+                    )
+                }
             }
         }
     }

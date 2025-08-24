@@ -1,7 +1,6 @@
 package com.company.myapplication.ui.home.chat
 
 import android.annotation.SuppressLint
-import android.net.Uri
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -22,7 +21,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import coil.compose.AsyncImage
 import coil.compose.rememberAsyncImagePainter
 import com.company.myapplication.R
 import com.company.myapplication.data.model.chat.GetConversation
@@ -60,7 +58,7 @@ fun ChatItem(
         Box{
             Image(
                 painter = rememberAsyncImagePainter(
-                    model = "${ApiConfig.BASE_URL}/api/users/get_avatar/${user.userId}",
+                    model = avatarUrl,
                     error = painterResource(R.drawable.person),
                     fallback = painterResource(R.drawable.person)
                 ),
@@ -83,14 +81,26 @@ fun ChatItem(
         Spacer(modifier = Modifier.width(12.dp))
         Column(Modifier.weight(1f)) {
             Text(text = user.name, fontWeight = FontWeight.Bold, fontFamily = titleFont)
-            Text(
-                text = user.content,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-                color = Color.Gray,
-                fontSize = 14.sp,
-                fontFamily = titleFont
-            )
+            if (user.content != null){
+                Text(
+                    text = user.content,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    color = Color.Gray,
+                    fontSize = 14.sp,
+                    fontFamily = titleFont
+                )
+            } else {
+                Text(
+                    text = "Đã gửi một phương tiện",
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    color = Color.Gray,
+                    fontSize = 14.sp,
+                    fontFamily = titleFont
+                )
+            }
+
         }
         Text(text = time, fontSize = 12.sp, color = Color.Gray, fontFamily = titleFont)
     }

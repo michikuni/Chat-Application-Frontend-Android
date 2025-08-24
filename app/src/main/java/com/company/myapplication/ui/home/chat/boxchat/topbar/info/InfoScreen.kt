@@ -26,6 +26,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
@@ -83,14 +85,42 @@ fun InfoScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(40.dp)
-                    .background(Color.White, shape = RoundedCornerShape(10.dp))
+                    .background(color = backgroundColor, shape = RoundedCornerShape(10.dp))
 //                    .clickable { onClick() }  // thêm sự kiện bấm
                     .padding(horizontal = 16.dp),
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center
             ) {
                 Row {
                     Image(
-                        imageVector = R.drawable.person,
+                        painter = painterResource(R.drawable.person),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .size(30.dp)
+                            .clip(shape = CircleShape)
+                            .background(color = Color.White)
+                            .padding(4.dp),
+                        colorFilter = ColorFilter.tint(Color.Black)
+                    )
+                    Spacer(modifier = Modifier.padding(10.dp))
+                    Image(
+                        painter = painterResource(R.drawable.bell_fill),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .size(30.dp)
+                            .clip(shape = CircleShape)
+                            .background(color = Color.White)
+                            .padding(4.dp)
+                    )
+                    Spacer(modifier = Modifier.padding(10.dp))
+                    Image(
+                        painter = painterResource(R.drawable.search),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .size(30.dp)
+                            .clip(shape = CircleShape)
+                            .background(color = Color.White)
+                            .padding(4.dp)
                     )
                 }
             }

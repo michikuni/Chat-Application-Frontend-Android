@@ -6,7 +6,8 @@ import java.sql.Timestamp
 data class Message (
     val conversationId: Conversation,
     val senderId: UserResponse,
-    val content: String,
+    val content: String?,
+    val mediaFile: String?,
     val createdAt: Timestamp,
     val isRead: Boolean
 )

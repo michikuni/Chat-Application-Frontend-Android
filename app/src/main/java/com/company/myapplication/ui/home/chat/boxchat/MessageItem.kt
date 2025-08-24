@@ -41,11 +41,19 @@ fun MessageItem(
                 )
                 .padding(12.dp)
         ) {
-            Text(
-                text = message.content,
-                color = if (isCurrentUser) Color.White else Color.Black,
-                fontFamily = titleFont
-            )
+            if (message.content != null){
+                Text(
+                    text = message.content,
+                    color = if (isCurrentUser) Color.White else Color.Black,
+                    fontFamily = titleFont
+                )
+            } else {
+                Text(
+                    text = "Đã gửi một phương tiện",
+                    color = if (isCurrentUser) Color.White else Color.Black,
+                    fontFamily = titleFont
+                )
+            }
         }
     }
 }

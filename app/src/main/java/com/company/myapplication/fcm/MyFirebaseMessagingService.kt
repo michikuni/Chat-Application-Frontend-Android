@@ -4,7 +4,6 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.app.NotificationChannel
 import android.app.NotificationManager
-import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
 import android.util.Log
@@ -19,12 +18,12 @@ import com.google.firebase.messaging.RemoteMessage
 
 class MyFirebaseMessagingService: FirebaseMessagingService() {
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
-        val title = remoteMessage.notification?.title ?: "Tin nhắn mới"
+        val title = remoteMessage.data["name"] ?: "Tin nhắn mới"
         val timestamp = remoteMessage.data["time"]?.toLong() ?: System.currentTimeMillis()
         val userId = remoteMessage.data["userId"]?.toLong() ?: -1
         val message = remoteMessage.data["message"] ?: ""
         val userIdUSP = UserSharedPreferences.getId(this)
-        Log.e("Fiirebase mes", "ms: $userId USP: $userIdUSP")
+        Log.e("Firebase mes", "ms: $userId USP: $userIdUSP")
         DataChangeHelper.setDataChanged(this, true)
 
         if (userIdUSP == userId){
@@ -37,8 +36,9 @@ class MyFirebaseMessagingService: FirebaseMessagingService() {
     }
     @SuppressLint("ObsoleteSdkInt")
     private fun showNotification(title: String, body: String, time: Long) {
-        val channelId = "chat_messages"
-        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        val channelId = getString(R.string.channel_id)
+        val channelName = getString(R.string.app_name)
+        val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
 
 //        val timeString = formatTimeHumanReadable(time)
 
@@ -47,8 +47,9 @@ class MyFirebaseMessagingService: FirebaseMessagingService() {
             if (notificationManager.getNotificationChannel(channelId) == null) {
                 val channel = NotificationChannel(
                     channelId,
-                    "Mir Communicate",
-                    NotificationManager.IMPORTANCE_HIGH
+                    channelName,
+                    NotificationManager.IMPORTANCE_HIGH,
+
                 )
                 notificationManager.createNotificationChannel(channel)
             }

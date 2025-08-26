@@ -115,7 +115,6 @@ fun CreateConversationPopup(
                 val suggestedContacts = filterUser
                 suggestedContacts.forEach {
                     SuggestionFriend(
-                        avatar = it.avatar,
                         name = it.name,
                         userId = userId,
                         friendId = it.id,

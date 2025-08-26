@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Korat Message</string>
+    <string name="channel_id">korat_message</string>
 </resources>

@@ -11,6 +11,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import com.company.myapplication.navigation.AppNavigation
+import com.google.firebase.FirebaseApp
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -18,6 +19,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             AppNavigation(this)
         }
+        FirebaseApp.initializeApp(this)
         askNotificationPermission()
     }
     private val requestPermissionLauncher =

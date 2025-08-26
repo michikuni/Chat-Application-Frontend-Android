@@ -7,10 +7,14 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
 import com.company.myapplication.data.model.chat.Message
+import com.company.myapplication.repository.apiconfig.ApiConfig
 import com.company.myapplication.util.titleFont
 
 
@@ -20,6 +24,7 @@ fun MessageItem(
     userId: Long
 ) {
     val screenWidth = LocalConfiguration.current.screenWidthDp.dp
+    val image = "${ApiConfig.BASE_URL}/api/chats/getMediaFile/${message.mediaFile}"
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -39,19 +44,23 @@ fun MessageItem(
                         Color.LightGray,
                     shape = RoundedCornerShape(16.dp)
                 )
-                .padding(12.dp)
         ) {
             if (message.content != null){
                 Text(
                     text = message.content,
                     color = if (isCurrentUser) Color.White else Color.Black,
-                    fontFamily = titleFont
+                    fontFamily = titleFont,
+                    modifier = Modifier
+                        .padding(12.dp)
                 )
-            } else {
-                Text(
-                    text = "Đã gửi một phương tiện",
-                    color = if (isCurrentUser) Color.White else Color.Black,
-                    fontFamily = titleFont
+            } else if (message.mediaFile != null) {
+                AsyncImage(
+                    model = image,
+                    contentDescription = null,
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(12.dp))
+                        .sizeIn(maxWidth = screenWidth * 0.6f, maxHeight = 250.dp) // giới hạn ảnh
                 )
             }
         }

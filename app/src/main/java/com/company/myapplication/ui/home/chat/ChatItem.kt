@@ -1,6 +1,7 @@
 package com.company.myapplication.ui.home.chat
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -80,25 +81,50 @@ fun ChatItem(
         }
         Spacer(modifier = Modifier.width(12.dp))
         Column(Modifier.weight(1f)) {
+            Log.e("USER", user.userId.toString())
+            Log.e("FRIEND", user.senderId.toString())
+            Log.e("USER ID", userId.toString())
             Text(text = user.name, fontWeight = FontWeight.Bold, fontFamily = titleFont)
-            if (user.content != null){
-                Text(
-                    text = user.content,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                    color = Color.Gray,
-                    fontSize = 14.sp,
-                    fontFamily = titleFont
-                )
+            if (userId == user.senderId){
+                if (user.content != null){
+                    Text(
+                        text = "Bạn: ${user.content}",
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        color = Color.Gray,
+                        fontSize = 14.sp,
+                        fontFamily = titleFont
+                    )
+                } else {
+                    Text(
+                        text = "Bạn: Đã gửi một ảnh",
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        color = Color.Gray,
+                        fontSize = 14.sp,
+                        fontFamily = titleFont
+                    )
+                }
             } else {
-                Text(
-                    text = "Đã gửi một phương tiện",
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                    color = Color.Gray,
-                    fontSize = 14.sp,
-                    fontFamily = titleFont
-                )
+                if (user.content != null){
+                    Text(
+                        text = user.content,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        color = Color.Gray,
+                        fontSize = 14.sp,
+                        fontFamily = titleFont
+                    )
+                } else {
+                    Text(
+                        text = "Đã gửi một ảnh",
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        color = Color.Gray,
+                        fontSize = 14.sp,
+                        fontFamily = titleFont
+                    )
+                }
             }
 
         }

@@ -19,7 +19,7 @@ fun convertTimestamp(timestampStr: String): String {
 
     val daysDiff = ChronoUnit.DAYS.between(ts.toLocalDate(), now.toLocalDate())
 
-    Log.e("TIME", daysDiff.toString())
+//    Log.e("TIME", daysDiff.toString())
 
     return when (daysDiff) {
         0L -> ts.plusHours(7).format(DateTimeFormatter.ofPattern("HH:mm")) // cùng ngày → hiển thị giờ:phút

@@ -35,6 +35,7 @@ import coil.compose.AsyncImage
 import com.company.myapplication.R
 import com.company.myapplication.repository.apiconfig.ApiConfig
 import com.company.myapplication.ui.home.chat.boxchat.topbar.info.topbar.InfoTopBar
+import com.company.myapplication.ui.home.setting.FeatureButton
 import com.company.myapplication.util.backgroundColor
 import com.company.myapplication.util.titleFont
 import com.company.myapplication.viewmodel.UserViewModel
@@ -123,6 +124,11 @@ fun InfoScreen(
                             .padding(4.dp)
                     )
                 }
+            }
+            Column {
+                FeatureButton(text = "Thay đổi chủ đề", onClick = {})
+                FeatureButton(text = "File phương tiện", onClick = {})
+                FeatureButton(text = "Chặn", onClick = {})
             }
         }
     }

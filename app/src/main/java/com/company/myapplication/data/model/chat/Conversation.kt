@@ -10,6 +10,7 @@ data class CreateConversation(
 data class GetConversation(
     val id: Long,
     val userId: Long,
+    val senderId: Long,
     val name: String,
     val avatar: String?,
     val content: String?,

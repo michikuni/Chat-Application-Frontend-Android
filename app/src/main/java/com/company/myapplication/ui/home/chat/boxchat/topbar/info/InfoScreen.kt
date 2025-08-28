@@ -33,18 +33,21 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.company.myapplication.R
+import com.company.myapplication.data.model.chat.Message
 import com.company.myapplication.repository.apiconfig.ApiConfig
 import com.company.myapplication.ui.home.chat.boxchat.topbar.info.topbar.InfoTopBar
 import com.company.myapplication.ui.home.setting.FeatureButton
 import com.company.myapplication.util.backgroundColor
 import com.company.myapplication.util.titleFont
+import com.company.myapplication.viewmodel.ConversationViewModel
 import com.company.myapplication.viewmodel.UserViewModel
 
 @Composable
 fun InfoScreen(
     userViewModel: UserViewModel,
     friendId: Long,
-    navHostController: NavHostController
+    navHostController: NavHostController,
+    userId: Long
 ){
     LaunchedEffect(Unit) {
         userViewModel.getUserInfo(friendId)
@@ -125,9 +128,14 @@ fun InfoScreen(
                     )
                 }
             }
-            Column {
+            Spacer(modifier = Modifier.padding(8.dp))
+            Column (modifier = Modifier.padding(horizontal = 15.dp, vertical = 8.dp)){
                 FeatureButton(text = "Thay đổi chủ đề", onClick = {})
-                FeatureButton(text = "File phương tiện", onClick = {})
+                Spacer(modifier = Modifier.padding(2.dp))
+                FeatureButton(text = "File phương tiện", onClick = {
+                    navHostController.navigate(route = "chat_media/$userId/$friendId")
+                })
+                Spacer(modifier = Modifier.padding(2.dp))
                 FeatureButton(text = "Chặn", onClick = {})
             }
         }

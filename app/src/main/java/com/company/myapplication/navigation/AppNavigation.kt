@@ -13,6 +13,7 @@ import com.company.myapplication.ui.home.HomeScreen
 import com.company.myapplication.ui.home.SettingScreen
 import com.company.myapplication.ui.home.chat.boxchat.BoxChatScreen
 import com.company.myapplication.ui.home.chat.boxchat.topbar.info.InfoScreen
+import com.company.myapplication.ui.home.chat.boxchat.topbar.info.MediaScreen
 import com.company.myapplication.ui.login.LoginScreen
 import com.company.myapplication.ui.register.RegisterScreen
 import com.company.myapplication.ui.splash.SplashScreen
@@ -106,16 +107,38 @@ fun AppNavigation(activity: Activity) {
         }
 
         composable (
-            route = "chat_friend_info/{friendId}",
-            arguments = listOf(navArgument(name = "friendId"){ type = NavType.LongType })
+            route = "chat_friend_info/{friendId}/{userId}",
+            arguments = listOf(
+                navArgument(name = "friendId"){ type = NavType.LongType },
+                navArgument(name = "userId"){type = NavType.LongType}
+            ),
+
         ){backStackEntry ->
             val friendId = backStackEntry.arguments?.getLong("friendId") ?: -1
+            val userId = backStackEntry.arguments?.getLong("userId") ?: -1
             InfoScreen(
                 userViewModel = userViewModel,
                 friendId = friendId,
-                navHostController = navController
+                navHostController = navController,
+                userId = userId
             )
         }
 
+        composable (
+            route = "chat_media/{userId}/{friendId}",
+            arguments = listOf(
+                navArgument(name = "userId"){ type = NavType.LongType},
+                navArgument(name = "friendId"){ type = NavType.LongType}
+            )
+        ){backStackEntry ->
+            val userId = backStackEntry.arguments?.getLong("userId") ?: -1
+            val friendId = backStackEntry.arguments?.getLong("friendId") ?: -1
+            MediaScreen(
+                userId = userId,
+                friendId = friendId,
+                conversationViewModel = conversationViewModel,
+                navHostController = navController
+            )
+        }
     }
 }

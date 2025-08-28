@@ -18,6 +18,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.navigation.NavHostController
 import com.company.myapplication.R
+import com.company.myapplication.data.model.chat.Message
 import com.company.myapplication.util.titleFont
 import com.company.myapplication.util.topAppBarHeight
 import com.company.myapplication.util.topAppBarPadding
@@ -28,7 +29,8 @@ import com.company.myapplication.util.topTitleBoxChatFontSize
 fun TopBoxChat(
     contact: String?,
     navHostController: NavHostController,
-    friendId: Long
+    friendId: Long,
+    userId: Long
 ){
     Box(
         modifier = Modifier
@@ -59,7 +61,7 @@ fun TopBoxChat(
             },
             actions = {
                 IconButton(onClick = {
-                    navHostController.navigate(route = "chat_friend_info/$friendId")
+                    navHostController.navigate(route = "chat_friend_info/$friendId/$userId")
                 }
                 ) {
                     Icon(

@@ -79,7 +79,8 @@ fun BoxChatScreen(
             TopBoxChat(
                 contact = contact,
                 navHostController = navHostController,
-                friendId = friendId
+                friendId = friendId,
+                userId = userId
             )
         },
         bottomBar = {

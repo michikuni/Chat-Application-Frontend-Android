@@ -1,6 +1,7 @@
 package com.company.myapplication.viewmodel
 
 import android.app.Activity
+import android.content.Context
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -54,6 +55,16 @@ class ConversationViewModel(activity: Activity): ViewModel(){
                 if (conversation != null) {
                     _conversation.value = conversation
                 }
+            } catch (e: Exception){
+                errorMsg = e.message
+            }
+        }
+    }
+
+    fun updateTheme(context: Context, conversationId: Long){
+        viewModelScope.launch {
+            try {
+                repo.updateTheme(context = context, conversationId = conversationId)
             } catch (e: Exception){
                 errorMsg = e.message
             }

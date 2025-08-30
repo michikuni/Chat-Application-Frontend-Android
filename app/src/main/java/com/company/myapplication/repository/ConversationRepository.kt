@@ -3,6 +3,7 @@ package com.company.myapplication.repository
 import android.content.Context
 import android.net.Uri
 import android.util.Log
+import android.widget.Toast
 import com.company.myapplication.data.api.ConversationApi
 import com.company.myapplication.data.model.chat.CreateConversation
 import com.company.myapplication.data.model.chat.GetConversation
@@ -71,6 +72,16 @@ class ConversationRepository (context: Context){
             Log.e("✅ Upload thành công:", "${response.body()?.string()}")
         } else {
             Log.e("❌ Upload thất bại: ", "${response.errorBody()?.string()}")
+        }
+    }
+
+    suspend fun updateTheme(context: Context, conversationId: Long){
+        val response = conversationApi.updateTheme(conversationId)
+
+        if (response.isSuccessful){
+            Toast.makeText(context, "Cập nhật chủ đề thành công", Toast.LENGTH_SHORT).show()
+        } else {
+            Toast.makeText(context, "Cập nhật chủ đề thất bại", Toast.LENGTH_SHORT).show()
         }
     }
 

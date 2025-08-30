@@ -21,7 +21,8 @@ import com.company.myapplication.util.titleFont
 @Composable
 fun MessageItem(
     message: Message,
-    userId: Long
+    userId: Long,
+    color: List<String>
 ) {
     val screenWidth = LocalConfiguration.current.screenWidthDp.dp
     val image = "${ApiConfig.BASE_URL}/api/chats/getMediaFile/${message.mediaFile}"
@@ -40,7 +41,7 @@ fun MessageItem(
 
                 .background(
                     color =
-                    if (isCurrentUser) Color.Blue else
+                    if (isCurrentUser) Color(color[3].removePrefix("0x").toLong(16)) else
                         Color.LightGray,
                     shape = RoundedCornerShape(16.dp)
                 )
@@ -48,7 +49,10 @@ fun MessageItem(
             if (message.content != null){
                 Text(
                     text = message.content,
-                    color = if (isCurrentUser) Color.White else Color.Black,
+                    color = if (isCurrentUser)
+                        Color(color[5].removePrefix("0x").toLong(16))
+                    else
+                        Color(color[4].removePrefix("0x").toLong(16)),
                     fontFamily = titleFont,
                     modifier = Modifier
                         .padding(12.dp)

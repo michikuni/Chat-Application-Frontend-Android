@@ -41,6 +41,13 @@ fun BoxChatScreen(
 
     val listState = rememberLazyListState()
     val messages by conversationViewModel.messages.collectAsState()
+    val conversation by conversationViewModel.conversation.collectAsState()
+    val defaultColor = listOf("0xFFFFFFFF", "0xFFFFFFFF", "0xFFFFFFFF", "0xFF2196F3", "0xFF000000", "0xFFFFFFFF")
+
+    val color: List<String> = messages.firstOrNull()?.let { msg ->
+        conversation.firstOrNull { it.id == msg.conversationId.id }?.themeColor ?: defaultColor
+    } ?: defaultColor
+
     val prefs = activity.getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
     var dataChanged by remember { mutableStateOf(DataChangeHelper.hasDataChanged(activity)) }
 
@@ -60,6 +67,7 @@ fun BoxChatScreen(
     // Khi dataChanged = true → reload
     LaunchedEffect(dataChanged) {
         conversationViewModel.getAllMessage(userId = userId, friendId = friendId)
+        conversationViewModel.getAllConversation(userId = userId)
         if (dataChanged) {
             conversationViewModel.getAllMessage(userId = userId, friendId = friendId)
             DataChangeHelper.setDataChanged(activity, false)
@@ -71,7 +79,11 @@ fun BoxChatScreen(
             .fillMaxSize()
             .background(
                 brush = Brush.verticalGradient(
-                    colors = listOf(Color(0xFF2196F3), Color(0xFFA3D1FF), Color(0xFFFFFFFF)) // xanh đậm → xanh nhạt
+                    colors = listOf(
+                        Color(color[0].removePrefix("0x").toLong(16)),
+                        Color(color[1].removePrefix("0x").toLong(16)),
+                        Color(color[2].removePrefix("0x").toLong(16))
+                    )
                 )
             ),
         containerColor = Color.Transparent,
@@ -80,7 +92,8 @@ fun BoxChatScreen(
                 contact = contact,
                 navHostController = navHostController,
                 friendId = friendId,
-                userId = userId
+                userId = userId,
+                color = color
             )
         },
         bottomBar = {
@@ -88,7 +101,8 @@ fun BoxChatScreen(
                 conversationViewModel = conversationViewModel,
                 userId = userId,
                 friendId = friendId,
-                activity = activity
+                activity = activity,
+                color = color
             )
         }
     ) { paddingValues ->
@@ -100,7 +114,7 @@ fun BoxChatScreen(
             contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp)
         ) {
             items(messages) { ms ->
-                MessageItem(message = ms, userId = userId)
+                MessageItem(message = ms, userId = userId, color = color)
             }
         }
     }

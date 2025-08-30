@@ -41,7 +41,8 @@ fun BottomBoxChat(
     conversationViewModel: ConversationViewModel,
     userId: Long,
     friendId: Long,
-    activity: Activity
+    activity: Activity,
+    color: List<String>
 ){
     var chatMessage by remember(userId, friendId) { mutableStateOf("") }
     val repo = ConversationRepository(context = activity)
@@ -81,7 +82,7 @@ fun BottomBoxChat(
                 Icon(
                     painter = painterResource(id = R.drawable.paperclip),
                     contentDescription = "Attach",
-                    tint = themeColor
+                    tint = Color(color[3].removePrefix("0x").toLong(16))
                 )
             }
 
@@ -109,7 +110,7 @@ fun BottomBoxChat(
                 Icon(
                     painter = painterResource(id = R.drawable.arrow_up_circle_fill),
                     contentDescription = "Send",
-                    tint = themeColor
+                    tint = Color(color[3].removePrefix("0x").toLong(16))
                 )
             }
         }

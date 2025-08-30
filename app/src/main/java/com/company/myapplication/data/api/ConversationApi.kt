@@ -32,6 +32,11 @@ interface ConversationApi {
         @Path("userId") userId: Long
     ): Response<List<GetConversation>>
 
+    @POST("api/chats/updateTheme/{conversationId}")
+    suspend fun updateTheme(
+        @Path("conversationId") conversationId: Long
+    ): Response<Void>
+
     @Multipart
     @POST("api/chats/sendMediaFile/{userId}")
     suspend fun sendMediaFile(

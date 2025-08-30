@@ -1,23 +1,17 @@
-package com.company.myapplication.ui.home.chat.boxchat.topbar.info
+package com.company.myapplication.ui.home.chat.boxchat.topbar.info.function_screen
 
 import android.util.Log
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
-import androidx.compose.material.Text
 import androidx.compose.material3.Card
+import androidx.compose.material3.Text
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -39,7 +33,6 @@ import androidx.navigation.NavHostController
 import coil.compose.rememberAsyncImagePainter
 import com.company.myapplication.R
 import com.company.myapplication.repository.apiconfig.ApiConfig
-import com.company.myapplication.ui.home.chat.boxchat.topbar.info.topbar.InfoTopBar
 import com.company.myapplication.util.titleFont
 import com.company.myapplication.viewmodel.ConversationViewModel
 @OptIn(ExperimentalMaterial3Api::class)
@@ -78,7 +71,7 @@ fun MediaScreen(
         }
     ){ paddingValues ->
         LazyVerticalGrid(
-            columns = GridCells.Adaptive(128.dp),
+            columns = GridCells.Adaptive(100.dp),
             contentPadding = PaddingValues(
                 start = 12.dp,
                 top = 16.dp,
@@ -87,13 +80,12 @@ fun MediaScreen(
             ),
             modifier = Modifier.padding(paddingValues)
         ){
-            items(items = messages) { index ->
+            items(items = messages.asReversed()) { index ->
                 if (index.mediaFile != null){
                     Card(
                         modifier = Modifier
                             .padding(4.dp)
-                            .fillMaxWidth(),
-                        elevation = 8.dp,
+                            .fillMaxSize(),
                     ) {
                         Image(
                             painter = rememberAsyncImagePainter(
@@ -101,7 +93,7 @@ fun MediaScreen(
                             ),
                             contentDescription = null,
                             modifier = Modifier
-                                .size(100.dp)
+                                .size(128.dp)
                                 .clip(RoundedCornerShape(8.dp)),
                             contentScale = ContentScale.Crop
                         )

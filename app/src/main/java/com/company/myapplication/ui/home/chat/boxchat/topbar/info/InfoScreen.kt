@@ -35,6 +35,7 @@ import coil.compose.AsyncImage
 import com.company.myapplication.R
 import com.company.myapplication.data.model.chat.Message
 import com.company.myapplication.repository.apiconfig.ApiConfig
+import com.company.myapplication.ui.home.chat.boxchat.topbar.info.function_screen.ThemePopupSimple
 import com.company.myapplication.ui.home.chat.boxchat.topbar.info.topbar.InfoTopBar
 import com.company.myapplication.ui.home.setting.FeatureButton
 import com.company.myapplication.util.backgroundColor
@@ -54,6 +55,7 @@ fun InfoScreen(
     }
     val userInfo by userViewModel.user_info.collectAsState()
     var avatarUrl by remember { mutableStateOf("${ApiConfig.BASE_URL}/api/users/get_avatar/$friendId") }
+    var themePopup by remember { mutableStateOf(false) }
     Scaffold (
         containerColor = backgroundColor,
         bottomBar = {},
@@ -130,14 +132,18 @@ fun InfoScreen(
             }
             Spacer(modifier = Modifier.padding(8.dp))
             Column (modifier = Modifier.padding(horizontal = 15.dp, vertical = 8.dp)){
-                FeatureButton(text = "Thay đổi chủ đề", onClick = {})
+                FeatureButton(text = "Thay đổi chủ đề", onClick = { themePopup = true})
                 Spacer(modifier = Modifier.padding(2.dp))
                 FeatureButton(text = "File phương tiện", onClick = {
                     navHostController.navigate(route = "chat_media/$userId/$friendId")
                 })
                 Spacer(modifier = Modifier.padding(2.dp))
                 FeatureButton(text = "Chặn", onClick = {})
+                if (themePopup){
+                    ThemePopupSimple (onDismiss = { themePopup = false })
+                }
             }
+
         }
     }
 }

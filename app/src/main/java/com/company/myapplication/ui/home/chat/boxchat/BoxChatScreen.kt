@@ -3,6 +3,7 @@ package com.company.myapplication.ui.home.chat.boxchat
 import android.app.Activity
 import android.content.Context
 import android.content.SharedPreferences
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -28,6 +29,8 @@ import com.company.myapplication.ui.home.chat.boxchat.bottombar.BottomBoxChat
 import com.company.myapplication.ui.home.chat.boxchat.topbar.TopBoxChat
 import com.company.myapplication.util.DataChangeHelper
 import com.company.myapplication.viewmodel.ConversationViewModel
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 
 @Composable
 fun BoxChatScreen(
@@ -38,16 +41,6 @@ fun BoxChatScreen(
     conversationViewModel: ConversationViewModel,
     activity: Activity
 ){
-
-    val listState = rememberLazyListState()
-    val messages by conversationViewModel.messages.collectAsState()
-    val conversation by conversationViewModel.conversation.collectAsState()
-    val defaultColor = listOf("0xFFFFFFFF", "0xFFFFFFFF", "0xFFFFFFFF", "0xFF2196F3", "0xFF000000", "0xFFFFFFFF")
-
-    val color: List<String> = messages.firstOrNull()?.let { msg ->
-        conversation.firstOrNull { it.id == msg.conversationId.id }?.themeColor ?: defaultColor
-    } ?: defaultColor
-
     val prefs = activity.getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
     var dataChanged by remember { mutableStateOf(DataChangeHelper.hasDataChanged(activity)) }
 
@@ -73,6 +66,27 @@ fun BoxChatScreen(
             DataChangeHelper.setDataChanged(activity, false)
         }
     }
+    val listState = rememberLazyListState()
+    val messages by conversationViewModel.messages.collectAsState()
+    val conversation by conversationViewModel.conversation.collectAsState()
+    val defaultColor = listOf("0xFFFFFFFF", "0xFFFFFFFF", "0xFFFFFFFF", "0xFF2196F3", "0xFF000000", "0xFFFFFFFF")
+
+    val conversationId = messages.firstOrNull()?.conversationId?.id
+
+    val color: List<String> = remember(conversationId, conversation) {
+        val raw = conversation.firstOrNull { it.id == conversationId }?.themeColor // String? JSON như: ["0xFFF...", ...]
+        val parsed = runCatching {
+            if (raw.isNullOrBlank()) emptyList()
+            else Gson().fromJson(raw, Array<String>::class.java).toList()
+        }.getOrDefault(emptyList())
+
+        if (parsed.size >= 3) parsed else defaultColor
+    }
+
+    for (cl in color){
+        Log.e("COLOR", cl)
+    }
+
 
     Scaffold(
         modifier = Modifier
@@ -93,7 +107,8 @@ fun BoxChatScreen(
                 navHostController = navHostController,
                 friendId = friendId,
                 userId = userId,
-                color = color
+                color = color,
+                conversationId = conversationId?:-1L
             )
         },
         bottomBar = {

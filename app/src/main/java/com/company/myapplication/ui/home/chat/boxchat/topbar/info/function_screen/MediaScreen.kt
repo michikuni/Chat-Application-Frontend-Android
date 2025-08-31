@@ -47,9 +47,6 @@ fun MediaScreen(
         conversationViewModel.getAllMessage(userId = userId, friendId = friendId)
     }
     val messages by conversationViewModel.messages.collectAsState()
-    for (ms in messages){
-        Log.e("Media SC1", ms.mediaFile.toString())
-    }
     Scaffold (
         topBar = {
             CenterAlignedTopAppBar(

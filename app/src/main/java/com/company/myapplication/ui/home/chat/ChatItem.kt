@@ -81,9 +81,6 @@ fun ChatItem(
         }
         Spacer(modifier = Modifier.width(12.dp))
         Column(Modifier.weight(1f)) {
-            Log.e("USER", user.userId.toString())
-            Log.e("FRIEND", user.senderId.toString())
-            Log.e("USER ID", userId.toString())
             Text(text = user.name, fontWeight = FontWeight.Bold, fontFamily = titleFont)
             if (userId == user.senderId){
                 if (user.content != null){
@@ -97,7 +94,7 @@ fun ChatItem(
                     )
                 } else {
                     Text(
-                        text = "Bạn: Đã gửi một ảnh",
+                        text = "Bạn đã gửi một ảnh",
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
                         color = Color.Gray,

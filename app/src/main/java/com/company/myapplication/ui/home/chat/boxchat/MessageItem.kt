@@ -41,8 +41,8 @@ fun MessageItem(
 
                 .background(
                     color =
-                    if (isCurrentUser) Color(color[3].removePrefix("0x").toLong(16)) else
-                        Color.LightGray,
+                    if (isCurrentUser) Color(color[3].removePrefix("0x").toLong(16))
+                    else Color(color[4].removePrefix("0x").toLong(16)),
                     shape = RoundedCornerShape(16.dp)
                 )
         ) {
@@ -50,9 +50,9 @@ fun MessageItem(
                 Text(
                     text = message.content,
                     color = if (isCurrentUser)
-                        Color(color[5].removePrefix("0x").toLong(16))
+                        Color(color[4].removePrefix("0x").toLong(16))
                     else
-                        Color(color[4].removePrefix("0x").toLong(16)),
+                        Color(color[5].removePrefix("0x").toLong(16)),
                     fontFamily = titleFont,
                     modifier = Modifier
                         .padding(12.dp)

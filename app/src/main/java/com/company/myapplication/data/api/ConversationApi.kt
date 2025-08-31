@@ -34,7 +34,8 @@ interface ConversationApi {
 
     @POST("api/chats/updateTheme/{conversationId}")
     suspend fun updateTheme(
-        @Path("conversationId") conversationId: Long
+        @Path("conversationId") conversationId: Long,
+        @Body color: List<String>
     ): Response<Void>
 
     @Multipart

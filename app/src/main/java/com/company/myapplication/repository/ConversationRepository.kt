@@ -75,8 +75,8 @@ class ConversationRepository (context: Context){
         }
     }
 
-    suspend fun updateTheme(context: Context, conversationId: Long){
-        val response = conversationApi.updateTheme(conversationId)
+    suspend fun updateTheme(context: Context, conversationId: Long, color: List<String>){
+        val response = conversationApi.updateTheme(conversationId, color)
 
         if (response.isSuccessful){
             Toast.makeText(context, "Cập nhật chủ đề thành công", Toast.LENGTH_SHORT).show()

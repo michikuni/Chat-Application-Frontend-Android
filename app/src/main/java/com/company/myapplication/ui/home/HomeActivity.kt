@@ -3,6 +3,7 @@ package com.company.myapplication.ui.home
 import android.app.Activity
 import android.content.Context
 import android.content.SharedPreferences
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -70,6 +71,9 @@ fun HomeScreen(
     }
 
     val listConversation by conversationViewModel.conversation.collectAsState()
+    for(cs in listConversation){
+        Log.e("CSSS", cs.toString())
+    }
     var searchQuery by remember { mutableStateOf("") }
     val filterUser = listConversation.filter {
         it.name.contains(searchQuery, ignoreCase = true)

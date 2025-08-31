@@ -17,7 +17,7 @@ data class GetConversation(
     val mediaFile: String?,
     val createdAt: Timestamp,
     val isRead: Boolean,
-    val themeColor: List<String>?
+    val themeColor: String?
 )
 data class Conversation(
     val id: Long,

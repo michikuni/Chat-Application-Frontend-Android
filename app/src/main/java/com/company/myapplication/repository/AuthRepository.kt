@@ -42,8 +42,6 @@ class AuthRepository (context: Context){
         return if (response.isSuccessful)
             response.body()
         else {
-            val errorBody = response.errorBody()?.string()
-            println("Login error: $errorBody")
             null
         }
     }
@@ -52,10 +50,8 @@ class AuthRepository (context: Context){
         val response = authApi.checkTokenValid()
         if (response.isSuccessful) {
             val body = response.body()
-            Log.d("API", "Success body=$body")
             return body
         } else {
-            Log.e("API", "Fail code=${response.code()}, error=${response.errorBody()?.string()}")
             return null
         }
     }

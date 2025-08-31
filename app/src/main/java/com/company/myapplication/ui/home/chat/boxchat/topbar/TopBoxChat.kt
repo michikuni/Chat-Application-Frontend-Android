@@ -30,7 +30,8 @@ fun TopBoxChat(
     navHostController: NavHostController,
     friendId: Long,
     userId: Long,
-    color: List<String>
+    color: List<String>,
+    conversationId: Long
 ){
     Box(
         modifier = Modifier
@@ -44,7 +45,7 @@ fun TopBoxChat(
                 if (contact != null) {
                     Text(contact,
                         fontWeight = FontWeight.Bold,
-                        color = Color.Black,
+                        color = Color(color[3].removePrefix("0x").toLong(16)),
                         fontSize = topTitleBoxChatFontSize,
                         fontFamily = titleFont
                     )
@@ -61,7 +62,7 @@ fun TopBoxChat(
             },
             actions = {
                 IconButton(onClick = {
-                    navHostController.navigate(route = "chat_friend_info/$friendId/$userId")
+                    navHostController.navigate(route = "chat_friend_info/$friendId/$userId/$conversationId")
                 }
                 ) {
                     Icon(

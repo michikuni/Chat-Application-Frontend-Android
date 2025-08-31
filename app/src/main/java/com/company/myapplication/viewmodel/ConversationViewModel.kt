@@ -48,23 +48,22 @@ class ConversationViewModel(activity: Activity): ViewModel(){
         }
     }
 
-    fun getAllConversation(userId: Long){
+    fun getAllConversation(userId: Long) {
         viewModelScope.launch {
             try {
                 val conversation = repo.getAllConversation(userId)
-                if (conversation != null) {
-                    _conversation.value = conversation
-                }
-            } catch (e: Exception){
+                if (conversation != null) _conversation.value = conversation
+            } catch (e: Exception) {
                 errorMsg = e.message
             }
         }
     }
 
-    fun updateTheme(context: Context, conversationId: Long){
+
+    fun updateTheme(context: Context, conversationId: Long, color: List<String>){
         viewModelScope.launch {
             try {
-                repo.updateTheme(context = context, conversationId = conversationId)
+                repo.updateTheme(context = context, conversationId = conversationId, color = color)
             } catch (e: Exception){
                 errorMsg = e.message
             }

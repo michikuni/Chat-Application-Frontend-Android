@@ -1,5 +1,6 @@
 package com.company.myapplication.ui.home.chat.boxchat.topbar.info
 
+import android.app.Activity
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -48,7 +49,10 @@ fun InfoScreen(
     userViewModel: UserViewModel,
     friendId: Long,
     navHostController: NavHostController,
-    userId: Long
+    userId: Long,
+    conversationId: Long,
+    conversationViewModel: ConversationViewModel,
+    context: Activity
 ){
     LaunchedEffect(Unit) {
         userViewModel.getUserInfo(friendId)
@@ -140,7 +144,7 @@ fun InfoScreen(
                 Spacer(modifier = Modifier.padding(2.dp))
                 FeatureButton(text = "Chặn", onClick = {})
                 if (themePopup){
-                    ThemePopupSimple (onDismiss = { themePopup = false })
+                    ThemePopupSimple (onDismiss = { themePopup = false }, context = context, conversationId = conversationId, conversationViewModel = conversationViewModel)
                 }
             }
 

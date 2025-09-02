@@ -30,7 +30,6 @@ import com.company.myapplication.ui.home.chat.boxchat.topbar.TopBoxChat
 import com.company.myapplication.util.DataChangeHelper
 import com.company.myapplication.viewmodel.ConversationViewModel
 import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 
 @Composable
 fun BoxChatScreen(

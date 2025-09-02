@@ -1,7 +1,6 @@
 package com.company.myapplication.ui.home.chat
 
 import android.annotation.SuppressLint
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -38,6 +37,7 @@ fun ChatItem(
     userId: Long,
 ) {
     var avatarUrl by remember { mutableStateOf("${ApiConfig.BASE_URL}/api/users/get_avatar/${user.userId}") }
+    var avatarGroupUrl by remember { mutableStateOf("${ApiConfig.BASE_URL}/api/chats/getMediaFile/avatar/${user.avatar}") }
     var isSelected by remember { mutableStateOf(false) }
     val time = convertTimestamp(user.createdAt.toString())
     Row(
@@ -56,75 +56,161 @@ fun ChatItem(
             .padding(12.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Box{
-            Image(
-                painter = rememberAsyncImagePainter(
-                    model = avatarUrl,
-                    error = painterResource(R.drawable.person),
-                    fallback = painterResource(R.drawable.person)
-                ),
-                contentDescription = null,
-                modifier = Modifier
-                    .size(50.dp)
-                    .clip(CircleShape)
-                    .background(color = backgroundColor)
-            )
-            if (user.avatar != null) {
-                Box(
-                    Modifier
-                        .align(Alignment.BottomEnd)
-                        .size(12.dp)
-                        .background(Color.Green, CircleShape)
-                        .border(2.dp, Color.White, CircleShape)
+        if (user.conversationType == "PAIR"){
+            Box{
+                Image(
+                    painter = rememberAsyncImagePainter(
+                        model = avatarUrl,
+                        error = painterResource(R.drawable.person),
+                        fallback = painterResource(R.drawable.person)
+                    ),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .size(50.dp)
+                        .clip(CircleShape)
+                        .background(color = backgroundColor)
                 )
-            }
-        }
-        Spacer(modifier = Modifier.width(12.dp))
-        Column(Modifier.weight(1f)) {
-            Text(text = user.name, fontWeight = FontWeight.Bold, fontFamily = titleFont)
-            if (userId == user.senderId){
-                if (user.content != null){
-                    Text(
-                        text = "Bạn: ${user.content}",
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                        color = Color.Gray,
-                        fontSize = 14.sp,
-                        fontFamily = titleFont
-                    )
-                } else {
-                    Text(
-                        text = "Bạn đã gửi một ảnh",
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                        color = Color.Gray,
-                        fontSize = 14.sp,
-                        fontFamily = titleFont
-                    )
-                }
-            } else {
-                if (user.content != null){
-                    Text(
-                        text = user.content,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                        color = Color.Gray,
-                        fontSize = 14.sp,
-                        fontFamily = titleFont
-                    )
-                } else {
-                    Text(
-                        text = "Đã gửi một ảnh",
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                        color = Color.Gray,
-                        fontSize = 14.sp,
-                        fontFamily = titleFont
+                if (user.avatar != null) {
+                    Box(
+                        Modifier
+                            .align(Alignment.BottomEnd)
+                            .size(12.dp)
+                            .background(Color.Green, CircleShape)
+                            .border(2.dp, Color.White, CircleShape)
                     )
                 }
             }
+            Spacer(modifier = Modifier.width(12.dp))
+            Column(Modifier.weight(1f)) {
+                Text(text = user.name, fontWeight = FontWeight.Bold, fontFamily = titleFont)
+                if (userId == user.senderId){
+                    if (user.content != null){
+                        Text(
+                            text = "Bạn: ${user.content}",
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                            color = Color.Gray,
+                            fontSize = 14.sp,
+                            fontFamily = titleFont
+                        )
+                    } else {
+                        Text(
+                            text = "Bạn đã gửi một ảnh",
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                            color = Color.Gray,
+                            fontSize = 14.sp,
+                            fontFamily = titleFont
+                        )
+                    }
+                } else {
+                    if (user.content != null){
+                        Text(
+                            text = user.content,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                            color = Color.Gray,
+                            fontSize = 14.sp,
+                            fontFamily = titleFont
+                        )
+                    } else {
+                        Text(
+                            text = "Đã gửi một ảnh",
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                            color = Color.Gray,
+                            fontSize = 14.sp,
+                            fontFamily = titleFont
+                        )
+                    }
+                }
 
+            }
+            Text(text = time, fontSize = 12.sp, color = Color.Gray, fontFamily = titleFont)
+        } else if(user.conversationType == "GROUP"){
+            Box{
+                Image(
+                    painter = rememberAsyncImagePainter(
+                        model = avatarGroupUrl,
+                        error = painterResource(R.drawable.person),
+                        fallback = painterResource(R.drawable.person)
+                    ),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .size(50.dp)
+                        .clip(CircleShape)
+                        .background(color = backgroundColor)
+                )
+                if (user.avatar != null) {
+                    Box(
+                        Modifier
+                            .align(Alignment.BottomEnd)
+                            .size(12.dp)
+                            .background(Color.Green, CircleShape)
+                            .border(2.dp, Color.White, CircleShape)
+                    )
+                }
+            }
+            Spacer(modifier = Modifier.width(12.dp))
+            Column(Modifier.weight(1f)) {
+                if (user.conversationName.isNullOrBlank()) {
+                    Text(
+                        text = "Nhóm chưa có tên",
+                        fontWeight = FontWeight.Bold,
+                        fontFamily = titleFont
+                    )
+                } else {
+                    Text(
+                        text = user.conversationName,
+                        fontWeight = FontWeight.Bold,
+                        fontFamily = titleFont
+                    )
+                }
+
+                if (userId == user.senderId){
+                    if (user.content != null){
+                        Text(
+                            text = "Bạn: ${user.content}",
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                            color = Color.Gray,
+                            fontSize = 14.sp,
+                            fontFamily = titleFont
+                        )
+                    } else {
+                        Text(
+                            text = "Bạn đã gửi một ảnh",
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                            color = Color.Gray,
+                            fontSize = 14.sp,
+                            fontFamily = titleFont
+                        )
+                    }
+                } else {
+                    if (user.content != null){
+                        Text(
+                            text = user.content,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                            color = Color.Gray,
+                            fontSize = 14.sp,
+                            fontFamily = titleFont
+                        )
+                    } else {
+                        Text(
+                            text = "Đã gửi một ảnh",
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                            color = Color.Gray,
+                            fontSize = 14.sp,
+                            fontFamily = titleFont
+                        )
+                    }
+                }
+
+            }
+            Text(text = time, fontSize = 12.sp, color = Color.Gray, fontFamily = titleFont)
         }
-        Text(text = time, fontSize = 12.sp, color = Color.Gray, fontFamily = titleFont)
     }
 }

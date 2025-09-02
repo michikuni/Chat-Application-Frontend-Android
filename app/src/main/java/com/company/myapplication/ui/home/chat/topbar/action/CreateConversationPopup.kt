@@ -17,7 +17,8 @@ import androidx.navigation.NavHostController
 import com.company.myapplication.ui.home.chat.topbar.action.component.FeatureItem
 import com.company.myapplication.ui.home.chat.topbar.action.component.SuggestionFriend
 import com.company.myapplication.ui.home.chat.topbar.action.component.functionfeature.AddFriendPopUp
-import com.company.myapplication.ui.home.chat.topbar.action.component.functionfeature.FriendRequestPopup
+import com.company.myapplication.ui.home.chat.topbar.action.component.functionfeature.CreateGroupPopup
+import com.company.myapplication.ui.home.chat.topbar.action.component.functionfeature.FriendRequestPendingPopup
 import com.company.myapplication.util.UserSharedPreferences
 import com.company.myapplication.util.titleFont
 import com.company.myapplication.viewmodel.FriendViewModel
@@ -36,6 +37,8 @@ fun CreateConversationPopup(
     val users by friendViewModel.allFriends.collectAsState()
 
     var showAddDialog by remember { mutableStateOf(false) }
+
+    var showCreateGroupPopup by remember { mutableStateOf(false) }
 
     var showRequestDialog by remember { mutableStateOf(false) }
 
@@ -86,7 +89,7 @@ fun CreateConversationPopup(
                 FeatureItem(
                     icon = Icons.Default.GroupAdd,
                     text = "Tạo nhóm mới",
-                    onClick = { showAddDialog = true }
+                    onClick = { showCreateGroupPopup = true }
                 )
                 FeatureItem(
                     icon = Icons.Default.Group,
@@ -95,7 +98,7 @@ fun CreateConversationPopup(
                 )
 
                 if (showRequestDialog){
-                    FriendRequestPopup(
+                    FriendRequestPendingPopup(
                         activity = activity,
                         friendViewModel = friendViewModel,
                         onDismiss = { showRequestDialog = false })
@@ -106,6 +109,14 @@ fun CreateConversationPopup(
                         activity = activity,
                         friendViewModel = friendViewModel,
                         onDismiss = { showAddDialog = false })
+                }
+
+                if (showCreateGroupPopup){
+                    CreateGroupPopup(
+                        context = activity,
+                        onDismiss = { showCreateGroupPopup = false},
+                        friends = users
+                    )
                 }
 
                 Spacer(modifier = Modifier.height(16.dp))

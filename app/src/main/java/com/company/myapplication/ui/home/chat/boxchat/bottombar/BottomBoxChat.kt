@@ -30,7 +30,6 @@ import com.company.myapplication.data.model.chat.CreateConversation
 import com.company.myapplication.repository.ConversationRepository
 import com.company.myapplication.ui.home.util.TextField
 import com.company.myapplication.util.DataChangeHelper
-import com.company.myapplication.util.topAppBarColor
 import com.company.myapplication.viewmodel.ConversationViewModel
 import kotlinx.coroutines.launch
 
@@ -89,7 +88,7 @@ fun BottomBoxChat(
                 onQueryChange = { chatMessage = it},
                 text = "Nhập tin nhắn ...",
                 multiLine = true,
-                color = topAppBarColor,
+                color = Color(color[3].removePrefix("0x").toLong(16)),
                 modifier = Modifier.weight(0.75f)
             )
 

@@ -4,6 +4,7 @@ import com.company.myapplication.data.model.chat.CreateConversation
 import com.company.myapplication.data.model.chat.GetConversation
 import com.company.myapplication.data.model.chat.Message
 import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.http.Body
@@ -19,6 +20,13 @@ interface ConversationApi {
     suspend fun createConversation(
         @Path("userId") userId: Long,
         @Body request: CreateConversation
+    ): Response<Void>
+
+    @Multipart
+    @POST("api/chats/createConversationGroup")
+    suspend fun createConversationGroup(
+        @Part("data") data: RequestBody,
+        @Part file: MultipartBody.Part
     ): Response<Void>
 
     @GET("api/chats/allMessage/{userId}")

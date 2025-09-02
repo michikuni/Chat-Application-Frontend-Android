@@ -34,9 +34,8 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.company.myapplication.R
-import com.company.myapplication.data.model.chat.Message
 import com.company.myapplication.repository.apiconfig.ApiConfig
-import com.company.myapplication.ui.home.chat.boxchat.topbar.info.function_screen.ThemePopupSimple
+import com.company.myapplication.ui.home.chat.boxchat.topbar.info.function_screen.ThemePopup
 import com.company.myapplication.ui.home.chat.boxchat.topbar.info.topbar.InfoTopBar
 import com.company.myapplication.ui.home.setting.FeatureButton
 import com.company.myapplication.util.backgroundColor
@@ -144,7 +143,7 @@ fun InfoScreen(
                 Spacer(modifier = Modifier.padding(2.dp))
                 FeatureButton(text = "Chặn", onClick = {})
                 if (themePopup){
-                    ThemePopupSimple (onDismiss = { themePopup = false }, context = context, conversationId = conversationId, conversationViewModel = conversationViewModel)
+                    ThemePopup (onDismiss = { themePopup = false }, context = context, conversationId = conversationId, conversationViewModel = conversationViewModel)
                 }
             }
 

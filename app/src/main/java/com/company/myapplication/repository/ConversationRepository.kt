@@ -6,14 +6,18 @@ import android.util.Log
 import android.widget.Toast
 import com.company.myapplication.data.api.ConversationApi
 import com.company.myapplication.data.model.chat.CreateConversation
+import com.company.myapplication.data.model.chat.CreateConversationGroup
 import com.company.myapplication.data.model.chat.GetConversation
 import com.company.myapplication.data.model.chat.Message
 import com.company.myapplication.repository.apiconfig.ApiConfig
 import com.company.myapplication.repository.interceptor.AuthInterceptor
+import com.google.gson.Gson
+import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
 import okhttp3.RequestBody.Companion.asRequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.io.File
@@ -40,6 +44,24 @@ class ConversationRepository (context: Context){
     suspend fun createConversation(userId: Long, body: CreateConversation): Boolean{
         val response = conversationApi.createConversation(userId = userId, request = body)
         return response.isSuccessful
+    }
+
+    suspend fun createConversationGroup(data: CreateConversationGroup, uri: Uri, context: Context){
+        val gson = Gson()
+        val json = gson.toJson(data)
+        val dataRequestBody = json.toRequestBody("application/json".toMediaType())
+
+        val file = uriToFile(context, uri)
+        val requestFile = file.asRequestBody("image/*".toMediaType())
+        val multipartFile = MultipartBody.Part.createFormData("file", file.name, requestFile)
+
+        val response = conversationApi.createConversationGroup(data = dataRequestBody, file = multipartFile)
+
+        if (response.isSuccessful) {
+            Log.e("Create Group", "Tạo đoạn chat thành công")
+        } else {
+            Log.e("Create Group", "Code: ${response.code()}, Error: ${response.errorBody()?.string()}")
+        }
     }
 
     suspend fun getAllMessage(userId: Long, friendId: Long): List<Message>?{

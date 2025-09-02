@@ -1,6 +1,5 @@
 package com.company.myapplication.ui.home.chat.boxchat.topbar.info.function_screen
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize

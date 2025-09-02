@@ -46,7 +46,7 @@ import com.company.myapplication.util.titleFont
 import com.company.myapplication.viewmodel.FriendViewModel
 
 @Composable
-fun FriendRequestPopup(
+fun FriendRequestPendingPopup(
     activity: Activity,
     friendViewModel: FriendViewModel,
     onDismiss: () -> Unit

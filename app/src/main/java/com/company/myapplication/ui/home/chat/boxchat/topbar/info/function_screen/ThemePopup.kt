@@ -37,7 +37,7 @@ import com.company.myapplication.viewmodel.ConversationViewModel
 import kotlinx.coroutines.launch
 
 @Composable
-fun ThemePopupSimple(
+fun ThemePopup(
     onDismiss: () -> Unit,
     context: Context,
     conversationId: Long,

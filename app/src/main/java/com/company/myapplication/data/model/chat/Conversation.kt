@@ -12,13 +12,21 @@ data class GetConversation(
     val userId: Long,
     val senderId: Long,
     val name: String,
+    val conversationName: String?,
     val avatar: String?,
     val content: String?,
     val mediaFile: String?,
     val createdAt: Timestamp,
     val isRead: Boolean,
-    val themeColor: String?
+    val themeColor: String?,
+    val conversationType: String
 )
+
+data class CreateConversationGroup(
+    val members: List<Long>,
+    val name: String
+)
+
 data class Conversation(
     val id: Long,
     val memberIds: List<Long>,

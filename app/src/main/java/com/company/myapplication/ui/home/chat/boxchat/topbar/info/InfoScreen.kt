@@ -1,6 +1,7 @@
 package com.company.myapplication.ui.home.chat.boxchat.topbar.info
 
 import android.app.Activity
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -53,18 +54,19 @@ fun InfoScreen(
     conversationViewModel: ConversationViewModel,
     context: Activity
 ){
+    Log.e("Info SC", conversationId.toString())
     LaunchedEffect(Unit) {
         conversationViewModel.getAllConversation(userId)
     }
     val conversation by conversationViewModel.conversation.collectAsState()
+
     var friendId by remember { mutableLongStateOf(-1) }
-    conversation.map { it ->
-        friendId = if (it.id == conversationId){
-            it.userId
-        } else {
-            -1
-        }
-    }
+
+    val matchedConversation = conversation.find { it.id == conversationId }
+
+    friendId = matchedConversation?.userId ?: -1
+
+    Log.e("INFO FRIEND", conversation.toString())
     LaunchedEffect(Unit) {
         userViewModel.getUserInfo(friendId)
     }

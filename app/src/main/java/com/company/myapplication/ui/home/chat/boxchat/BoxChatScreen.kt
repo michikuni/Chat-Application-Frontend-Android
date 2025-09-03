@@ -131,7 +131,6 @@ fun BoxChatScreen(
             contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp)
         ) {
             items(messages) { ms ->
-                Log.e("BOX", "Messages count: ${messages.size}")
                 MessageItem(message = ms, userId = userId, color = color)
             }
         }

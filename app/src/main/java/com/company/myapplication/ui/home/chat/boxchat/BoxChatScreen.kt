@@ -28,18 +28,18 @@ import androidx.navigation.NavHostController
 import com.company.myapplication.ui.home.chat.boxchat.bottombar.BottomBoxChat
 import com.company.myapplication.ui.home.chat.boxchat.topbar.TopBoxChat
 import com.company.myapplication.util.DataChangeHelper
+import com.company.myapplication.util.UserSharedPreferences
 import com.company.myapplication.viewmodel.ConversationViewModel
 import com.google.gson.Gson
 
 @Composable
 fun BoxChatScreen(
-    contact: String?,
     navHostController: NavHostController,
-    userId: Long,
-    friendId: Long,
+    conversationId: Long,
     conversationViewModel: ConversationViewModel,
     activity: Activity
 ){
+    val userId = UserSharedPreferences.getId(context = activity)
     val prefs = activity.getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
     var dataChanged by remember { mutableStateOf(DataChangeHelper.hasDataChanged(activity)) }
 
@@ -58,10 +58,10 @@ fun BoxChatScreen(
 
     // Khi dataChanged = true → reload
     LaunchedEffect(dataChanged) {
-        conversationViewModel.getAllMessage(userId = userId, friendId = friendId)
+        conversationViewModel.getAllMessage(conversationId = conversationId)
         conversationViewModel.getAllConversation(userId = userId)
         if (dataChanged) {
-            conversationViewModel.getAllMessage(userId = userId, friendId = friendId)
+            conversationViewModel.getAllMessage(conversationId = conversationId)
             DataChangeHelper.setDataChanged(activity, false)
         }
     }
@@ -70,8 +70,17 @@ fun BoxChatScreen(
     val conversation by conversationViewModel.conversation.collectAsState()
     val defaultColor = listOf("0xFFFFFFFF", "0xFFFFFFFF", "0xFFFFFFFF", "0xFF2196F3", "0xFF000000", "0xFFFFFFFF")
 
-    val conversationId = messages.firstOrNull()?.conversationId?.id
+    var conversationName by remember { mutableStateOf("") }
 
+    val matchedConversation = conversation.find { it.id == conversationId }
+
+    conversationName = when (matchedConversation?.conversationType) {
+        "PAIR" -> {
+            matchedConversation.name
+        }
+        "GROUP" -> matchedConversation.conversationName ?: "Unknow"
+        else -> "Unknow"
+    }
     val color: List<String> = remember(conversationId, conversation) {
         val raw = conversation.firstOrNull { it.id == conversationId }?.themeColor // String? JSON như: ["0xFFF...", ...]
         val parsed = runCatching {
@@ -81,11 +90,6 @@ fun BoxChatScreen(
 
         if (parsed.size >= 3) parsed else defaultColor
     }
-
-    for (cl in color){
-        Log.e("COLOR", cl)
-    }
-
 
     Scaffold(
         modifier = Modifier
@@ -102,19 +106,18 @@ fun BoxChatScreen(
         containerColor = Color.Transparent,
         topBar = {
             TopBoxChat(
-                contact = contact,
+                contact = conversationName,
                 navHostController = navHostController,
-                friendId = friendId,
                 userId = userId,
                 color = color,
-                conversationId = conversationId?:-1L
+                conversationId = conversationId
             )
         },
         bottomBar = {
             BottomBoxChat(
                 conversationViewModel = conversationViewModel,
                 userId = userId,
-                friendId = friendId,
+                conversationId = conversationId,
                 activity = activity,
                 color = color
             )
@@ -128,6 +131,7 @@ fun BoxChatScreen(
             contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp)
         ) {
             items(messages) { ms ->
+                Log.e("BOX", "Messages count: ${messages.size}")
                 MessageItem(message = ms, userId = userId, color = color)
             }
         }

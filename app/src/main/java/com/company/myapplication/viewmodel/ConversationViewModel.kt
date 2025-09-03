@@ -28,10 +28,10 @@ class ConversationViewModel(activity: Activity): ViewModel(){
     private val _conversation = MutableStateFlow<List<GetConversation>>(emptyList())
     val conversation: StateFlow<List<GetConversation>> get() = _conversation
 
-    fun getAllMessage(userId: Long, friendId: Long){
+    fun getAllMessage(conversationId: Long){
         viewModelScope.launch {
             try {
-                val message = repo.getAllMessage(userId, friendId)
+                val message = repo.getAllMessage(conversationId = conversationId)
                 if (message != null){
                     _messages.value = message
                 }

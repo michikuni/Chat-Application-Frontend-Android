@@ -1,6 +1,7 @@
 package com.company.myapplication.ui.home.chat
 
 import android.annotation.SuppressLint
+import android.content.Context
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -26,20 +27,22 @@ import com.company.myapplication.R
 import com.company.myapplication.data.model.chat.GetConversation
 import com.company.myapplication.repository.apiconfig.ApiConfig
 import com.company.myapplication.ui.home.util.convertTimestamp
+import com.company.myapplication.util.UserSharedPreferences
 import com.company.myapplication.util.backgroundColor
 import com.company.myapplication.util.titleFont
 
 @SuppressLint("UnrememberedMutableState")
 @Composable
 fun ChatItem(
-    user: GetConversation,
+    conversation: GetConversation,
     navHostController: NavHostController,
-    userId: Long,
+    context: Context
 ) {
-    var avatarUrl by remember { mutableStateOf("${ApiConfig.BASE_URL}/api/users/get_avatar/${user.userId}") }
-    var avatarGroupUrl by remember { mutableStateOf("${ApiConfig.BASE_URL}/api/chats/getMediaFile/avatar/${user.avatar}") }
+    val userId = UserSharedPreferences.getId(context)
+    var avatarUrl by remember { mutableStateOf("${ApiConfig.BASE_URL}/api/users/get_avatar/${conversation.userId}") }
+    var avatarGroupUrl by remember { mutableStateOf("${ApiConfig.BASE_URL}/api/chats/getMediaFile/avatar/${conversation.avatar}") }
     var isSelected by remember { mutableStateOf(false) }
-    val time = convertTimestamp(user.createdAt.toString())
+    val time = convertTimestamp(conversation.createdAt.toString())
     Row(
         modifier = Modifier
             .background(
@@ -49,14 +52,14 @@ fun ChatItem(
             .clickable {
                 isSelected = !isSelected
                 navHostController.navigate(
-                    route = "box_chat/${user.name}/${userId}/${user.userId}"
+                    route = "box_chat/${conversation.id}"
                 )
             }
             .fillMaxWidth()
             .padding(12.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        if (user.conversationType == "PAIR"){
+        if (conversation.conversationType == "PAIR"){
             Box{
                 Image(
                     painter = rememberAsyncImagePainter(
@@ -70,7 +73,7 @@ fun ChatItem(
                         .clip(CircleShape)
                         .background(color = backgroundColor)
                 )
-                if (user.avatar != null) {
+                if (conversation.avatar != null) {
                     Box(
                         Modifier
                             .align(Alignment.BottomEnd)
@@ -82,11 +85,11 @@ fun ChatItem(
             }
             Spacer(modifier = Modifier.width(12.dp))
             Column(Modifier.weight(1f)) {
-                Text(text = user.name, fontWeight = FontWeight.Bold, fontFamily = titleFont)
-                if (userId == user.senderId){
-                    if (user.content != null){
+                Text(text = conversation.name, fontWeight = FontWeight.Bold, fontFamily = titleFont)
+                if (userId == conversation.senderId){
+                    if (conversation.content != null){
                         Text(
-                            text = "Bạn: ${user.content}",
+                            text = "Bạn: ${conversation.content}",
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis,
                             color = Color.Gray,
@@ -104,9 +107,9 @@ fun ChatItem(
                         )
                     }
                 } else {
-                    if (user.content != null){
+                    if (conversation.content != null){
                         Text(
-                            text = user.content,
+                            text = conversation.content,
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis,
                             color = Color.Gray,
@@ -127,7 +130,7 @@ fun ChatItem(
 
             }
             Text(text = time, fontSize = 12.sp, color = Color.Gray, fontFamily = titleFont)
-        } else if(user.conversationType == "GROUP"){
+        } else if(conversation.conversationType == "GROUP"){
             Box{
                 Image(
                     painter = rememberAsyncImagePainter(
@@ -141,7 +144,7 @@ fun ChatItem(
                         .clip(CircleShape)
                         .background(color = backgroundColor)
                 )
-                if (user.avatar != null) {
+                if (conversation.avatar != null) {
                     Box(
                         Modifier
                             .align(Alignment.BottomEnd)
@@ -153,7 +156,7 @@ fun ChatItem(
             }
             Spacer(modifier = Modifier.width(12.dp))
             Column(Modifier.weight(1f)) {
-                if (user.conversationName.isNullOrBlank()) {
+                if (conversation.conversationName.isNullOrBlank()) {
                     Text(
                         text = "Nhóm chưa có tên",
                         fontWeight = FontWeight.Bold,
@@ -161,16 +164,16 @@ fun ChatItem(
                     )
                 } else {
                     Text(
-                        text = user.conversationName,
+                        text = conversation.conversationName,
                         fontWeight = FontWeight.Bold,
                         fontFamily = titleFont
                     )
                 }
 
-                if (userId == user.senderId){
-                    if (user.content != null){
+                if (userId == conversation.senderId){
+                    if (conversation.content != null){
                         Text(
-                            text = "Bạn: ${user.content}",
+                            text = "Bạn: ${conversation.content}",
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis,
                             color = Color.Gray,
@@ -188,9 +191,9 @@ fun ChatItem(
                         )
                     }
                 } else {
-                    if (user.content != null){
+                    if (conversation.content != null){
                         Text(
-                            text = user.content,
+                            text = conversation.content,
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis,
                             color = Color.Gray,

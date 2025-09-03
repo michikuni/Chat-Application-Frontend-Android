@@ -86,41 +86,32 @@ fun AppNavigation(activity: Activity) {
         }
 
         composable(
-            route = "box_chat/{contact}/{userId}/{friendId}",
+            route = "box_chat/{conversationId}",
             arguments = listOf(
-                navArgument(name = "contact") { type = NavType.StringType },
-                navArgument(name = "userId") { type = NavType.LongType },
-                navArgument(name = "friendId") { type = NavType.LongType }
+                navArgument(name = "conversationId") { type = NavType.LongType }
             )
         ) { backStackEntry ->
-            val contact = backStackEntry.arguments?.getString("contact") ?: ""
-            val userId = backStackEntry.arguments?.getLong("userId") ?: -1
-            val friendId = backStackEntry.arguments?.getLong("friendId") ?: -1
+            val conversationId = backStackEntry.arguments?.getLong("conversationId") ?: -1
             BoxChatScreen(
-                contact = contact,
                 navHostController = navController,
-                userId = userId,
-                friendId = friendId,
+                conversationId = conversationId,
                 conversationViewModel = conversationViewModel,
                 activity = activity
             )
         }
 
         composable (
-            route = "chat_friend_info/{friendId}/{userId}/{conversationId}",
+            route = "chat_friend_info/{userId}/{conversationId}",
             arguments = listOf(
-                navArgument(name = "friendId"){ type = NavType.LongType },
                 navArgument(name = "conversationId"){ type = NavType.LongType },
                 navArgument(name = "userId"){type = NavType.LongType}
             ),
 
         ){backStackEntry ->
-            val friendId = backStackEntry.arguments?.getLong("friendId") ?: -1
             val conversationId = backStackEntry.arguments?.getLong("conversationId") ?: -1
             val userId = backStackEntry.arguments?.getLong("userId") ?: -1
             InfoScreen(
                 userViewModel = userViewModel,
-                friendId = friendId,
                 navHostController = navController,
                 userId = userId,
                 context = activity,
@@ -130,17 +121,14 @@ fun AppNavigation(activity: Activity) {
         }
 
         composable (
-            route = "chat_media/{userId}/{friendId}",
+            route = "chat_media/{conversationId}",
             arguments = listOf(
-                navArgument(name = "userId"){ type = NavType.LongType},
-                navArgument(name = "friendId"){ type = NavType.LongType}
+                navArgument(name = "conversationId"){ type = NavType.LongType}
             )
         ){backStackEntry ->
-            val userId = backStackEntry.arguments?.getLong("userId") ?: -1
-            val friendId = backStackEntry.arguments?.getLong("friendId") ?: -1
+            val conversationId = backStackEntry.arguments?.getLong("conversationId") ?: -1
             MediaScreen(
-                userId = userId,
-                friendId = friendId,
+                conversationId = conversationId,
                 conversationViewModel = conversationViewModel,
                 navHostController = navController
             )

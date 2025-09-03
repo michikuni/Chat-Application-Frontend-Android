@@ -64,8 +64,8 @@ class ConversationRepository (context: Context){
         }
     }
 
-    suspend fun getAllMessage(userId: Long, friendId: Long): List<Message>?{
-        val response = conversationApi.getAllMessage(userId = userId, friendId = friendId)
+    suspend fun getAllMessage(conversationId: Long): List<Message>?{
+        val response = conversationApi.getAllMessage(conversationId = conversationId)
         return if (response.isSuccessful){
             response.body()
         } else {
@@ -82,13 +82,13 @@ class ConversationRepository (context: Context){
         }
     }
 
-    suspend fun sendMediaFile(context: Context, uri: Uri, userId: Long, friendId: Long) {
+    suspend fun sendMediaFile(context: Context, uri: Uri, userId: Long, conversationId: Long) {
         val file = uriToFile(context, uri)
 
         val requestFile = file.asRequestBody("image/*".toMediaTypeOrNull())
         val body = MultipartBody.Part.createFormData("file", file.name, requestFile)
 
-        val response = conversationApi.sendMediaFile(userId = userId, friendId = friendId, file = body)
+        val response = conversationApi.sendMediaFile(userId = userId, conversationId = conversationId, file = body)
 
         if (response.isSuccessful) {
             Log.e("✅ Upload thành công:", "${response.body()?.string()}")

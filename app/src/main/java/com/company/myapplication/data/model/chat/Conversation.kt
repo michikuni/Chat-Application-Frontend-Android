@@ -3,12 +3,12 @@ package com.company.myapplication.data.model.chat
 import java.sql.Timestamp
 
 data class CreateConversation(
-    val friendId: Long,
+    val conversationId: Long,
     val message: String
 )
 
 data class GetConversation(
-    val id: Long,
+    var id: Long,
     val userId: Long,
     val senderId: Long,
     val name: String,

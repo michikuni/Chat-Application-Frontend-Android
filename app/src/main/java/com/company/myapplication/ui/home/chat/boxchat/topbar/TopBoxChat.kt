@@ -28,7 +28,6 @@ import com.company.myapplication.util.topTitleBoxChatFontSize
 fun TopBoxChat(
     contact: String?,
     navHostController: NavHostController,
-    friendId: Long,
     userId: Long,
     color: List<String>,
     conversationId: Long
@@ -62,7 +61,7 @@ fun TopBoxChat(
             },
             actions = {
                 IconButton(onClick = {
-                    navHostController.navigate(route = "chat_friend_info/$friendId/$userId/$conversationId")
+                    navHostController.navigate(route = "chat_friend_info/$userId/$conversationId")
                 }
                 ) {
                     Icon(

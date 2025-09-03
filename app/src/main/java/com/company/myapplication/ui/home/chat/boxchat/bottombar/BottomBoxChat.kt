@@ -38,11 +38,11 @@ import kotlinx.coroutines.launch
 fun BottomBoxChat(
     conversationViewModel: ConversationViewModel,
     userId: Long,
-    friendId: Long,
+    conversationId: Long,
     activity: Activity,
     color: List<String>
 ){
-    var chatMessage by remember(userId, friendId) { mutableStateOf("") }
+    var chatMessage by remember(userId, conversationId) { mutableStateOf("") }
     val repo = ConversationRepository(context = activity)
     val scope = rememberCoroutineScope()
     val imageLauncher = rememberLauncherForActivityResult(
@@ -53,7 +53,7 @@ fun BottomBoxChat(
                 repo.sendMediaFile(
                     context = activity,
                     userId = userId,
-                    friendId = friendId,
+                    conversationId = conversationId,
                     uri = it
                 )
             }
@@ -97,7 +97,7 @@ fun BottomBoxChat(
                     if (chatMessage.isNotBlank()) {
                         conversationViewModel.createConversation(
                             userId = userId,
-                            body = CreateConversation(friendId = friendId, message = chatMessage)
+                            body = CreateConversation(conversationId = conversationId, message = chatMessage)
                         )
                     }
                     chatMessage = ""

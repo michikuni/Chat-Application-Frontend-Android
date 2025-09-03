@@ -38,12 +38,11 @@ import com.company.myapplication.viewmodel.ConversationViewModel
 @Composable
 fun MediaScreen(
     conversationViewModel: ConversationViewModel,
-    userId: Long,
-    friendId: Long,
+    conversationId: Long,
     navHostController: NavHostController
 ) {
     LaunchedEffect(Unit) {
-        conversationViewModel.getAllMessage(userId = userId, friendId = friendId)
+        conversationViewModel.getAllMessage(conversationId = conversationId)
     }
     val messages by conversationViewModel.messages.collectAsState()
     Scaffold (

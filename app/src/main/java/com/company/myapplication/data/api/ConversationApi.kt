@@ -29,10 +29,9 @@ interface ConversationApi {
         @Part file: MultipartBody.Part
     ): Response<Void>
 
-    @GET("api/chats/allMessage/{userId}")
+    @GET("api/chats/allMessage/{conversationId}")
     suspend fun getAllMessage(
-        @Path("userId") userId: Long,
-        @Query("friendId") friendId: Long
+        @Path("conversationId") conversationId: Long
     ): Response<List<Message>>
 
     @GET("api/chats/allConversation/{userId}")
@@ -50,7 +49,7 @@ interface ConversationApi {
     @POST("api/chats/sendMediaFile/{userId}")
     suspend fun sendMediaFile(
         @Path("userId") userId: Long,
-        @Query("friendId") friendId: Long,  // gửi friendId như form field
+        @Query("friendId") conversationId: Long,  // gửi friendId như form field
         @Part file: MultipartBody.Part
     ): Response<ResponseBody>
 }

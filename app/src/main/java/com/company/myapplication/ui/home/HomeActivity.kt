@@ -71,9 +71,6 @@ fun HomeScreen(
     }
 
     val listConversation by conversationViewModel.conversation.collectAsState()
-    for(cs in listConversation){
-        Log.e("CSSS", cs.toString())
-    }
     var searchQuery by remember { mutableStateOf("") }
     val filterUser = listConversation.filter {
         it.name.contains(searchQuery, ignoreCase = true)
@@ -113,7 +110,7 @@ fun HomeScreen(
                 contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp)
             ) {
                 items(filterUser) { user ->
-                    ChatItem(user, navHostController, userId)
+                    ChatItem(user, navHostController, context = activity)
                     HorizontalDivider(
                         color = lineBreakMessage,
                         thickness = 0.75.dp,

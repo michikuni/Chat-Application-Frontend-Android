@@ -20,6 +20,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -46,13 +47,24 @@ import com.company.myapplication.viewmodel.UserViewModel
 @Composable
 fun InfoScreen(
     userViewModel: UserViewModel,
-    friendId: Long,
     navHostController: NavHostController,
     userId: Long,
     conversationId: Long,
     conversationViewModel: ConversationViewModel,
     context: Activity
 ){
+    LaunchedEffect(Unit) {
+        conversationViewModel.getAllConversation(userId)
+    }
+    val conversation by conversationViewModel.conversation.collectAsState()
+    var friendId by remember { mutableLongStateOf(-1) }
+    conversation.map { it ->
+        friendId = if (it.id == conversationId){
+            it.userId
+        } else {
+            -1
+        }
+    }
     LaunchedEffect(Unit) {
         userViewModel.getUserInfo(friendId)
     }
@@ -138,7 +150,7 @@ fun InfoScreen(
                 FeatureButton(text = "Thay đổi chủ đề", onClick = { themePopup = true})
                 Spacer(modifier = Modifier.padding(2.dp))
                 FeatureButton(text = "File phương tiện", onClick = {
-                    navHostController.navigate(route = "chat_media/$userId/$friendId")
+                    navHostController.navigate(route = "chat_media/$conversationId")
                 })
                 Spacer(modifier = Modifier.padding(2.dp))
                 FeatureButton(text = "Chặn", onClick = {})

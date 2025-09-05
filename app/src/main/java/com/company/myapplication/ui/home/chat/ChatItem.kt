@@ -47,9 +47,6 @@ fun ChatItem(
     val userId = UserSharedPreferences.getId(context = context)
     val toViewConversation = conversation.toViewDTO()
     val conversationViewFilter = toViewConversation.filterUser(user = userInfo)
-    Log.e("ChatItem", conversationViewFilter.membersIds.toString())
-    Log.e("ChatItem", conversationViewFilter.name.toString())
-    Log.e("ChatItem", conversationViewFilter.pairAvatar.toString())
 
     if (conversationViewFilter.conversationType == "PAIR"){
         friendId = conversationViewFilter.membersIds[0]

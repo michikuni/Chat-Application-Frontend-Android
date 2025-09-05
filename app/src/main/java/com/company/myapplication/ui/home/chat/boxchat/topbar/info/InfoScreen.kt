@@ -181,7 +181,7 @@ fun InfoScreen(
                 Spacer(modifier = Modifier.padding(2.dp))
                 if (matchedConversation?.conversationType == "GROUP"){
                     FeatureButton(text = "Thành viên đoạn chat", onClick = {
-                        navHostController.navigate(route = "")
+                        navHostController.navigate(route = "group_members/$conversationId")
                     })
                     Spacer(modifier = Modifier.padding(2.dp))
                 }

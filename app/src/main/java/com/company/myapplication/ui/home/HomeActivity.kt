@@ -116,7 +116,7 @@ fun HomeScreen(
                     .fillMaxWidth(),
                 contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp)
             ) {
-                items(filterUser) { user ->
+                items(items = filterUser) { user ->
 //                    Log.e("HOMEE", user.toString())
 //                    Log.e("HOMEE", user.name)
 //                    Log.e("HOMEE", user.membersIds.toString())

@@ -13,6 +13,7 @@ import com.company.myapplication.ui.home.HomeScreen
 import com.company.myapplication.ui.home.SettingScreen
 import com.company.myapplication.ui.home.chat.boxchat.BoxChatScreen
 import com.company.myapplication.ui.home.chat.boxchat.topbar.info.InfoScreen
+import com.company.myapplication.ui.home.chat.boxchat.topbar.info.function_screen.GroupMembers
 import com.company.myapplication.ui.home.chat.boxchat.topbar.info.function_screen.MediaScreen
 import com.company.myapplication.ui.login.LoginScreen
 import com.company.myapplication.ui.register.RegisterScreen
@@ -135,6 +136,22 @@ fun AppNavigation(activity: Activity) {
                 conversationId = conversationId,
                 conversationViewModel = conversationViewModel,
                 navHostController = navController
+            )
+        }
+
+        composable(
+            route = "group_members/{conversationId}",
+            arguments = listOf(
+                navArgument(name = "conversationId"){ type = NavType.LongType}
+            )
+        ){backStackEntry ->
+            val conversationId = backStackEntry.arguments?.getLong("conversationId") ?: -1
+            GroupMembers(
+                conversationId = conversationId,
+                conversationViewModel = conversationViewModel,
+                navHostController = navController,
+                context = activity,
+                userViewModel = userViewModel
             )
         }
     }

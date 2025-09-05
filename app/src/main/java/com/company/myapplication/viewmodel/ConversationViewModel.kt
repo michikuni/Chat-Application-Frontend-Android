@@ -7,8 +7,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.company.myapplication.data.model.chat.ConversationDTO
 import com.company.myapplication.data.model.chat.CreateConversation
-import com.company.myapplication.data.model.chat.GetConversation
 import com.company.myapplication.data.model.chat.Message
 import com.company.myapplication.repository.ConversationRepository
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -25,8 +25,8 @@ class ConversationViewModel(activity: Activity): ViewModel(){
 
     private var createConversationSuccess by mutableStateOf(false)
 
-    private val _conversation = MutableStateFlow<List<GetConversation>>(emptyList())
-    val conversation: StateFlow<List<GetConversation>> get() = _conversation
+    private val _conversation = MutableStateFlow<List<ConversationDTO>>(emptyList())
+    val conversation: StateFlow<List<ConversationDTO>> get() = _conversation
 
     fun getAllMessage(conversationId: Long){
         viewModelScope.launch {

@@ -63,8 +63,16 @@ fun InfoScreen(
     var friendId by remember { mutableLongStateOf(-1) }
 
     val matchedConversation = conversation.find { it.id == conversationId }
-
-    friendId = matchedConversation?.userId ?: -1
+    val listMembers: List<Long> = matchedConversation?.membersIds?.split(",")?.mapNotNull { it.trim().toLongOrNull() } ?: emptyList()
+    if (matchedConversation != null){
+        if (matchedConversation.conversationType == "PAIR"){
+            listMembers.map {
+                if (it != userId){
+                    friendId = it
+                }
+            }
+        }
+    }
 
     Log.e("INFO FRIEND", conversation.toString())
     LaunchedEffect(Unit) {

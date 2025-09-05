@@ -1,7 +1,7 @@
 package com.company.myapplication.data.api
 
+import com.company.myapplication.data.model.chat.ConversationDTO
 import com.company.myapplication.data.model.chat.CreateConversation
-import com.company.myapplication.data.model.chat.GetConversation
 import com.company.myapplication.data.model.chat.Message
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -37,7 +37,7 @@ interface ConversationApi {
     @GET("api/chats/allConversation/{userId}")
     suspend fun getAllConversation(
         @Path("userId") userId: Long
-    ): Response<List<GetConversation>>
+    ): Response<List<ConversationDTO>>
 
     @POST("api/chats/updateTheme/{conversationId}")
     suspend fun updateTheme(

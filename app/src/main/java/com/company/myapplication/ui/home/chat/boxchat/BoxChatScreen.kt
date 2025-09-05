@@ -82,7 +82,7 @@ fun BoxChatScreen(
         else -> "Unknow"
     }
     val color: List<String> = remember(conversationId, conversation) {
-        val raw = conversation.firstOrNull { it.id == conversationId }?.themeColor // String? JSON như: ["0xFFF...", ...]
+        val raw = matchedConversation?.themeColor // String? JSON như: ["0xFFF...", ...]
         val parsed = runCatching {
             if (raw.isNullOrBlank()) emptyList()
             else Gson().fromJson(raw, Array<String>::class.java).toList()

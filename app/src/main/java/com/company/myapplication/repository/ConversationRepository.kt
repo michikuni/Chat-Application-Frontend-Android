@@ -5,9 +5,9 @@ import android.net.Uri
 import android.util.Log
 import android.widget.Toast
 import com.company.myapplication.data.api.ConversationApi
+import com.company.myapplication.data.model.chat.ConversationDTO
 import com.company.myapplication.data.model.chat.CreateConversation
 import com.company.myapplication.data.model.chat.CreateConversationGroup
-import com.company.myapplication.data.model.chat.GetConversation
 import com.company.myapplication.data.model.chat.Message
 import com.company.myapplication.repository.apiconfig.ApiConfig
 import com.company.myapplication.repository.interceptor.AuthInterceptor
@@ -73,7 +73,7 @@ class ConversationRepository (context: Context){
         }
     }
 
-    suspend fun getAllConversation(userId: Long): List<GetConversation>?{
+    suspend fun getAllConversation(userId: Long): List<ConversationDTO>?{
         val response = conversationApi.getAllConversation(userId = userId)
         return if (response.isSuccessful){
             response.body()

@@ -26,6 +26,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.company.myapplication.data.model.response.UserResponse
 import com.company.myapplication.ui.home.util.SearchBar
 import com.company.myapplication.ui.home.chat.ChatItem
 import com.company.myapplication.ui.home.chat.topbar.ChatTopBar
@@ -36,18 +37,23 @@ import com.company.myapplication.util.lineBreakMessage
 import com.company.myapplication.util.topAppBarColor
 import com.company.myapplication.viewmodel.ConversationViewModel
 import com.company.myapplication.viewmodel.FriendViewModel
+import com.company.myapplication.viewmodel.UserViewModel
 
 @Composable
 fun HomeScreen(
     activity: Activity,
     friendViewModel: FriendViewModel,
     conversationViewModel: ConversationViewModel,
-    navHostController: NavHostController
+    navHostController: NavHostController,
+    userViewModel: UserViewModel
 ){
     val userId = UserSharedPreferences.getId(activity)
     val prefs = activity.getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
     var dataChanged by remember { mutableStateOf(DataChangeHelper.hasDataChanged(activity)) }
 
+    LaunchedEffect(Unit) {
+        userViewModel.getUserInfo(userId = userId)
+    }
     // Lắng nghe SharedPreferences thay đổi
     DisposableEffect(prefs) {
         val listener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
@@ -70,6 +76,7 @@ fun HomeScreen(
         }
     }
 
+    val userInfo by userViewModel.user_info.collectAsState()
     val listConversation by conversationViewModel.conversation.collectAsState()
     var searchQuery by remember { mutableStateOf("") }
     val filterUser = listConversation.filter {
@@ -110,7 +117,15 @@ fun HomeScreen(
                 contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp)
             ) {
                 items(filterUser) { user ->
-                    ChatItem(user, navHostController, context = activity)
+//                    Log.e("HOMEE", user.toString())
+//                    Log.e("HOMEE", user.name)
+//                    Log.e("HOMEE", user.membersIds.toString())
+//                    Log.e("HOMEE", user.pairAvatar.toString())
+                    ChatItem(
+                        conversation = user,
+                        navHostController = navHostController,
+                        context = activity,
+                        userInfo = userInfo ?: UserResponse(-1, "", "", "", null))
                     HorizontalDivider(
                         color = lineBreakMessage,
                         thickness = 0.75.dp,

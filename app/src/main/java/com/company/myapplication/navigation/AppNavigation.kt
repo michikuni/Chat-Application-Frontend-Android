@@ -59,7 +59,8 @@ fun AppNavigation(activity: Activity) {
                 activity = activity,
                 conversationViewModel = conversationViewModel,
                 friendViewModel = friendViewModel,
-                navHostController = navController
+                navHostController = navController,
+                userViewModel = userViewModel
             )
         }
 

@@ -33,6 +33,9 @@ object CustomMapper {
             pairAvatar = this.pairAvatar.filter { it != user.avatar }
         )
     }
+    fun List<ConversationViewDTO>.filterListConversation(user: UserResponse): List<ConversationViewDTO> {
+        return this.map { it.filterUser(user) }
+    }
 
 
 }

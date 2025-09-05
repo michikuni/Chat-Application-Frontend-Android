@@ -87,17 +87,20 @@ fun AppNavigation(activity: Activity) {
         }
 
         composable(
-            route = "box_chat/{conversationId}",
+            route = "box_chat/{conversationId}/{contact}",
             arguments = listOf(
-                navArgument(name = "conversationId") { type = NavType.LongType }
+                navArgument(name = "conversationId") { type = NavType.LongType },
+                navArgument(name = "contact") { type = NavType.StringType }
             )
         ) { backStackEntry ->
             val conversationId = backStackEntry.arguments?.getLong("conversationId") ?: -1
+            val contact = backStackEntry.arguments?.getString("contact") ?: ""
             BoxChatScreen(
                 navHostController = navController,
                 conversationId = conversationId,
                 conversationViewModel = conversationViewModel,
-                activity = activity
+                activity = activity,
+                contact = contact
             )
         }
 

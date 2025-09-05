@@ -59,7 +59,6 @@ fun InfoScreen(
         conversationViewModel.getAllConversation(userId)
     }
     val conversation by conversationViewModel.conversation.collectAsState()
-
     var friendId by remember { mutableLongStateOf(-1) }
 
     val matchedConversation = conversation.find { it.id == conversationId }
@@ -80,6 +79,7 @@ fun InfoScreen(
     }
     val userInfo by userViewModel.user_info.collectAsState()
     var avatarUrl by remember { mutableStateOf("${ApiConfig.BASE_URL}/api/users/get_avatar/$friendId") }
+    var avatarGroupUrl by remember { mutableStateOf("${ApiConfig.BASE_URL}/api/chats/getConversationAvatar/${matchedConversation?.groupAvatar}") }
     var themePopup by remember { mutableStateOf(false) }
     Scaffold (
         containerColor = backgroundColor,
@@ -98,17 +98,33 @@ fun InfoScreen(
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically
             ){
-                Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    AsyncImage(
-                        model = avatarUrl,
-                        contentDescription = "avatar",
-                        modifier = Modifier
-                            .size(150.dp)
-                            .clip(CircleShape)
-                            .background(color = Color.White)
-                    )
-                    Spacer(modifier = Modifier.padding(4.dp))
-                    Text(text = userInfo?.name ?: "Unknown", fontFamily = titleFont, fontSize = 20.sp)
+                if(matchedConversation?.conversationType == "PAIR"){
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        AsyncImage(
+                            model = avatarUrl,
+                            contentDescription = "avatar",
+                            modifier = Modifier
+                                .size(150.dp)
+                                .clip(CircleShape)
+                                .background(color = Color.White)
+                        )
+                        Spacer(modifier = Modifier.padding(4.dp))
+                        Text(text = userInfo?.name ?: "Unknown", fontFamily = titleFont, fontSize = 20.sp)
+                    }
+                } else {
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        AsyncImage(
+                            model = avatarGroupUrl,
+                            contentDescription = "avatar",
+                            modifier = Modifier
+                                .size(150.dp)
+                                .clip(CircleShape)
+                                .background(color = Color.White)
+                        )
+                        Spacer(modifier = Modifier.padding(4.dp))
+                        Text(text = if (!matchedConversation?.conversationName.isNullOrBlank()) matchedConversation.conversationName
+                            else "Nhóm chưa có tên", fontFamily = titleFont, fontSize = 20.sp)
+                    }
                 }
             }
             Spacer(modifier = Modifier.padding(10.dp))
@@ -163,6 +179,12 @@ fun InfoScreen(
                     navHostController.navigate(route = "chat_media/$conversationId")
                 })
                 Spacer(modifier = Modifier.padding(2.dp))
+                if (matchedConversation?.conversationType == "GROUP"){
+                    FeatureButton(text = "Thành viên đoạn chat", onClick = {
+                        navHostController.navigate(route = "")
+                    })
+                    Spacer(modifier = Modifier.padding(2.dp))
+                }
                 FeatureButton(text = "Chặn", onClick = {})
                 if (themePopup){
                     ThemePopup (onDismiss = { themePopup = false }, context = context, conversationId = conversationId, conversationViewModel = conversationViewModel)

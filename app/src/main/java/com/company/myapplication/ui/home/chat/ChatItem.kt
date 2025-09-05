@@ -67,7 +67,7 @@ fun ChatItem(
             .clickable {
                 isSelected = !isSelected
                 navHostController.navigate(
-                    route = "box_chat/${conversationViewFilter.id}"
+                    route = "box_chat/${conversationViewFilter.id}/${conversationViewFilter.name[0]}"
                 )
             }
             .fillMaxWidth()

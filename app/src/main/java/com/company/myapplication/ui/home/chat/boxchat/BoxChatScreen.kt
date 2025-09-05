@@ -37,7 +37,8 @@ fun BoxChatScreen(
     navHostController: NavHostController,
     conversationId: Long,
     conversationViewModel: ConversationViewModel,
-    activity: Activity
+    activity: Activity,
+    contact: String
 ){
     val userId = UserSharedPreferences.getId(context = activity)
     val prefs = activity.getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
@@ -76,9 +77,15 @@ fun BoxChatScreen(
 
     conversationName = when (matchedConversation?.conversationType) {
         "PAIR" -> {
-            matchedConversation.name
+            contact
         }
-        "GROUP" -> matchedConversation.conversationName ?: "Unknow"
+        "GROUP" -> {
+            if (matchedConversation.conversationName.isNullOrBlank()){
+                "Nhóm chưa có tên"
+            } else {
+                matchedConversation.conversationName
+            }
+        }
         else -> "Unknow"
     }
     val color: List<String> = remember(conversationId, conversation) {

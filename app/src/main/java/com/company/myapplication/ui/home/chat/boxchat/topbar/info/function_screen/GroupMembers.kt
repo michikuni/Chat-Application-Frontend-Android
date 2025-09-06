@@ -1,6 +1,7 @@
 package com.company.myapplication.ui.home.chat.boxchat.topbar.info.function_screen
 
 import android.content.Context
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -77,6 +78,7 @@ fun GroupMembers(
         user?.let { listUser.add(it) }
     }
 
+    Log.e("GROUP MEM", conversation.toString())
     var searchQuery by remember { mutableStateOf("") }
     val filterUser = listUser.filter {
         it.name.contains(searchQuery, ignoreCase = true)

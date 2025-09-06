@@ -13,15 +13,30 @@ import kotlinx.coroutines.launch
 class UserViewModel(context: Context): ViewModel(){
     val repo = UserRepository(context = context)
 
-    private val _user_info = MutableStateFlow<UserResponse?>(null)
-    val user_info: StateFlow<UserResponse?> = _user_info
+    private val _userInfo = MutableStateFlow<UserResponse?>(null)
+    val userInfo: StateFlow<UserResponse?> = _userInfo
+    private val _userInfoList = MutableStateFlow<List<UserResponse>>(emptyList())
+    val userInfoList: StateFlow<List<UserResponse>> = _userInfoList
 
     fun getUserInfo(userId: Long){
         viewModelScope.launch {
             val info = repo.getUserInfo(userId = userId)
             if (info != null){
-                _user_info.value = info
+                _userInfo.value = info
             }
+        }
+    }
+
+    fun getUserInfoList(userIds: List<Long>?) {
+        viewModelScope.launch {
+            val result = mutableListOf<UserResponse>()
+            userIds?.forEach { id ->
+                val user = repo.getUserInfo(userId = id)
+                if (user != null) {
+                    result.add(user)
+                }
+            }
+            _userInfoList.value = result
         }
     }
 }

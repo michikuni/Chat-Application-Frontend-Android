@@ -76,7 +76,7 @@ fun HomeScreen(
         }
     }
 
-    val userInfo by userViewModel.user_info.collectAsState()
+    val userInfo by userViewModel.userInfo.collectAsState()
     val listConversation by conversationViewModel.conversation.collectAsState()
     var searchQuery by remember { mutableStateOf("") }
     val filterUser = listConversation.filter {

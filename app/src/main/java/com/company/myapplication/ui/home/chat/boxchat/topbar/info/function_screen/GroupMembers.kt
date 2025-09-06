@@ -8,11 +8,13 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
@@ -70,13 +72,11 @@ fun GroupMembers(
     val allConversation by conversationViewModel.conversation.collectAsState()
     val conversation = allConversation.find { it.id == conversationId }?.toViewDTO()
 
-    val listUser = remember { mutableStateListOf<UserResponse>() }
-
-    conversation?.membersIds?.map { memberId ->
-        userViewModel.getUserInfo(memberId)
-        val user by userViewModel.user_info.collectAsState()
-        user?.let { listUser.add(it) }
+    LaunchedEffect(Unit) {
+        userViewModel.getUserInfoList(conversation?.membersIds)
     }
+
+    val listUser by userViewModel.userInfoList.collectAsState()
 
     Log.e("GROUP MEM", conversation.toString())
     var searchQuery by remember { mutableStateOf("") }
@@ -141,13 +141,19 @@ fun GroupMembers(
                                 contentDescription = null,
                                 modifier = Modifier
                                     .size(50.dp)
-                                    .clip(CircleShape)
+                                    .width(50.dp)
+                                    .height(50.dp)
                                     .background(color = backgroundColor)
                             )
                         }
+                        Spacer(modifier = Modifier.padding(5.dp))
                         Column (modifier = Modifier.align(Alignment.CenterVertically)){
                             Text(text = user.name, fontFamily = titleFont, fontSize = 14.sp)
-                            Text(text = "user", fontFamily = titleFont, fontSize = 12.sp, color = Color.Gray)
+                            if (user.id == userId){
+                                Text(text = "Bạn", fontFamily = titleFont, fontSize = 12.sp, color = Color.Gray)
+                            } else {
+                                Text(text = "user", fontFamily = titleFont, fontSize = 12.sp, color = Color.Gray)
+                            }
                         }
                     }
                 }

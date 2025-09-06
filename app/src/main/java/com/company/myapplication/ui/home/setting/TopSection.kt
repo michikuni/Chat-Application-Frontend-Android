@@ -67,7 +67,7 @@ fun TopSection(
     LaunchedEffect(Unit) {
         userViewModel.getUserInfo(userId = userId)
     }
-    val userInfo by userViewModel.user_info.collectAsState()
+    val userInfo by userViewModel.userInfo.collectAsState()
 
     Spacer(modifier = Modifier.padding(10.dp))
     Row(

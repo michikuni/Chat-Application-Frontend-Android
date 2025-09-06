@@ -77,7 +77,7 @@ fun InfoScreen(
     LaunchedEffect(Unit) {
         userViewModel.getUserInfo(friendId)
     }
-    val userInfo by userViewModel.user_info.collectAsState()
+    val userInfo by userViewModel.userInfo.collectAsState()
     var avatarUrl by remember { mutableStateOf("${ApiConfig.BASE_URL}/api/users/get_avatar/$friendId") }
     var avatarGroupUrl by remember { mutableStateOf("${ApiConfig.BASE_URL}/api/chats/getConversationAvatar/${matchedConversation?.groupAvatar}") }
     var themePopup by remember { mutableStateOf(false) }

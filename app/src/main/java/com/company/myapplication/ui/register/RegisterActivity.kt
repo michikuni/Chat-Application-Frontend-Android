@@ -125,6 +125,7 @@ fun RegisterScreen(
             LaunchedEffect(Unit) {
                 delay(1000)
                 onRegisterSuccess()
+                viewModel.registerSuccess = false
             }
         }
     }

@@ -1,5 +1,5 @@
 package com.company.myapplication.repository.apiconfig
 
 object ApiConfig {
-    const val BASE_URL = "http://10.0.2.2:8080"
+    const val BASE_URL = "http://192.155.14.101:8080"
 }

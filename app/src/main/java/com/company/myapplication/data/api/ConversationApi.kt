@@ -22,6 +22,11 @@ interface ConversationApi {
         @Body request: CreateConversation
     ): Response<Void>
 
+    @POST("api/chats/findConversation/{userId}/{friendId}")
+    suspend fun findConversation(
+        @Path("userId") userId: Long,
+        @Path("friendId") friendId: Long
+    ): Response<Long>
     @Multipart
     @POST("api/chats/createConversationGroup")
     suspend fun createConversationGroup(

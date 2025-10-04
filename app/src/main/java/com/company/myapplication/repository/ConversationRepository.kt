@@ -46,6 +46,11 @@ class ConversationRepository (context: Context){
         return response.isSuccessful
     }
 
+    suspend fun findConversation(userId: Long, friendId: Long): Long{
+        val response = conversationApi.findConversation(userId = userId, friendId = friendId)
+        return response.body() ?: -1
+    }
+
     suspend fun createConversationGroup(data: CreateConversationGroup, uri: Uri, context: Context){
         val gson = Gson()
         val json = gson.toJson(data)

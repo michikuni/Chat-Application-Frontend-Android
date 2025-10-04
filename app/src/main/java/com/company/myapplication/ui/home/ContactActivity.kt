@@ -59,7 +59,12 @@ fun ContactScreen(
             )
             LazyColumn (contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp)){
                 items(filterContact){ contact ->
-                    ContactItem(contact)
+                    ContactItem(
+                        contact = contact,
+                        context = activity,
+                        navHostController = navHostController
+                    )
+
                     HorizontalDivider(
                         color = lineBreakMessage,
                         thickness = 0.75.dp,

@@ -16,8 +16,8 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface ConversationApi {
-    @POST("api/chats/createConversation/{userId}")
-    suspend fun createConversation(
+    @POST("api/chats/createMessage/{userId}")
+    suspend fun createMessage(
         @Path("userId") userId: Long,
         @Body request: CreateConversation
     ): Response<Void>

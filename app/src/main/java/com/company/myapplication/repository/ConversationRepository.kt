@@ -41,8 +41,8 @@ class ConversationRepository (context: Context){
     private val retrofit = createRetrofit(context)
     private val conversationApi = retrofit.create(ConversationApi::class.java)
 
-    suspend fun createConversation(userId: Long, body: CreateConversation): Boolean{
-        val response = conversationApi.createConversation(userId = userId, request = body)
+    suspend fun createMessage(userId: Long, body: CreateConversation): Boolean{
+        val response = conversationApi.createMessage(userId = userId, request = body)
         return response.isSuccessful
     }
 

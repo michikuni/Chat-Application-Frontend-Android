@@ -23,7 +23,7 @@ class ConversationViewModel(activity: Activity): ViewModel(){
     private val _messages = MutableStateFlow<List<Message>>(emptyList())
     val messages: StateFlow<List<Message>> get() = _messages
 
-    private var createConversationSuccess by mutableStateOf(false)
+    private var createMessageSuccess by mutableStateOf(false)
 
     private val _conversation = MutableStateFlow<List<ConversationDTO>>(emptyList())
     val conversation: StateFlow<List<ConversationDTO>> get() = _conversation
@@ -43,8 +43,8 @@ class ConversationViewModel(activity: Activity): ViewModel(){
 
     fun createConversation(userId: Long, body: CreateConversation){
         viewModelScope.launch {
-            val createConversation = repo.createConversation(userId = userId, body = body)
-            createConversationSuccess = createConversation
+            val createMessage = repo.createMessage(userId = userId, body = body)
+            createMessageSuccess = createMessage
         }
     }
 

@@ -41,7 +41,13 @@ fun ContactScreen(
         it.name.contains(searchQuery, ignoreCase = true)
     }
     Scaffold (
-        topBar = {ContactTopBar()},
+        topBar = {
+            ContactTopBar(
+                activity = activity,
+                friendViewModel = friendViewModel,
+                navHostController = navHostController
+            )
+        },
         bottomBar = {
             val currentBackStackEntry = navHostController.currentBackStackEntryAsState().value
             val currentRoute = currentBackStackEntry?.destination?.route?: ""

@@ -22,11 +22,13 @@ class FriendViewModel (activity: Activity): ViewModel(){
     private val _allFriends = MutableStateFlow<List<UserResponse>>(emptyList())
     val allFriends: StateFlow<List<UserResponse>> = _allFriends
 
-    var sendAddFriendSuccess by mutableStateOf(false)
+    var sendAddFriendSuccess by mutableStateOf<String?>(null)
 
     var acceptedFriendSuccess by mutableStateOf(false)
 
     var canceledFriendSuccess by mutableStateOf(false)
+    private val _friendInfo = MutableStateFlow<UserResponse?>(null)
+    val friendInfo: StateFlow<UserResponse?> get() = _friendInfo
 
     private val _pendingFriends = MutableStateFlow<List<FriendResponse>>(emptyList())
     val pendingFriends: StateFlow<List<FriendResponse>> get() = _pendingFriends
@@ -45,12 +47,22 @@ class FriendViewModel (activity: Activity): ViewModel(){
         }
     }
 
+    fun getFriendByEmail(email: String){
+        viewModelScope.launch {
+            try {
+                val friendInfo = repo.getFriendByEmail(email = email)
+                _friendInfo.value = friendInfo
+            } catch (e: Exception){
+                errorMsg = e.message
+            }
+        }
+    }
+
     fun sendAddRequest(userId: Long, receiverEmail: RequestBody){
         viewModelScope.launch {
             try {
                 val sendAdd = repo.sendAddRequest(userId = userId, receiverEmail = receiverEmail)
                 sendAddFriendSuccess = sendAdd
-                errorMsg = if (sendAdd) null else "Gửi lời mời kết bạn thất bại"
             } catch (e: IllegalArgumentException){
                 errorMsg = e.message
             }

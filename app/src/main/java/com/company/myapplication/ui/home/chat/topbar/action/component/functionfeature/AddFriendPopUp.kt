@@ -12,13 +12,14 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.Send
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -28,13 +29,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import androidx.navigation.NavHostController
 import com.company.myapplication.ui.home.util.TextField
 import com.company.myapplication.util.UserSharedPreferences
 import com.company.myapplication.util.themeColor
 import com.company.myapplication.util.titleFont
 import com.company.myapplication.util.topAppBarColor
 import com.company.myapplication.viewmodel.FriendViewModel
-import okhttp3.RequestBody.Companion.toRequestBody
 
 @Composable
 fun AddFriendPopUp (
@@ -43,6 +44,7 @@ fun AddFriendPopUp (
     onDismiss: () -> Unit
 ){
     val userId = UserSharedPreferences.getId(activity)
+    val friendInfo by friendViewModel.friendInfo.collectAsState()
     var query by remember { mutableStateOf("") }
     Dialog(onDismissRequest = {onDismiss()}) {
         Surface(
@@ -84,25 +86,43 @@ fun AddFriendPopUp (
                         text = "Nhập email ...",
                         multiLine = false,
                         color = topAppBarColor,
-                        modifier = Modifier.weight(0.875f).align(Alignment.CenterVertically)
+                        modifier = Modifier
+                            .weight(0.875f)
+                            .align(Alignment.CenterVertically)
                     )
                     IconButton(onClick = {
-                        friendViewModel.sendAddRequest(userId = userId, receiverEmail = query.toRequestBody())
-                        friendViewModel.sendAddFriendSuccess.let {
-                            Toast.makeText(activity, "Gửi lời mời kết bạn thành công", Toast.LENGTH_SHORT).show()
-                            onDismiss()
+                        if (query.isBlank()) {
+                            Toast.makeText(activity, "Vui lòng nhập email", Toast.LENGTH_SHORT).show()
+                            return@IconButton
                         }
+
+                        // Gửi request
+                        friendViewModel.getFriendByEmail(email = query)
+
+                        // Nếu có lỗi
                         friendViewModel.errorMsg?.let {
-                            Toast.makeText(activity, "${friendViewModel.errorMsg}", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(activity, it, Toast.LENGTH_SHORT).show()
                         }
-                    },
-                        modifier = Modifier.weight(0.125f)) {
+                    }) {
                         Icon(
-                            imageVector = Icons.AutoMirrored.Filled.Send,
-                            contentDescription = "Send",
+                            imageVector = Icons.Default.Search,
+                            contentDescription = "Search",
                             tint = themeColor
                         )
                     }
+
+                }
+                if (friendInfo != null){
+                    AddFriendItem(
+                        name = friendInfo?.name ?: "",
+                        friendId = friendInfo?.id ?: -1,
+                        userId = userId,
+                        friendViewModel = friendViewModel,
+                        email = query,
+                        onDismiss = onDismiss
+                    )
+                } else {
+                    Text(text = "Không tìm được bạn bè", fontFamily = titleFont, color = Color.Gray)
                 }
             }
         }

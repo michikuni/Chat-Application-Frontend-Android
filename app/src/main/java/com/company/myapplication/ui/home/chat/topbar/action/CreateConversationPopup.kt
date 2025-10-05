@@ -108,7 +108,8 @@ fun CreateConversationPopup(
                     AddFriendPopUp(
                         activity = activity,
                         friendViewModel = friendViewModel,
-                        onDismiss = { showAddDialog = false })
+                        onDismiss = { showAddDialog = false }
+                    )
                 }
 
                 if (showCreateGroupPopup){

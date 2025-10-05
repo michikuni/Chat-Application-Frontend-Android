@@ -15,11 +15,16 @@ interface FriendApi {
         @Path("userId") userId: Long
     ): Response<List<UserResponse>>
 
+    @GET("api/friends/getFriendByEmail/{email}")
+    suspend fun getFriendByEmail(
+        @Path("email") email: String
+    ): Response<UserResponse>
+
     @POST("api/friends/add/{userId}")
     suspend fun sendAddRequest(
         @Path("userId") userId: Long,
         @Body request: RequestBody
-    ): Response<Void>
+    ): Response<String>
 
     @GET("api/friends/pending/{userId}")
     suspend fun getPendingFriends(

@@ -39,9 +39,18 @@ class FriendRepository (context: Context){
         }
     }
 
-    suspend fun sendAddRequest(userId: Long, receiverEmail: RequestBody): Boolean{
+    suspend fun getFriendByEmail(email: String): UserResponse? {
+        val response = friendApi.getFriendByEmail(email = email)
+        if (response.isSuccessful){
+            return response.body()
+        } else {
+            throw Exception("Lỗi lấy danh sách bạn bè: ${response.code()}")
+        }
+    }
+
+    suspend fun sendAddRequest(userId: Long, receiverEmail: RequestBody): String? {
         val response = friendApi.sendAddRequest(userId, receiverEmail)
-        return response.isSuccessful
+        return response.message()
     }
 
     suspend fun getPendingFriends(userId: Long): List<FriendResponse>{

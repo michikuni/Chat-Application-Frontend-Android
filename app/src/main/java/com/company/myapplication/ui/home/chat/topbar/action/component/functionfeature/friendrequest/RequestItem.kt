@@ -19,6 +19,9 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -26,17 +29,26 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import com.company.myapplication.repository.apiconfig.ApiConfig
 import com.company.myapplication.util.titleFont
 import com.company.myapplication.viewmodel.FriendViewModel
 
 @Composable
 fun RequestItem(
-    avatar: String?,
+    friendId: Long?,
     name: String,
     friendViewModel: FriendViewModel,
     friendshipId: Long,
     activity: Activity
 ){
+    val avatarUrl by remember {
+        mutableStateOf(
+            if (friendId != -1L)
+                "${ApiConfig.BASE_URL}/api/users/get_avatar/${friendId}"
+            else
+                null
+        )
+    }
     Column (
         modifier = Modifier
             .padding(16.dp)
@@ -49,7 +61,7 @@ fun RequestItem(
             verticalAlignment = Alignment.CenterVertically
         ) {
             AsyncImage(
-                model = avatar,
+                model = avatarUrl,
                 contentDescription = null,
                 modifier = Modifier
                     .size(50.dp)

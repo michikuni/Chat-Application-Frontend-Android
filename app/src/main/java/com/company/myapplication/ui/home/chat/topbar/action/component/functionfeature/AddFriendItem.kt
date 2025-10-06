@@ -16,6 +16,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -46,8 +47,23 @@ fun AddFriendItem(
 ) {
     var isSelected by remember { mutableStateOf(false) }
     var avatarUrl by remember { mutableStateOf("${ApiConfig.BASE_URL}/api/users/get_avatar/${friendId}") }
+
     val addFriendSuccess = friendViewModel.sendAddFriendSuccess
     val errorMsg = friendViewModel.errorMsg
+
+    // 👇 Lắng nghe thay đổi để hiện Toast sau khi API phản hồi
+    LaunchedEffect(addFriendSuccess, errorMsg) {
+        addFriendSuccess?.let {
+            Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+            friendViewModel.resetFriendInfo()
+            onDismiss()
+        }
+        errorMsg?.let {
+            Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+            friendViewModel.resetFriendInfo()
+        }
+    }
+
     Row(
         modifier = Modifier
             .background(
@@ -61,15 +77,6 @@ fun AddFriendItem(
                     userId = userId,
                     receiverEmail = email
                 )
-                Log.e("AddItem", "Success: $addFriendSuccess")
-                Log.e("AddITem", "Fail: $errorMsg")
-                addFriendSuccess?.let {
-                    Toast.makeText(context, addFriendSuccess, Toast.LENGTH_SHORT).show()
-                }
-                errorMsg?.let {
-                    Toast.makeText(context, errorMsg, Toast.LENGTH_SHORT).show()
-                }
-                onDismiss()
             }
             .padding(vertical = 10.dp),
         verticalAlignment = Alignment.CenterVertically

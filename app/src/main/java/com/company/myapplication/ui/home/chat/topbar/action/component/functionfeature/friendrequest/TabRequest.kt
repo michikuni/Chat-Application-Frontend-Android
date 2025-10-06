@@ -54,7 +54,7 @@ fun TabRequest(
         val suggestedContacts = users
         suggestedContacts.forEach { request ->
             RequestItem(
-                avatar = request.avatar,
+                friendId = request.id,
                 name = request.name,
                 friendViewModel = friendViewModel,
                 activity = activity,

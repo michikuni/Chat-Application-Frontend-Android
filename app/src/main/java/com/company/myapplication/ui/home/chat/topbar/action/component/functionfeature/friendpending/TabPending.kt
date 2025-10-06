@@ -54,7 +54,7 @@ fun TabPending(
         val suggestedContacts = users
         suggestedContacts.forEach { request ->
             PendingItem(
-                avatar = request.avatar,
+                friendId = request.id,
                 name = request.name,
                 friendViewModel = friendViewModel,
                 friendshipId = request.friendshipId,

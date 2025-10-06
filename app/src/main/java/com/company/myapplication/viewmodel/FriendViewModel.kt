@@ -127,7 +127,7 @@ class FriendViewModel (activity: Activity): ViewModel(){
         }
     }
     fun resetFriendInfo() {
-        _friendInfo.value = null
+        sendAddFriendSuccess = null
         errorMsg = null
     }
 

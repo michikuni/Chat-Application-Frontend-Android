@@ -1,5 +1,7 @@
 package com.company.myapplication.data.api
 
+import com.company.myapplication.data.model.friend.FriendRequestDTO
+import com.company.myapplication.data.model.response.ApiResponse
 import com.company.myapplication.data.model.response.FriendResponse
 import com.company.myapplication.data.model.response.UserResponse
 import okhttp3.RequestBody
@@ -23,8 +25,9 @@ interface FriendApi {
     @POST("api/friends/add/{userId}")
     suspend fun sendAddRequest(
         @Path("userId") userId: Long,
-        @Body request: RequestBody
-    ): Response<String>
+        @Body request: FriendRequestDTO
+    ): Response<ApiResponse>
+
 
     @GET("api/friends/pending/{userId}")
     suspend fun getPendingFriends(

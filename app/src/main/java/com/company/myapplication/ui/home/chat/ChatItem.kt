@@ -48,10 +48,24 @@ fun ChatItem(
     val toViewConversation = conversation.toViewDTO()
     val conversationViewFilter = toViewConversation.filterUser(user = userInfo)
 
-    if (conversationViewFilter.conversationType == "PAIR"){
-        friendId = conversationViewFilter.membersIds[0]
+    if (conversationViewFilter.conversationType == "PAIR") {
+        if (conversationViewFilter.membersIds.isNotEmpty()) {
+            friendId = conversationViewFilter.membersIds.firstOrNull() ?: -1L
+
+        } else {
+            Log.e("ChatItem", "Lỗi: membersIds rỗng cho conversation ${conversationViewFilter.id}")
+            return  // hoặc hiển thị placeholder an toàn
+        }
     }
-    var avatarUrl by remember { mutableStateOf("${ApiConfig.BASE_URL}/api/users/get_avatar/${friendId}") }
+
+    val avatarUrl by remember {
+        mutableStateOf(
+            if (friendId != -1L)
+                "${ApiConfig.BASE_URL}/api/users/get_avatar/${friendId}"
+            else
+                null
+        )
+    }
     var avatarGroupUrl by remember { mutableStateOf("${ApiConfig.BASE_URL}/api/chats/getConversationAvatar/${conversationViewFilter.groupAvatar}") }
     var isSelected by remember { mutableStateOf(false) }
     val time = convertTimestamp(conversationViewFilter.createdAt.toString())
@@ -97,7 +111,12 @@ fun ChatItem(
             }
             Spacer(modifier = Modifier.width(12.dp))
             Column(Modifier.weight(1f)) {
-                Text(text = conversationViewFilter.name[0], fontWeight = FontWeight.Bold, fontFamily = titleFont)
+                Text(
+                    text = conversationViewFilter.name.firstOrNull() ?: "Người dùng",
+                    fontWeight = FontWeight.Bold,
+                    fontFamily = titleFont
+                )
+
                 if (userId == conversationViewFilter.senderId){
                     if (conversationViewFilter.content != null){
                         Text(

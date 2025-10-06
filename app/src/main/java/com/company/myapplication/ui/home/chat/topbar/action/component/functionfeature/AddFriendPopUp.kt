@@ -19,6 +19,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -38,15 +39,22 @@ import com.company.myapplication.util.topAppBarColor
 import com.company.myapplication.viewmodel.FriendViewModel
 
 @Composable
-fun AddFriendPopUp (
+fun AddFriendPopUp(
     activity: Activity,
     friendViewModel: FriendViewModel,
     onDismiss: () -> Unit
-){
+) {
     val userId = UserSharedPreferences.getId(activity)
     val friendInfo by friendViewModel.friendInfo.collectAsState()
     var query by remember { mutableStateOf("") }
-    Dialog(onDismissRequest = {onDismiss()}) {
+
+    // Reset mỗi khi popup mở lại
+    LaunchedEffect(Unit) {
+        query = ""
+        friendViewModel.resetFriendInfo()
+    }
+
+    Dialog(onDismissRequest = { onDismiss() }) {
         Surface(
             shape = RoundedCornerShape(16.dp),
             tonalElevation = 4.dp,
@@ -76,10 +84,10 @@ fun AddFriendPopUp (
                         modifier = Modifier.clickable { onDismiss() }
                     )
                 }
-                Row (
-                    modifier = Modifier
-                        .fillMaxWidth()
-                ){
+
+                Row(
+                    modifier = Modifier.fillMaxWidth()
+                ) {
                     TextField(
                         query = query,
                         onQueryChange = { query = it },
@@ -96,10 +104,8 @@ fun AddFriendPopUp (
                             return@IconButton
                         }
 
-                        // Gửi request
                         friendViewModel.getFriendByEmail(email = query)
 
-                        // Nếu có lỗi
                         friendViewModel.errorMsg?.let {
                             Toast.makeText(activity, it, Toast.LENGTH_SHORT).show()
                         }
@@ -110,19 +116,24 @@ fun AddFriendPopUp (
                             tint = themeColor
                         )
                     }
-
                 }
-                if (friendInfo != null){
+
+                if (friendInfo != null) {
                     AddFriendItem(
                         name = friendInfo?.name ?: "",
                         friendId = friendInfo?.id ?: -1,
                         userId = userId,
                         friendViewModel = friendViewModel,
                         email = query,
-                        onDismiss = onDismiss
+                        onDismiss = onDismiss,
+                        context = activity
                     )
                 } else {
-                    Text(text = "Không tìm được bạn bè", fontFamily = titleFont, color = Color.Gray)
+                    Text(
+                        text = "Không tìm được bạn bè",
+                        fontFamily = titleFont,
+                        color = Color.Gray
+                    )
                 }
             }
         }

@@ -2,6 +2,7 @@ package com.company.myapplication.repository
 
 import android.content.Context
 import com.company.myapplication.data.api.FriendApi
+import com.company.myapplication.data.model.friend.FriendRequestDTO
 import com.company.myapplication.data.model.response.FriendResponse
 import com.company.myapplication.data.model.response.UserResponse
 import com.company.myapplication.repository.apiconfig.ApiConfig
@@ -48,10 +49,18 @@ class FriendRepository (context: Context){
         }
     }
 
-    suspend fun sendAddRequest(userId: Long, receiverEmail: RequestBody): String? {
-        val response = friendApi.sendAddRequest(userId, receiverEmail)
-        return response.message()
+    suspend fun sendAddRequest(userId: Long, receiverEmail: String): String? {
+        val request = FriendRequestDTO(receiverEmail = receiverEmail)
+        val response = friendApi.sendAddRequest(userId, request)
+
+        return if (response.isSuccessful) {
+            val body = response.body()
+            body?.message ?: body?.error  // Ưu tiên trả về message, nếu có lỗi thì trả error
+        } else {
+            response.errorBody()?.string()  // Trả về chuỗi lỗi nếu request thất bại
+        }
     }
+
 
     suspend fun getPendingFriends(userId: Long): List<FriendResponse>{
         val response = friendApi.getPendingFriends(userId)

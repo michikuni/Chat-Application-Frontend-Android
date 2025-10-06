@@ -13,6 +13,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import okhttp3.RequestBody
+import retrofit2.HttpException
+import java.io.IOException
 
 class FriendViewModel (activity: Activity): ViewModel(){
     private val repo = FriendRepository(activity)
@@ -58,16 +60,28 @@ class FriendViewModel (activity: Activity): ViewModel(){
         }
     }
 
-    fun sendAddRequest(userId: Long, receiverEmail: RequestBody){
+    fun sendAddRequest(userId: Long, receiverEmail: String) {
         viewModelScope.launch {
             try {
-                val sendAdd = repo.sendAddRequest(userId = userId, receiverEmail = receiverEmail)
-                sendAddFriendSuccess = sendAdd
-            } catch (e: IllegalArgumentException){
-                errorMsg = e.message
+                val responseMessage = repo.sendAddRequest(userId, receiverEmail)
+
+                if (!responseMessage.isNullOrBlank()) {
+                    sendAddFriendSuccess = responseMessage
+                    errorMsg = null
+                } else {
+                    errorMsg = "Phản hồi rỗng từ máy chủ"
+                }
+
+            } catch (e: HttpException) {
+                errorMsg = "Lỗi server: ${e.code()} - ${e.message()}"
+            } catch (e: IOException) {
+                errorMsg = "Không thể kết nối tới máy chủ. Vui lòng kiểm tra mạng."
+            } catch (e: Exception) {
+                errorMsg = "Lỗi không xác định: ${e.message}"
             }
         }
     }
+
 
     fun acceptedFriendRequest(friendshipId: Long){
         viewModelScope.launch {
@@ -112,4 +126,9 @@ class FriendViewModel (activity: Activity): ViewModel(){
             }
         }
     }
+    fun resetFriendInfo() {
+        _friendInfo.value = null
+        errorMsg = null
+    }
+
 }

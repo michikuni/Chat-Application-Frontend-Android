@@ -8,12 +8,12 @@ plugins {
 
 android {
     namespace = "com.company.myapplication"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.company.myapplication"
         minSdk = 26
-        targetSdk = 34
+        targetSdk = 36
         versionCode = 1
         versionName = "1.0"
 
@@ -48,6 +48,7 @@ dependencies {
     implementation("org.hildan.krossbow:krossbow-websocket-builtin:7.0.0")
     implementation(libs.firebase.messaging)
     implementation(libs.androidx.runtime)
+    implementation(libs.androidx.compose.runtime)
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.4")
     implementation("androidx.navigation:navigation-compose:2.9.3")
     implementation(libs.androidx.material)

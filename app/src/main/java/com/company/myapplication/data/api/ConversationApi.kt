@@ -54,7 +54,7 @@ interface ConversationApi {
     @POST("api/chats/sendMediaFile/{userId}")
     suspend fun sendMediaFile(
         @Path("userId") userId: Long,
-        @Query("friendId") conversationId: Long,  // gửi friendId như form field
+        @Query("conversationId") conversationId: Long,  // gửi friendId như form field
         @Part file: MultipartBody.Part
     ): Response<ResponseBody>
 }

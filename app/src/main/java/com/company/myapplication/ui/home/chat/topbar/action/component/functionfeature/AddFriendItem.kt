@@ -1,7 +1,8 @@
 package com.company.myapplication.ui.home.chat.topbar.action.component.functionfeature
 
-import android.content.Context
+import android.app.Activity
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -15,9 +16,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -28,15 +27,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavHostController
 import coil.compose.rememberAsyncImagePainter
 import com.company.myapplication.R
-import com.company.myapplication.repository.ConversationRepository
 import com.company.myapplication.repository.apiconfig.ApiConfig
 import com.company.myapplication.util.backgroundColor
 import com.company.myapplication.util.titleFont
 import com.company.myapplication.viewmodel.FriendViewModel
-import okhttp3.RequestBody.Companion.toRequestBody
 
 @Composable
 fun AddFriendItem(
@@ -45,10 +41,13 @@ fun AddFriendItem(
     friendId: Long,
     friendViewModel: FriendViewModel,
     email: String,
-    onDismiss: () -> Unit
+    onDismiss: () -> Unit,
+    context: Activity
 ) {
     var isSelected by remember { mutableStateOf(false) }
     var avatarUrl by remember { mutableStateOf("${ApiConfig.BASE_URL}/api/users/get_avatar/${friendId}") }
+    val addFriendSuccess = friendViewModel.sendAddFriendSuccess
+    val errorMsg = friendViewModel.errorMsg
     Row(
         modifier = Modifier
             .background(
@@ -60,8 +59,16 @@ fun AddFriendItem(
                 isSelected = !isSelected
                 friendViewModel.sendAddRequest(
                     userId = userId,
-                    receiverEmail = email.toRequestBody()
+                    receiverEmail = email
                 )
+                Log.e("AddItem", "Success: $addFriendSuccess")
+                Log.e("AddITem", "Fail: $errorMsg")
+                addFriendSuccess?.let {
+                    Toast.makeText(context, addFriendSuccess, Toast.LENGTH_SHORT).show()
+                }
+                errorMsg?.let {
+                    Toast.makeText(context, errorMsg, Toast.LENGTH_SHORT).show()
+                }
                 onDismiss()
             }
             .padding(vertical = 10.dp),

@@ -20,6 +20,7 @@ data class ConversationDTO(
     val mediaFile: String?,
     val senderId: Long?,
     val createdAt: Timestamp?,
+    val csCreatedAt: Timestamp?,
     val isRead: Boolean?,
 )
 
@@ -36,6 +37,7 @@ data class ConversationViewDTO(
     val mediaFile: String?,
     val senderId: Long?,
     val createdAt: Timestamp?,
+    val csCreatedAt: Timestamp?,
     val isRead: Boolean?,
 )
 

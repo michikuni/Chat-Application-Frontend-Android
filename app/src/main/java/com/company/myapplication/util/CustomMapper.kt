@@ -22,6 +22,7 @@ object CustomMapper {
             mediaFile = this.mediaFile,
             senderId = this.senderId,
             createdAt = this.createdAt,
+            csCreatedAt = this.csCreatedAt,
             isRead = this.isRead
         )
     }

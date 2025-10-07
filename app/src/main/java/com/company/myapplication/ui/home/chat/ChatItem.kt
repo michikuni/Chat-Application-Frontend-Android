@@ -77,6 +77,7 @@ fun ChatItem(
             )
             .clickable {
                 isSelected = !isSelected
+//                Log.e("CSID", "${conversationViewFilter.id}")
                 navHostController.navigate(
                     route = "box_chat/${conversationViewFilter.id}/${conversationViewFilter.name[0]}"
                 )
@@ -262,7 +263,11 @@ fun ChatItem(
                 }
 
             }
-            Text(text = time, fontSize = 12.sp, color = Color.Gray, fontFamily = titleFont)
+            if (conversationViewFilter.content.isNullOrBlank() && conversationViewFilter.mediaFile.isNullOrBlank()){
+                Text(text = convertTimestamp(conversationViewFilter.csCreatedAt.toString()), fontSize = 12.sp, color = Color.Gray, fontFamily = titleFont)
+            } else {
+                Text(text = time, fontSize = 12.sp, color = Color.Gray, fontFamily = titleFont)
+            }
         }
     }
 }

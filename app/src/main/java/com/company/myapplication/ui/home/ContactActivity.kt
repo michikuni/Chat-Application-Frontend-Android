@@ -6,7 +6,11 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.HorizontalDivider
@@ -31,51 +35,64 @@ fun ContactScreen(
     friendViewModel: FriendViewModel,
     navHostController: NavHostController
 ){
-    val userId = UserSharedPreferences.getId(activity)
-    LaunchedEffect(Unit) {
-        friendViewModel.getAllFriendsById(userId = userId)
-    }
-    val contacts by friendViewModel.allFriends.collectAsState()
-    var searchQuery by remember { mutableStateOf("") }
-    val filterContact = contacts.filter {
-        it.name.contains(searchQuery, ignoreCase = true)
-    }
-    Scaffold (
-        topBar = {
-            ContactTopBar(
-                activity = activity,
-                friendViewModel = friendViewModel,
-                navHostController = navHostController
-            )
-        },
-        bottomBar = {
-            val currentBackStackEntry = navHostController.currentBackStackEntryAsState().value
-            val currentRoute = currentBackStackEntry?.destination?.route?: ""
-            BottomNavigationBar(navController = navHostController, currentRoute = currentRoute, color = backgroundColor)
+    Column(modifier = Modifier
+        .fillMaxSize()
+        .background(backgroundColor)
+        .windowInsetsPadding(WindowInsets.safeDrawing)
+    ) {
+        val userId = UserSharedPreferences.getId(activity)
+        LaunchedEffect(Unit) {
+            friendViewModel.getAllFriendsById(userId = userId)
         }
+        val contacts by friendViewModel.allFriends.collectAsState()
+        var searchQuery by remember { mutableStateOf("") }
+        val filterContact = contacts.filter {
+            it.name.contains(searchQuery, ignoreCase = true)
+        }
+        Scaffold(
+            contentWindowInsets = WindowInsets.safeDrawing,
+            topBar = {
+                ContactTopBar(
+                    activity = activity,
+                    friendViewModel = friendViewModel,
+                    navHostController = navHostController
+                )
+            },
+            bottomBar = {
+                val currentBackStackEntry = navHostController.currentBackStackEntryAsState().value
+                val currentRoute = currentBackStackEntry?.destination?.route ?: ""
+                BottomNavigationBar(
+                    navController = navHostController,
+                    currentRoute = currentRoute,
+                    color = backgroundColor
+                )
+            }
         ) { paddingValues ->
-        Column (modifier = Modifier
-            .fillMaxWidth()
-            .padding(paddingValues)){
-            SearchBar(
-                query = searchQuery,
-                onQueryChange = { searchQuery = it },
+            Column(
                 modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(paddingValues)
+            ) {
+                SearchBar(
+                    query = searchQuery,
+                    onQueryChange = { searchQuery = it },
+                    modifier = Modifier
                         .background(color = topAppBarColor)
-            )
-            LazyColumn (contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp)){
-                items(filterContact){ contact ->
-                    ContactItem(
-                        contact = contact,
-                        context = activity,
-                        navHostController = navHostController
-                    )
+                )
+                LazyColumn(contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp)) {
+                    items(filterContact) { contact ->
+                        ContactItem(
+                            contact = contact,
+                            context = activity,
+                            navHostController = navHostController
+                        )
 
-                    HorizontalDivider(
-                        color = lineBreakMessage,
-                        thickness = 0.75.dp,
-                        modifier = Modifier.padding(start = 75.dp)
-                    )
+                        HorizontalDivider(
+                            color = lineBreakMessage,
+                            thickness = 0.75.dp,
+                            modifier = Modifier.padding(start = 75.dp)
+                        )
+                    }
                 }
             }
         }

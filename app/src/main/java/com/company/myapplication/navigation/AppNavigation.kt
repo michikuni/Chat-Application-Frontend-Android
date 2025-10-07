@@ -32,7 +32,7 @@ fun AppNavigation(activity: Activity) {
     val authViewModel = remember { AuthViewModel(activity) }
     val userViewModel = remember { UserViewModel(activity) }
 
-    NavHost(navController = navController, startDestination = "contact") {
+    NavHost(navController = navController, startDestination = "splash") {
         composable(route = "splash") {
             SplashScreen(
                 context = activity,

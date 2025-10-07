@@ -7,6 +7,7 @@ import android.app.NotificationManager
 import android.content.pm.PackageManager
 import android.os.Build
 import android.util.Log
+import androidx.compose.runtime.remember
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
@@ -15,23 +16,35 @@ import com.company.myapplication.util.DataChangeHelper
 import com.company.myapplication.util.UserSharedPreferences
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
+import kotlin.collections.mutableMapOf
 
 class MyFirebaseMessagingService: FirebaseMessagingService() {
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         val title = remoteMessage.data["name"] ?: "Tin nhắn mới"
+//        Log.e("FCMMMMM", "TIEL $title")
+        val titleGroup = remoteMessage.data["titleGroup"]?.ifEmpty { null }
+//        Log.e("FCMMMMM", "TITLE $titleGroup")
         val timestamp = remoteMessage.data["time"]?.toLong() ?: System.currentTimeMillis()
         val userId = remoteMessage.data["userId"]?.toLong() ?: -1
         val message = remoteMessage.data["message"] ?: ""
         val userIdUSP = UserSharedPreferences.getId(this)
-        Log.e("Firebase mes", "ms: $userId USP: $userIdUSP")
+//        Log.e("Firebase mes", "ms: $userId USP: $userIdUSP")
         DataChangeHelper.setDataChanged(this, true)
 
+        val finalTitle = if (titleGroup == null) {
+//            Log.e("FCMMMMM", "NUKLLL")
+            title
+        } else {
+//            Log.e("FCMMMMM", "nottttt   NUKLLL")
+
+            "$title tới $titleGroup"
+        }
         if (userIdUSP == userId){
             remoteMessage.notification?.title?.let { Log.e("ms reicei", it) }
-            remoteMessage.data["time"]?.let { Log.e("ms reicei time", it) }
-            remoteMessage.data["message"]?.let { Log.e("ms reicei message", it) }
+//            remoteMessage.data["time"]?.let { Log.e("ms reicei time", it) }
+//            remoteMessage.data["message"]?.let { Log.e("ms reicei message", it) }
 
-            showNotification(title, message, timestamp)
+            showNotification(finalTitle, message, timestamp)
         }
     }
     @SuppressLint("ObsoleteSdkInt")

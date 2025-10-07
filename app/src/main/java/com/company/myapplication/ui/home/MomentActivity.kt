@@ -6,13 +6,16 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Scaffold
@@ -48,56 +51,67 @@ fun MomentScreen (
     navHostController: NavHostController,
     context: Activity
 ){
-    val userId = UserSharedPreferences.getId(context)
-    val userAvatar by remember { mutableStateOf("${ApiConfig.BASE_URL}/api/users/get_avatar/${userId}") }
-    Scaffold (
-        topBar = { MomentTopBar() },
-        bottomBar = {
-            val currentBackStackEntry = navHostController.currentBackStackEntryAsState().value
-            val currentRoute = currentBackStackEntry?.destination?.route?: ""
-            BottomNavigationBar(
-                navController = navHostController,
-                currentRoute = currentRoute,
-                color = backgroundColor
-            )
-        }
-    ){ paddingValues ->
-        Column (
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues)
-                .background(color = backgroundColor)
-        ){
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(10.dp)
-                    .height(60.dp)
-                    .clip(RoundedCornerShape(16.dp))
-                    .background(color = Color.White)
-            ){
-                Image(
-                    painter = rememberAsyncImagePainter(
-                        model = userAvatar,
-                        error = painterResource(R.drawable.person),
-                        fallback = painterResource(R.drawable.person)
-                    ),
-                    contentDescription = "user avatar",
-                    modifier = Modifier
-                        .size(56.dp)
-                        .padding(5.dp)
-                        .clip(CircleShape)
-                        .background(color = backgroundColor)
-                        .fillMaxHeight()
-                        .align(Alignment.CenterVertically)
+    Column(modifier = Modifier
+        .fillMaxSize()
+        .background(backgroundColor)
+        .windowInsetsPadding(WindowInsets.safeDrawing)
+    ) {
+        val userId = UserSharedPreferences.getId(context)
+        val userAvatar by remember { mutableStateOf("${ApiConfig.BASE_URL}/api/users/get_avatar/${userId}") }
+        Scaffold(
+            contentWindowInsets = WindowInsets.safeDrawing,
+            topBar = { MomentTopBar() },
+            bottomBar = {
+                val currentBackStackEntry = navHostController.currentBackStackEntryAsState().value
+                val currentRoute = currentBackStackEntry?.destination?.route ?: ""
+                BottomNavigationBar(
+                    navController = navHostController,
+                    currentRoute = currentRoute,
+                    color = backgroundColor
                 )
-                Text(text = "Bạn đang nghĩ gì?", modifier = Modifier.fillMaxWidth().align(Alignment.CenterVertically), color = Color.Gray)
             }
-            Column (
+        ) { paddingValues ->
+            Column(
                 modifier = Modifier
                     .fillMaxSize()
+                    .padding(paddingValues)
                     .background(color = backgroundColor)
-            ){  }
+            ) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(10.dp)
+                        .height(60.dp)
+                        .clip(RoundedCornerShape(16.dp))
+                        .background(color = Color.White)
+                ) {
+                    Image(
+                        painter = rememberAsyncImagePainter(
+                            model = userAvatar,
+                            error = painterResource(R.drawable.person),
+                            fallback = painterResource(R.drawable.person)
+                        ),
+                        contentDescription = "user avatar",
+                        modifier = Modifier
+                            .size(56.dp)
+                            .padding(5.dp)
+                            .clip(CircleShape)
+                            .background(color = backgroundColor)
+                            .fillMaxHeight()
+                            .align(Alignment.CenterVertically)
+                    )
+                    Text(
+                        text = "Bạn đang nghĩ gì?",
+                        modifier = Modifier.fillMaxWidth().align(Alignment.CenterVertically),
+                        color = Color.Gray
+                    )
+                }
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(color = backgroundColor)
+                ) { }
+            }
         }
     }
 }

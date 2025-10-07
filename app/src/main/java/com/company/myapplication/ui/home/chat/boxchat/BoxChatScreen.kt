@@ -5,9 +5,13 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.util.Log
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -29,6 +33,7 @@ import com.company.myapplication.ui.home.chat.boxchat.bottombar.BottomBoxChat
 import com.company.myapplication.ui.home.chat.boxchat.topbar.TopBoxChat
 import com.company.myapplication.util.DataChangeHelper
 import com.company.myapplication.util.UserSharedPreferences
+import com.company.myapplication.util.backgroundColor
 import com.company.myapplication.viewmodel.ConversationViewModel
 import com.google.gson.Gson
 
@@ -40,112 +45,127 @@ fun BoxChatScreen(
     activity: Activity,
     contact: String
 ){
-    val userId = UserSharedPreferences.getId(context = activity)
-    val prefs = activity.getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
-    var dataChanged by remember { mutableStateOf(DataChangeHelper.hasDataChanged(activity)) }
+    Column(modifier = Modifier
+        .fillMaxSize()
+        .background(backgroundColor)
+        .windowInsetsPadding(WindowInsets.safeDrawing)
+    ) {
+        val userId = UserSharedPreferences.getId(context = activity)
+        val prefs = activity.getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
+        var dataChanged by remember { mutableStateOf(DataChangeHelper.hasDataChanged(activity)) }
 
-    // Lắng nghe SharedPreferences thay đổi
-    DisposableEffect(prefs) {
-        val listener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
-            if (key == "data_changed") {
-                dataChanged = DataChangeHelper.hasDataChanged(activity)
+        // Lắng nghe SharedPreferences thay đổi
+        DisposableEffect(prefs) {
+            val listener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
+                if (key == "data_changed") {
+                    dataChanged = DataChangeHelper.hasDataChanged(activity)
+                }
+            }
+            prefs.registerOnSharedPreferenceChangeListener(listener)
+            onDispose {
+                prefs.unregisterOnSharedPreferenceChangeListener(listener)
             }
         }
-        prefs.registerOnSharedPreferenceChangeListener(listener)
-        onDispose {
-            prefs.unregisterOnSharedPreferenceChangeListener(listener)
-        }
-    }
 
-    // Khi dataChanged = true → reload
-    LaunchedEffect(dataChanged) {
-        conversationViewModel.getAllMessage(conversationId = conversationId)
-        conversationViewModel.getAllConversation(userId = userId)
-        if (dataChanged) {
+        // Khi dataChanged = true → reload
+        LaunchedEffect(dataChanged) {
             conversationViewModel.getAllMessage(conversationId = conversationId)
-            DataChangeHelper.setDataChanged(activity, false)
-        }
-    }
-    val listState = rememberLazyListState()
-    val messages by conversationViewModel.messages.collectAsState()
-    val conversation by conversationViewModel.conversation.collectAsState()
-    val defaultColor = listOf("0xFFFFFFFF", "0xFFFFFFFF", "0xFFFFFFFF", "0xFF2196F3", "0xFF000000", "0xFFFFFFFF")
-
-    var conversationName by remember { mutableStateOf("") }
-
-    val matchedConversation = conversation.find { it.id == conversationId }
-
-    conversationName = when (matchedConversation?.conversationType) {
-        "PAIR" -> {
-            contact
-        }
-        "GROUP" -> {
-            if (matchedConversation.conversationName.isNullOrBlank()){
-                "Nhóm chưa có tên"
-            } else {
-                matchedConversation.conversationName
+            conversationViewModel.getAllConversation(userId = userId)
+            if (dataChanged) {
+                conversationViewModel.getAllMessage(conversationId = conversationId)
+                DataChangeHelper.setDataChanged(activity, false)
             }
         }
-        else -> "Unknow"
-    }
-    val color: List<String> = remember(conversationId, conversation) {
-        val raw = matchedConversation?.themeColor // String? JSON như: ["0xFFF...", ...]
-        val parsed = runCatching {
-            if (raw.isNullOrBlank()) emptyList()
-            else Gson().fromJson(raw, Array<String>::class.java).toList()
-        }.getOrDefault(emptyList())
+        val listState = rememberLazyListState()
+        val messages by conversationViewModel.messages.collectAsState()
+        val conversation by conversationViewModel.conversation.collectAsState()
+        val defaultColor = listOf(
+            "0xFFFFFFFF",
+            "0xFFFFFFFF",
+            "0xFFFFFFFF",
+            "0xFF2196F3",
+            "0xFF000000",
+            "0xFFFFFFFF"
+        )
 
-        if (parsed.size >= 3) parsed else defaultColor
-    }
+        var conversationName by remember { mutableStateOf("") }
 
-    Scaffold(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(
-                brush = Brush.verticalGradient(
-                    colors = listOf(
-                        Color(color[0].removePrefix("0x").toLong(16)),
-                        Color(color[1].removePrefix("0x").toLong(16)),
-                        Color(color[2].removePrefix("0x").toLong(16))
-                    )
-                )
-            ),
-        containerColor = Color.Transparent,
-        topBar = {
-            TopBoxChat(
-                contact = conversationName,
-                navHostController = navHostController,
-                userId = userId,
-                color = color,
-                conversationId = conversationId
-            )
-        },
-        bottomBar = {
-            BottomBoxChat(
-                conversationViewModel = conversationViewModel,
-                userId = userId,
-                conversationId = conversationId,
-                activity = activity,
-                color = color
-            )
+        val matchedConversation = conversation.find { it.id == conversationId }
+
+        conversationName = when (matchedConversation?.conversationType) {
+            "PAIR" -> {
+                contact
+            }
+
+            "GROUP" -> {
+                if (matchedConversation.conversationName.isNullOrBlank()) {
+                    "Nhóm chưa có tên"
+                } else {
+                    matchedConversation.conversationName
+                }
+            }
+
+            else -> "Unknow"
         }
-    ) { paddingValues ->
-        LazyColumn(
-            state = listState,
+        val color: List<String> = remember(conversationId, conversation) {
+            val raw = matchedConversation?.themeColor // String? JSON như: ["0xFFF...", ...]
+            val parsed = runCatching {
+                if (raw.isNullOrBlank()) emptyList()
+                else Gson().fromJson(raw, Array<String>::class.java).toList()
+            }.getOrDefault(emptyList())
+
+            if (parsed.size >= 3) parsed else defaultColor
+        }
+
+        Scaffold(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(paddingValues),
-            contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp)
-        ) {
-            items(messages) { ms ->
-                MessageItem(message = ms, userId = userId, color = color)
+                .background(
+                    brush = Brush.verticalGradient(
+                        colors = listOf(
+                            Color(color[0].removePrefix("0x").toLong(16)),
+                            Color(color[1].removePrefix("0x").toLong(16)),
+                            Color(color[2].removePrefix("0x").toLong(16))
+                        )
+                    )
+                ),
+            containerColor = Color.Transparent,
+            contentWindowInsets = WindowInsets.safeDrawing,
+            topBar = {
+                TopBoxChat(
+                    contact = conversationName,
+                    navHostController = navHostController,
+                    userId = userId,
+                    color = color,
+                    conversationId = conversationId
+                )
+            },
+            bottomBar = {
+                BottomBoxChat(
+                    conversationViewModel = conversationViewModel,
+                    userId = userId,
+                    conversationId = conversationId,
+                    activity = activity,
+                    color = color
+                )
+            }
+        ) { paddingValues ->
+            LazyColumn(
+                state = listState,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(paddingValues),
+                contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp)
+            ) {
+                items(messages) { ms ->
+                    MessageItem(message = ms, userId = userId, color = color)
+                }
+            }
+        }
+        LaunchedEffect(messages.size) {
+            if (messages.isNotEmpty()) {
+                listState.animateScrollToItem(messages.size - 1)
             }
         }
     }
-    LaunchedEffect(messages.size) {
-        if (messages.isNotEmpty()) {
-            listState.animateScrollToItem(messages.size - 1)
-        }
-    }
-
 }

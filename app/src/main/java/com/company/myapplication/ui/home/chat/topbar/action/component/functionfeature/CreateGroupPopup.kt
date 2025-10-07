@@ -133,6 +133,7 @@ fun CreateGroupPopup (
                                                 context = context
                                             )
                                         }
+                                        onDismiss()
                                     },
                                 fontFamily = titleFont
                             )

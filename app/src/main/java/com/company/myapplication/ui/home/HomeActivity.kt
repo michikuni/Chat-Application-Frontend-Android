@@ -7,9 +7,12 @@ import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.HorizontalDivider
@@ -47,90 +50,99 @@ fun HomeScreen(
     navHostController: NavHostController,
     userViewModel: UserViewModel
 ){
-    val userId = UserSharedPreferences.getId(activity)
-    val prefs = activity.getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
-    var dataChanged by remember { mutableStateOf(DataChangeHelper.hasDataChanged(activity)) }
+    Column(modifier = Modifier
+        .fillMaxSize()
+        .background(backgroundColor)
+        .windowInsetsPadding(WindowInsets.safeDrawing)
+    ) {
+        val userId = UserSharedPreferences.getId(activity)
+        val prefs = activity.getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
+        var dataChanged by remember { mutableStateOf(DataChangeHelper.hasDataChanged(activity)) }
 
-    LaunchedEffect(Unit) {
-        userViewModel.getUserInfo(userId = userId)
-    }
-    // Lắng nghe SharedPreferences thay đổi
-    DisposableEffect(prefs) {
-        val listener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
-            if (key == "data_changed") {
-                dataChanged = DataChangeHelper.hasDataChanged(activity)
+        LaunchedEffect(Unit) {
+            userViewModel.getUserInfo(userId = userId)
+        }
+        // Lắng nghe SharedPreferences thay đổi
+        DisposableEffect(prefs) {
+            val listener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
+                if (key == "data_changed") {
+                    dataChanged = DataChangeHelper.hasDataChanged(activity)
+                }
+            }
+            prefs.registerOnSharedPreferenceChangeListener(listener)
+            onDispose {
+                prefs.unregisterOnSharedPreferenceChangeListener(listener)
             }
         }
-        prefs.registerOnSharedPreferenceChangeListener(listener)
-        onDispose {
-            prefs.unregisterOnSharedPreferenceChangeListener(listener)
-        }
-    }
 
-    // Khi dataChanged = true → reload
-    LaunchedEffect(dataChanged) {
-        conversationViewModel.getAllConversation(userId)
-        if (dataChanged) {
+        // Khi dataChanged = true → reload
+        LaunchedEffect(dataChanged) {
             conversationViewModel.getAllConversation(userId)
-            DataChangeHelper.setDataChanged(activity, false)
+            if (dataChanged) {
+                conversationViewModel.getAllConversation(userId)
+                DataChangeHelper.setDataChanged(activity, false)
+            }
         }
-    }
 
-    val userInfo by userViewModel.userInfo.collectAsState()
-    val listConversation by conversationViewModel.conversation.collectAsState()
-    var searchQuery by remember { mutableStateOf("") }
-    val filterUser = listConversation.filter {
-        it.name.contains(searchQuery, ignoreCase = true)
-    }
-    Scaffold (
-        topBar = {
-            ChatTopBar(
-                activity = activity,
-                friendViewModel = friendViewModel,
-                navHostController = navHostController
-            ) },
-        bottomBar = {
-            val currentBackStackEntry = navHostController.currentBackStackEntryAsState().value
-            val currentRoute = currentBackStackEntry?.destination?.route?: ""
-            BottomNavigationBar(
-                navController = navHostController,
-                currentRoute = currentRoute,
-                color = backgroundColor
-            )
+        val userInfo by userViewModel.userInfo.collectAsState()
+        val listConversation by conversationViewModel.conversation.collectAsState()
+        var searchQuery by remember { mutableStateOf("") }
+        val filterUser = listConversation.filter {
+            it.name.contains(searchQuery, ignoreCase = true)
         }
-    ) { paddingValues ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues)
-        ) {
-            SearchBar(
-                query = searchQuery,
-                onQueryChange = { searchQuery = it },
+        Scaffold(
+            contentWindowInsets = WindowInsets.safeDrawing,
+            topBar = {
+                ChatTopBar(
+                    activity = activity,
+                    friendViewModel = friendViewModel,
+                    navHostController = navHostController
+                )
+            },
+            bottomBar = {
+                val currentBackStackEntry = navHostController.currentBackStackEntryAsState().value
+                val currentRoute = currentBackStackEntry?.destination?.route ?: ""
+                BottomNavigationBar(
+                    navController = navHostController,
+                    currentRoute = currentRoute,
+                    color = backgroundColor
+                )
+            }
+        ) { paddingValues ->
+            Column(
                 modifier = Modifier
-                    .background(color = topAppBarColor)
-            )
-            LazyColumn(
-                modifier = Modifier
-                    .weight(1f)
-                    .fillMaxWidth(),
-                contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp)
+                    .fillMaxSize()
+                    .padding(paddingValues)
             ) {
-                items(items = filterUser) { user ->
+                SearchBar(
+                    query = searchQuery,
+                    onQueryChange = { searchQuery = it },
+                    modifier = Modifier
+                        .background(color = topAppBarColor)
+                )
+                LazyColumn(
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxWidth(),
+                    contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp)
+                ) {
+                    items(items = filterUser) { user ->
 //                    Log.e("HOMEE", user.toString())
 //                    Log.e("HOMEE", user.name)
 //                    Log.e("HOMEE", user.membersIds.toString())
 //                    Log.e("HOMEE", user.pairAvatar.toString())
-                    ChatItem(
-                        conversation = user,
-                        navHostController = navHostController,
-                        context = activity,
-                        userInfo = userInfo ?: UserResponse(-1, "", "", "", null))
-                    HorizontalDivider(
-                        color = lineBreakMessage,
-                        thickness = 0.75.dp,
-                        modifier = Modifier.padding(start = 75.dp)
-                    )
+                        ChatItem(
+                            conversation = user,
+                            navHostController = navHostController,
+                            context = activity,
+                            userInfo = userInfo ?: UserResponse(-1, "", "", "", null)
+                        )
+                        HorizontalDivider(
+                            color = lineBreakMessage,
+                            thickness = 0.75.dp,
+                            modifier = Modifier.padding(start = 75.dp)
+                        )
+                    }
                 }
             }
         }

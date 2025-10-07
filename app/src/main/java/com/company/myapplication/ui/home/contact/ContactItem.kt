@@ -16,6 +16,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -46,35 +47,34 @@ fun ContactItem(
     }
     Row (
         modifier = Modifier
-            .background(
-                if (isSelected) Color(0xFFEEEEEE) else Color.Transparent,
-                shape = RoundedCornerShape(10.dp)
-            )
+            .clip(RoundedCornerShape(16.dp))
             .fillMaxWidth()
-            .padding(12.dp)
+            .height(60.dp)
+            .background(
+                if (isSelected) Color(0xFFEEEEEE) else Color.White
+            )
             .clickable{
                 isSelected = !isSelected
                 navHostController.navigate("box_chat/${conversationId}/${contact.name}")
             },
         verticalAlignment = Alignment.CenterVertically
     ){
-        Box{
-            Image(
-                modifier = Modifier
-                    .size(50.dp)
-                    .clip(CircleShape),
-                contentDescription = null,
-                painter = rememberAsyncImagePainter(
-                    model = "${ApiConfig.BASE_URL}/api/users/get_avatar/${contact.id}",
-                    error = painterResource(R.drawable.person),
-                    fallback = painterResource(R.drawable.person)
-                )
+        Image(
+            modifier = Modifier
+                .size(50.dp)
+                .clip(CircleShape)
+                .align (Alignment.CenterVertically),
+            contentDescription = null,
+            painter = rememberAsyncImagePainter(
+                model = "${ApiConfig.BASE_URL}/api/users/get_avatar/${contact.id}",
+                error = painterResource(R.drawable.person),
+                fallback = painterResource(R.drawable.person)
             )
-                    }
-        Spacer(modifier = Modifier.width(12.dp))
+        )
 
-        Column (modifier = Modifier
-            .weight(1f)
+        Column(modifier = Modifier
+            .fillMaxWidth()
+            .padding(10.dp)
         ){
             Text(text = contact.name,
                 fontWeight = FontWeight.Bold,

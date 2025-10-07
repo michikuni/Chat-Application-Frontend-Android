@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Call
+import androidx.compose.material.icons.filled.Camera
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
@@ -35,10 +36,10 @@ fun BottomNavigationBar(
             onClick = { navController.navigate("contact")}
         )
         NavigationBarItem(
-            icon = { Icon(Icons.Default.Call, contentDescription = null) },
-            label = { Text(text = "Gọi", fontFamily = titleFont) },
-            selected = currentRoute == "call",
-            onClick = {}
+            icon = { Icon(Icons.Default.Camera, contentDescription = null) },
+            label = { Text(text = "Khoảnh khắc", fontFamily = titleFont) },
+            selected = currentRoute == "moment",
+            onClick = { navController.navigate("moment") }
         )
         NavigationBarItem(
             icon = { Icon(FontAwesomeIcons.Brands.Weixin, contentDescription = null, modifier = Modifier.size(24.dp)) },

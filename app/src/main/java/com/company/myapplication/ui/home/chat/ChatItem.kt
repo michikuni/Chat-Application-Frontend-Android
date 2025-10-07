@@ -71,9 +71,9 @@ fun ChatItem(
     val time = convertTimestamp(conversationViewFilter.createdAt.toString())
     Row(
         modifier = Modifier
+            .clip(RoundedCornerShape(10.dp))
             .background(
-                if (isSelected) Color(0xFFEEEEEE) else Color.Transparent,
-                shape = RoundedCornerShape(10.dp)
+                if (isSelected) Color(0xFFEEEEEE) else Color.White
             )
             .clickable {
                 isSelected = !isSelected

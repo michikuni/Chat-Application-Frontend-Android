@@ -10,6 +10,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.company.myapplication.ui.home.ContactScreen
 import com.company.myapplication.ui.home.HomeScreen
+import com.company.myapplication.ui.home.MomentScreen
 import com.company.myapplication.ui.home.SettingScreen
 import com.company.myapplication.ui.home.chat.boxchat.BoxChatScreen
 import com.company.myapplication.ui.home.chat.boxchat.topbar.info.InfoScreen
@@ -31,7 +32,7 @@ fun AppNavigation(activity: Activity) {
     val authViewModel = remember { AuthViewModel(activity) }
     val userViewModel = remember { UserViewModel(activity) }
 
-    NavHost(navController = navController, startDestination = "splash") {
+    NavHost(navController = navController, startDestination = "contact") {
         composable(route = "splash") {
             SplashScreen(
                 context = activity,
@@ -84,6 +85,13 @@ fun AppNavigation(activity: Activity) {
                 },
                 authViewModel = authViewModel,
                 userViewModel = userViewModel
+            )
+        }
+
+        composable ("moment"){
+            MomentScreen(
+                navHostController = navController,
+                context = activity
             )
         }
 

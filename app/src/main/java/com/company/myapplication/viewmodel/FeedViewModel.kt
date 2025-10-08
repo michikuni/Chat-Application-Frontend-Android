@@ -27,15 +27,14 @@ class FeedViewModel(activity: Activity): ViewModel(){
             try {
                 val res = repo.postNewsFeed(context, userId, content, mediaUri)
                 _state.value = res.body() ?: ApiResponse(error = "Empty response")
-                delay(1000)
-                _state.value = null
             } catch (e: Exception) {
                 _state.value = ApiResponse(error = e.message)
-                delay(1000)
-                _state.value = null
             } finally {
                 _loading.value = false
             }
         }
+    }
+    fun clearState() {
+        _state.value = null
     }
 }

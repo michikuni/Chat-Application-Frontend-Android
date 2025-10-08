@@ -170,6 +170,7 @@ fun PostFeedDialog(
                         LaunchedEffect(it.message) {
                             delay(1500)
                             onDismiss()
+                            feedViewModel.clearState()
                         }
                     }
                 }

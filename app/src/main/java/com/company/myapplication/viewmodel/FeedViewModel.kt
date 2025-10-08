@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.company.myapplication.data.model.response.ApiResponse
 import com.company.myapplication.repository.FeedRepository
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -26,8 +27,12 @@ class FeedViewModel(activity: Activity): ViewModel(){
             try {
                 val res = repo.postNewsFeed(context, userId, content, mediaUri)
                 _state.value = res.body() ?: ApiResponse(error = "Empty response")
+                delay(1000)
+                _state.value = null
             } catch (e: Exception) {
                 _state.value = ApiResponse(error = e.message)
+                delay(1000)
+                _state.value = null
             } finally {
                 _loading.value = false
             }

@@ -34,7 +34,7 @@ fun AppNavigation(activity: Activity) {
     val userViewModel = remember { UserViewModel(activity) }
     val feedViewModel = remember { FeedViewModel(activity) }
 
-    NavHost(navController = navController, startDestination = "moment") {
+    NavHost(navController = navController, startDestination = "splash") {
         composable(route = "splash") {
             SplashScreen(
                 context = activity,

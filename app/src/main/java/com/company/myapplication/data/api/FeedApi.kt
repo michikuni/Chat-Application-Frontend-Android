@@ -9,7 +9,7 @@ import retrofit2.http.*
 
 interface FeedApi {
     @Multipart
-    @POST("/post_newsfeed/{userId}")
+    @POST("api/feed/post_newsfeed/{userId}")
     suspend fun postNewsFeed(
         @Path("userId") userId: Long,
         @Part("content") content: RequestBody?,

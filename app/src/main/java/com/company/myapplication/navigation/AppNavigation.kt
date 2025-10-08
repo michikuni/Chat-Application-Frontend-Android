@@ -21,6 +21,7 @@ import com.company.myapplication.ui.register.RegisterScreen
 import com.company.myapplication.ui.splash.SplashScreen
 import com.company.myapplication.viewmodel.AuthViewModel
 import com.company.myapplication.viewmodel.ConversationViewModel
+import com.company.myapplication.viewmodel.FeedViewModel
 import com.company.myapplication.viewmodel.FriendViewModel
 import com.company.myapplication.viewmodel.UserViewModel
 
@@ -31,8 +32,9 @@ fun AppNavigation(activity: Activity) {
     val friendViewModel = remember { FriendViewModel(activity) }
     val authViewModel = remember { AuthViewModel(activity) }
     val userViewModel = remember { UserViewModel(activity) }
+    val feedViewModel = remember { FeedViewModel(activity) }
 
-    NavHost(navController = navController, startDestination = "splash") {
+    NavHost(navController = navController, startDestination = "moment") {
         composable(route = "splash") {
             SplashScreen(
                 context = activity,
@@ -91,7 +93,8 @@ fun AppNavigation(activity: Activity) {
         composable ("moment"){
             MomentScreen(
                 navHostController = navController,
-                context = activity
+                context = activity,
+                feedViewModel = feedViewModel
             )
         }
 

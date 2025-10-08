@@ -1,6 +1,7 @@
 package com.company.myapplication.repository.interceptor
 
 import android.content.Context
+import android.util.Log
 import com.company.myapplication.util.UserSharedPreferences
 import okhttp3.*
 
@@ -15,6 +16,7 @@ class AuthInterceptor(private val context: Context) : Interceptor {
         } else {
             chain.request()
         }
+        Log.e("AuthInterceptor", "Authorization Header: Bearer $token")
 
         val response = chain.proceed(request)
 

@@ -18,6 +18,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.compose.rememberAsyncImagePainter
 import com.company.myapplication.R
@@ -61,46 +62,54 @@ fun MessageItem(
             )
             Spacer(modifier = Modifier.width(4.dp))
         }
-
-        // Bong bóng chat
-        Box(
-            modifier = Modifier
-                .widthIn(max = screenWidth * 0.6f)
-                .background(
-                    color = if (isCurrentUser)
-                        Color(color[3].removePrefix("0x").toLong(16))
-                    else
-                        Color(color[4].removePrefix("0x").toLong(16)),
-                    shape = RoundedCornerShape(16.dp)
+        Column {
+            if (!isCurrentUser) {
+                Text(
+                    text = message.senderId.name, fontFamily = titleFont,
+                    fontSize = 10.sp, color = Color.LightGray,
+                    modifier = Modifier.padding(horizontal = 5.dp, vertical = 2.dp)
                 )
-                .padding(8.dp)
-        ) {
-            when {
-                message.content != null -> {
-                    Text(
-                        text = message.content,
+            }
+            // Bong bóng chat
+            Box(
+                modifier = Modifier
+                    .widthIn(max = screenWidth * 0.6f)
+                    .background(
                         color = if (isCurrentUser)
-                            Color(color[4].removePrefix("0x").toLong(16))
+                            Color(color[3].removePrefix("0x").toLong(16))
                         else
-                            Color(color[5].removePrefix("0x").toLong(16)),
-                        fontFamily = titleFont,
-                        modifier = Modifier.padding(8.dp)
+                            Color(color[4].removePrefix("0x").toLong(16)),
+                        shape = RoundedCornerShape(16.dp)
                     )
-                }
+                    .padding(8.dp)
+            ) {
 
-                message.mediaFile != null -> {
-                    AsyncImage(
-                        model = image,
-                        contentDescription = null,
-                        contentScale = ContentScale.Crop,
-                        modifier = Modifier
-                            .clip(RoundedCornerShape(12.dp))
-                            .sizeIn(maxWidth = screenWidth * 0.5f, maxHeight = 250.dp)
-                    )
+                when {
+                    message.content != null -> {
+                        Text(
+                            text = message.content,
+                            color = if (isCurrentUser)
+                                Color(color[4].removePrefix("0x").toLong(16))
+                            else
+                                Color(color[5].removePrefix("0x").toLong(16)),
+                            fontFamily = titleFont,
+                            modifier = Modifier.padding(8.dp)
+                        )
+                    }
+
+                    message.mediaFile != null -> {
+                        AsyncImage(
+                            model = image,
+                            contentDescription = null,
+                            contentScale = ContentScale.Crop,
+                            modifier = Modifier
+                                .clip(RoundedCornerShape(12.dp))
+                                .sizeIn(maxWidth = screenWidth * 0.5f, maxHeight = 250.dp)
+                        )
+                    }
                 }
             }
         }
-
         // Nếu là tin nhắn của current user thì chừa khoảng trống cho đẹp
 //        if (isCurrentUser) {
 //            Spacer(modifier = Modifier.width(40.dp))

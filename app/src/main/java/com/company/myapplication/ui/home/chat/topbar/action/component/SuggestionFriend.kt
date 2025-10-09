@@ -35,6 +35,7 @@ import com.company.myapplication.repository.ConversationRepository
 import com.company.myapplication.repository.apiconfig.ApiConfig
 import com.company.myapplication.util.backgroundColor
 import com.company.myapplication.util.titleFont
+import com.company.myapplication.viewmodel.FriendViewModel
 
 @Composable
 fun SuggestionFriend(
@@ -42,14 +43,22 @@ fun SuggestionFriend(
     userId: Long,
     friendId: Long,
     navHostController: NavHostController,
-    context: Context
+    context: Context,
+    friendViewModel: FriendViewModel
 ) {
+    val acceptedFriendSuccess = friendViewModel.acceptedFriendSuccess
+    val canceledFriendSuccess = friendViewModel.canceledFriendSuccess
     var isSelected by remember { mutableStateOf(false) }
     var avatarUrl by remember { mutableStateOf("${ApiConfig.BASE_URL}/api/users/get_avatar/${friendId}") }
     val repo = ConversationRepository(context = context)
     var conversationId by remember { mutableLongStateOf(-1) }
     LaunchedEffect(friendId) {
         conversationId = repo.findConversation(userId, friendId)
+    }
+    LaunchedEffect(acceptedFriendSuccess, canceledFriendSuccess) {
+        if (acceptedFriendSuccess || canceledFriendSuccess) {
+            conversationId = repo.findConversation(userId, friendId)
+        }
     }
     Row(
         modifier = Modifier

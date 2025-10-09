@@ -131,7 +131,8 @@ fun CreateConversationPopup(
                         userId = userId,
                         friendId = it.id,
                         navHostController = navHostController,
-                        context = activity
+                        context = activity,
+                        friendViewModel = friendViewModel
                     )
                 }
             }

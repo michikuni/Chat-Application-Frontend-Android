@@ -58,7 +58,7 @@ fun MomentScreen(
     userViewModel: UserViewModel
 ) {
     Log.d("MomentScreen", "🧭 Mở MomentScreen")
-
+    val loading by feedViewModel.loading.collectAsState()
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -77,7 +77,11 @@ fun MomentScreen(
             feedViewModel.getAllFeed(userId)
         }
         val allFeed by feedViewModel.allFeed.collectAsState()
-
+        LaunchedEffect(loading) {
+            if (!loading){
+                feedViewModel.getAllFeed(userId)
+            }
+        }
         LaunchedEffect(Unit) {
             Log.e("MomentScreen", "📡 Gọi userViewModel.getUserInfo($userId)")
             userViewModel.getUserInfo(userId)

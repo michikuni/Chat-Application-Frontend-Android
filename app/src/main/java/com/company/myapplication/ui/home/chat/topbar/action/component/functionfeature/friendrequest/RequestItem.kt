@@ -34,6 +34,7 @@ import coil.compose.AsyncImage
 import coil.compose.rememberAsyncImagePainter
 import com.company.myapplication.R
 import com.company.myapplication.repository.apiconfig.ApiConfig
+import com.company.myapplication.util.UserSharedPreferences
 import com.company.myapplication.util.titleFont
 import com.company.myapplication.viewmodel.FriendViewModel
 
@@ -45,6 +46,7 @@ fun RequestItem(
     friendshipId: Long,
     activity: Activity
 ){
+    val userId = UserSharedPreferences.getId(activity)
     val avatarUrl by remember {
         mutableStateOf(
             if (friendId != -1L)
@@ -101,6 +103,8 @@ fun RequestItem(
                     friendViewModel.canceledFriendSuccess.let {
                         Toast.makeText(activity, "Đã thu hồi lời mời kết bạn", Toast.LENGTH_SHORT).show()
                     }
+                    friendViewModel.getRequestFriendRequest(userId = userId)
+
                 }
             ) {
                 Text(text = "Thu hồi", fontSize = 12.sp, fontFamily = titleFont)

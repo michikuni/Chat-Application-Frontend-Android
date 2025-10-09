@@ -52,14 +52,32 @@ fun FriendRequestPendingPopup(
     onDismiss: () -> Unit
 ) {
     val userId = UserSharedPreferences.getId(activity)
+
+    // ✅ Quan sát danh sách bạn bè
+    val usersPending by friendViewModel.pendingFriends.collectAsState()
+    val usersRequest by friendViewModel.requestFriends.collectAsState()
+
+    // ✅ Quan sát trạng thái thành công khi chấp nhận / từ chối
+    val acceptedFriendSuccess = friendViewModel.acceptedFriendSuccess
+    val canceledFriendSuccess = friendViewModel.canceledFriendSuccess
+
+    // ✅ Gọi API lần đầu
     LaunchedEffect(Unit) {
         friendViewModel.getPendingFriendRequest(userId)
-    }
-    val usersPending by friendViewModel.pendingFriends.collectAsState()
-    LaunchedEffect(Unit) {
         friendViewModel.getRequestFriendRequest(userId)
     }
-    val usersRequest by friendViewModel.requestFriends.collectAsState()
+
+    // ✅ Mỗi khi chấp nhận hoặc từ chối thành công → load lại danh sách
+    LaunchedEffect(acceptedFriendSuccess, canceledFriendSuccess) {
+        if (acceptedFriendSuccess || canceledFriendSuccess) {
+            friendViewModel.getPendingFriendRequest(userId)
+            friendViewModel.getRequestFriendRequest(userId)
+
+            // Reset lại flag để không gọi lại nhiều lần
+            friendViewModel.acceptedFriendSuccess = false
+            friendViewModel.canceledFriendSuccess = false
+        }
+    }
 
     var selectedTabIndex by remember { mutableIntStateOf(0) }
     val tabTitles = listOf("Đã nhận", "Đã gửi")
@@ -72,10 +90,7 @@ fun FriendRequestPendingPopup(
                 .fillMaxWidth()
                 .padding(16.dp)
         ) {
-            Column(
-                modifier = Modifier
-                    .padding(16.dp)
-            ) {
+            Column(modifier = Modifier.padding(16.dp)) {
                 TabRow(
                     selectedTabIndex = selectedTabIndex,
                     contentColor = Color.LightGray,
@@ -85,17 +100,27 @@ fun FriendRequestPendingPopup(
                         Tab(
                             selected = selectedTabIndex == index,
                             onClick = { selectedTabIndex = index },
-                            text = { Text(title , fontFamily = titleFont) }
+                            text = { Text(title, fontFamily = titleFont) }
                         )
                     }
                 }
+
                 Spacer(modifier = Modifier.height(16.dp))
 
                 when (selectedTabIndex) {
-                    0 -> TabPending(users = usersPending, onDismiss = onDismiss, activity = activity, friendViewModel = friendViewModel)
-                    1 -> TabRequest(users = usersRequest, onDismiss = onDismiss, activity = activity, friendViewModel = friendViewModel)
+                    0 -> TabPending(
+                        users = usersPending,
+                        onDismiss = onDismiss,
+                        activity = activity,
+                        friendViewModel = friendViewModel
+                    )
+                    1 -> TabRequest(
+                        users = usersRequest,
+                        onDismiss = onDismiss,
+                        activity = activity,
+                        friendViewModel = friendViewModel
+                    )
                 }
-                Spacer(modifier = Modifier.height(16.dp))
             }
         }
     }

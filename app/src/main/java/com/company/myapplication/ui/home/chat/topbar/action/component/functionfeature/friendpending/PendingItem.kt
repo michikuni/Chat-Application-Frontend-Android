@@ -19,6 +19,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -33,6 +34,7 @@ import coil.compose.AsyncImage
 import coil.compose.rememberAsyncImagePainter
 import com.company.myapplication.R
 import com.company.myapplication.repository.apiconfig.ApiConfig
+import com.company.myapplication.util.UserSharedPreferences
 import com.company.myapplication.util.titleFont
 import com.company.myapplication.viewmodel.FriendViewModel
 
@@ -44,6 +46,7 @@ fun PendingItem(
     friendshipId: Long,
     activity: Activity
 ){
+    val userId = UserSharedPreferences.getId(activity)
     val avatarUrl by remember {
         mutableStateOf(
             if (friendId != -1L)
@@ -98,6 +101,7 @@ fun PendingItem(
                     friendViewModel.acceptedFriendSuccess.let {
                         Toast.makeText(activity, "Đã chấp nhận lời mời kết bạn", Toast.LENGTH_SHORT).show()
                     }
+                    friendViewModel.getPendingFriendRequest(userId = userId)
                 }
             ) {
                 Text(text = "Chấp nhận", fontSize = 10.sp, fontFamily = titleFont)
@@ -117,6 +121,7 @@ fun PendingItem(
                     friendViewModel.canceledFriendSuccess.let {
                         Toast.makeText(activity, "Đã từ chối lời mời kết bạn", Toast.LENGTH_SHORT).show()
                     }
+                    friendViewModel.getPendingFriendRequest(userId = userId)
                 }
             ) {
                 Text(text = "Từ chối", fontSize = 10.sp, fontFamily = titleFont)

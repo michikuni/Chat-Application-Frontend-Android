@@ -1,8 +1,11 @@
 package com.company.myapplication.ui.home.chat.boxchat.topbar.info.function_screen
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -66,35 +69,38 @@ fun MediaScreen(
         }
     ){ paddingValues ->
         LazyVerticalGrid(
-            columns = GridCells.Adaptive(100.dp),
-            contentPadding = PaddingValues(
-                start = 12.dp,
-                top = 16.dp,
-                end = 12.dp,
-                bottom = 16.dp
-            ),
+            columns = GridCells.Adaptive(120.dp),
+            horizontalArrangement = Arrangement.Start, // chỉ có từ compose 1.6.0
+            contentPadding = PaddingValues(12.dp),
             modifier = Modifier.padding(paddingValues)
-        ){
-            items(items = messages.asReversed()) { index ->
-                if (index.mediaFile != null){
-                    Card(
-                        modifier = Modifier
-                            .padding(4.dp)
-                            .fillMaxSize(),
-                    ) {
-                        Image(
-                            painter = rememberAsyncImagePainter(
-                                model = "${ApiConfig.BASE_URL}/api/chats/getMediaFile/${index.mediaFile}"
-                            ),
-                            contentDescription = null,
-                            modifier = Modifier
-                                .size(128.dp)
-                                .clip(RoundedCornerShape(8.dp)),
-                            contentScale = ContentScale.Crop
-                        )
-                    }
+        ) {
+            items(messages.asReversed()) { message ->
+                if (message.mediaFile != null) {
+                    ImageCard(message.mediaFile)
                 }
             }
         }
+
+
+
     }
 }
+@Composable
+fun ImageCard(mediaFile: String) {
+    Card(
+        modifier = Modifier
+            .padding(4.dp)
+            .aspectRatio(1f), // giữ ảnh vuông
+        shape = RoundedCornerShape(8.dp)
+    ) {
+        Image(
+            painter = rememberAsyncImagePainter(
+                model = "${ApiConfig.BASE_URL}/api/chats/getMediaFile/$mediaFile"
+            ),
+            contentDescription = null,
+            modifier = Modifier.clip(RoundedCornerShape(8.dp)),
+            contentScale = ContentScale.Crop
+        )
+    }
+}
+

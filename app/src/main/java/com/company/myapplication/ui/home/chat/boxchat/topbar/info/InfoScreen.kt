@@ -127,50 +127,50 @@ fun InfoScreen(
                     }
                 }
             }
-            Spacer(modifier = Modifier.padding(10.dp))
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(40.dp)
-                    .background(color = backgroundColor, shape = RoundedCornerShape(10.dp))
-//                    .clickable { onClick() }  // thêm sự kiện bấm
-                    .padding(horizontal = 16.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center
-            ) {
-                Row {
-                    Image(
-                        painter = painterResource(R.drawable.person),
-                        contentDescription = null,
-                        modifier = Modifier
-                            .size(30.dp)
-                            .clip(shape = CircleShape)
-                            .background(color = Color.White)
-                            .padding(4.dp),
-                        colorFilter = ColorFilter.tint(Color.Black)
-                    )
-                    Spacer(modifier = Modifier.padding(10.dp))
-                    Image(
-                        painter = painterResource(R.drawable.bell_fill),
-                        contentDescription = null,
-                        modifier = Modifier
-                            .size(30.dp)
-                            .clip(shape = CircleShape)
-                            .background(color = Color.White)
-                            .padding(4.dp)
-                    )
-                    Spacer(modifier = Modifier.padding(10.dp))
-                    Image(
-                        painter = painterResource(R.drawable.search),
-                        contentDescription = null,
-                        modifier = Modifier
-                            .size(30.dp)
-                            .clip(shape = CircleShape)
-                            .background(color = Color.White)
-                            .padding(4.dp)
-                    )
-                }
-            }
+//            Spacer(modifier = Modifier.padding(10.dp))
+//            Row(
+//                modifier = Modifier
+//                    .fillMaxWidth()
+//                    .height(40.dp)
+//                    .background(color = backgroundColor, shape = RoundedCornerShape(10.dp))
+////                    .clickable { onClick() }  // thêm sự kiện bấm
+//                    .padding(horizontal = 16.dp),
+//                verticalAlignment = Alignment.CenterVertically,
+//                horizontalArrangement = Arrangement.Center
+//            ) {
+//                Row {
+//                    Image(
+//                        painter = painterResource(R.drawable.person),
+//                        contentDescription = null,
+//                        modifier = Modifier
+//                            .size(30.dp)
+//                            .clip(shape = CircleShape)
+//                            .background(color = Color.White)
+//                            .padding(4.dp),
+//                        colorFilter = ColorFilter.tint(Color.Black)
+//                    )
+//                    Spacer(modifier = Modifier.padding(10.dp))
+//                    Image(
+//                        painter = painterResource(R.drawable.bell_fill),
+//                        contentDescription = null,
+//                        modifier = Modifier
+//                            .size(30.dp)
+//                            .clip(shape = CircleShape)
+//                            .background(color = Color.White)
+//                            .padding(4.dp)
+//                    )
+//                    Spacer(modifier = Modifier.padding(10.dp))
+//                    Image(
+//                        painter = painterResource(R.drawable.search),
+//                        contentDescription = null,
+//                        modifier = Modifier
+//                            .size(30.dp)
+//                            .clip(shape = CircleShape)
+//                            .background(color = Color.White)
+//                            .padding(4.dp)
+//                    )
+//                }
+//            }
             Spacer(modifier = Modifier.padding(8.dp))
             Column (modifier = Modifier.padding(horizontal = 15.dp, vertical = 8.dp)){
                 FeatureButton(text = "Thay đổi chủ đề", onClick = { themePopup = true})
@@ -185,7 +185,7 @@ fun InfoScreen(
                     })
                     Spacer(modifier = Modifier.padding(2.dp))
                 }
-                FeatureButton(text = "Chặn", onClick = {})
+//                FeatureButton(text = "Chặn", onClick = {})
                 if (themePopup){
                     ThemePopup (onDismiss = { themePopup = false }, context = context, conversationId = conversationId, conversationViewModel = conversationViewModel)
                 }

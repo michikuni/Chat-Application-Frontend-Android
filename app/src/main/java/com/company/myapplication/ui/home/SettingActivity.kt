@@ -50,8 +50,8 @@ fun SettingScreen(
                     .padding(horizontal = 15.dp, vertical = 0.dp)
             ) {
                 TopSection(context = activity, userViewModel = userViewModel)
-                Spacer(modifier = Modifier.padding(4.dp))
-                FeatureButton(text = "Trang cá nhân", onClick = {})
+//                Spacer(modifier = Modifier.padding(4.dp))
+//                FeatureButton(text = "Trang cá nhân", onClick = {})
                 Spacer(modifier = Modifier.padding(2.dp))
                 FeatureButton(text = "Đăng xuất", onClick = {
                     authViewModel.logout(activity = activity)

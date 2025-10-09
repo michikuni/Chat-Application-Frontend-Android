@@ -88,7 +88,11 @@ fun HomeScreen(
         val listConversation by conversationViewModel.conversation.collectAsState()
         var searchQuery by remember { mutableStateOf("") }
         val filterUser = listConversation.filter {
-            it.name.contains(searchQuery, ignoreCase = true)
+            if (it.conversationType == "PAIR"){
+                it.name.contains(searchQuery, ignoreCase = true)
+            } else {
+                it.conversationName?.contains(searchQuery, ignoreCase = true) ?: false
+            }
         }
         Scaffold(
             contentWindowInsets = WindowInsets.safeDrawing,

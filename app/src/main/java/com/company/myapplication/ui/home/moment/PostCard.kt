@@ -26,6 +26,12 @@ import com.company.myapplication.R
 import com.company.myapplication.data.model.feed.FeedDTO
 import com.company.myapplication.data.model.response.UserResponse
 import com.company.myapplication.repository.apiconfig.ApiConfig
+import java.time.Duration
+import java.time.Instant
+import java.time.ZoneId
+import java.time.ZoneOffset
+import java.time.format.DateTimeFormatter
+import java.util.Locale
 
 @Composable
 fun PostCard(
@@ -39,7 +45,6 @@ fun PostCard(
         colors = CardDefaults.cardColors(containerColor = Color.White),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
-        val media by remember { mutableStateOf("${ApiConfig.BASE_URL}/api/feed/getMediaFile/${feedInfo.mediaFile}") }
         Column {
             // Phần Header: Avatar, Tên người dùng, Thời gian
             PostHeader(
@@ -70,17 +75,17 @@ fun PostCard(
                 )
             }
             // Phần thống kê Like, Comment
-            EngagementStats(likeCount = "", commentCount = "", likeIconResId = R.drawable.like)
+//            EngagementStats(likeCount = "", commentCount = "", likeIconResId = R.drawable.like)
 
             // Dấu gạch ngang
-            Divider(
-                color = Color.LightGray,
-                thickness = 1.dp,
-                modifier = Modifier.padding(horizontal = 16.dp)
-            )
+//            Divider(
+//                color = Color.LightGray,
+//                thickness = 1.dp,
+//                modifier = Modifier.padding(horizontal = 16.dp)
+//            )
 
             // Phần nút chức năng: Like, Comment
-            ActionButtons()
+//            ActionButtons()
         }
     }
 }
@@ -91,6 +96,34 @@ fun PostHeader(
     postTime: String,
     userId: Long
 ) {
+    fun formatRelativeTime(isoTime: String): String {
+        return try {
+            // Parse ISO string → Instant
+            val instant = Instant.parse(isoTime)
+            // Cộng thêm 7 tiếng cho múi giờ VN
+            val adjusted = instant.plusSeconds(7 * 3600)
+            val now = Instant.now().plusSeconds(7 * 3600)
+
+            val duration = Duration.between(adjusted, now)
+            val minutes = duration.toMinutes()
+            val hours = duration.toHours()
+            val days = duration.toDays()
+
+            when {
+                minutes < 1 -> "Vừa xong"
+                minutes < 60 -> "$minutes phút trước"
+                hours < 24 -> "$hours giờ trước"
+                days < 7 -> "$days ngày trước"
+                else -> {
+                    val formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy", Locale("vi", "VN"))
+                        .withZone(ZoneOffset.ofHours(7))
+                    formatter.format(adjusted)
+                }
+            }
+        } catch (e: Exception) {
+            "Không xác định"
+        }
+    }
     val avatarUrl by remember { mutableStateOf("${ApiConfig.BASE_URL}/api/users/get_avatar/${userId}") }
     Row(
         modifier = Modifier
@@ -111,12 +144,12 @@ fun PostHeader(
         )
         Column(modifier = Modifier.padding(start = 12.dp)) {
             Text(text = userName, fontWeight = FontWeight.Bold, fontSize = 16.sp)
-            Text(text = postTime, color = Color.Gray, fontSize = 14.sp)
+            Text(text = formatRelativeTime(postTime), color = Color.Gray, fontSize = 14.sp)
         }
         Spacer(modifier = Modifier.weight(1f))
-        IconButton(onClick = { /* TODO: Handle more options click */ }) {
-            Icon(Icons.Default.MoreHoriz, contentDescription = "More Options")
-        }
+//        IconButton(onClick = { /* TODO: Handle more options click */ }) {
+//            Icon(Icons.Default.MoreHoriz, contentDescription = "More Options")
+//        }
     }
 }
 

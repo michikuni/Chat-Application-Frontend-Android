@@ -119,7 +119,7 @@ fun ChatItem(
                 )
 
                 if (userId == conversationViewFilter.senderId){
-                    if (conversationViewFilter.content != null){
+                    if (!conversationViewFilter.content.isNullOrBlank()){
                         Text(
                             text = "Bạn: ${conversationViewFilter.content}",
                             maxLines = 1,
@@ -128,7 +128,7 @@ fun ChatItem(
                             fontSize = 14.sp,
                             fontFamily = titleFont
                         )
-                    } else {
+                    } else if (!conversationViewFilter.mediaFile.isNullOrBlank()){
                         Text(
                             text = "Bạn đã gửi một ảnh",
                             maxLines = 1,
@@ -137,9 +137,18 @@ fun ChatItem(
                             fontSize = 14.sp,
                             fontFamily = titleFont
                         )
+                    } else{
+                        Text(
+                            text = "",
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                            color = Color.Gray,
+                            fontSize = 14.sp,
+                            fontFamily = titleFont
+                        )
                     }
                 } else {
-                    if (conversationViewFilter.content != null){
+                    if (!conversationViewFilter.content.isNullOrBlank()){
                         Text(
                             text = conversationViewFilter.content,
                             maxLines = 1,
@@ -148,9 +157,18 @@ fun ChatItem(
                             fontSize = 14.sp,
                             fontFamily = titleFont
                         )
+                    }else if (!conversationViewFilter.mediaFile.isNullOrBlank()){
+                        Text(
+                            text = "Bạn đã gửi một ảnh",
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                            color = Color.Gray,
+                            fontSize = 14.sp,
+                            fontFamily = titleFont
+                        )
                     } else {
                         Text(
-                            text = "Đã gửi một ảnh",
+                            text = "",
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis,
                             color = Color.Gray,
@@ -161,7 +179,11 @@ fun ChatItem(
                 }
 
             }
-            Text(text = time, fontSize = 12.sp, color = Color.Gray, fontFamily = titleFont)
+            if (conversationViewFilter.content.isNullOrBlank()){
+                Text(text = convertTimestamp(conversationViewFilter.csCreatedAt.toString()), fontSize = 12.sp, color = Color.Gray, fontFamily = titleFont)
+            } else {
+                Text(text = time, fontSize = 12.sp, color = Color.Gray, fontFamily = titleFont)
+            }
         } else if(conversationViewFilter.conversationType == "GROUP"){
             Box{
                 Image(

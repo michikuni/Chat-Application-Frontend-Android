@@ -51,13 +51,23 @@ fun TopBoxChat(
                 }
             },
             navigationIcon = {
-                IconButton(onClick = {navHostController.popBackStack()}) {
+                IconButton(onClick = {
+                    if (navHostController.previousBackStackEntry != null) {
+                        navHostController.popBackStack()
+                    } else {
+                        // Nếu không còn màn trước thì có thể navigate về màn home hoặc xử lý khác
+                        navHostController.navigate("home") {
+                            popUpTo("home") { inclusive = true }
+                        }
+                    }
+                }) {
                     Icon(
                         painter = painterResource(id = R.drawable.arrow_left_short),
                         contentDescription = null,
                         tint = Color(color[3].removePrefix("0x").toLong(16))
                     )
                 }
+
             },
             actions = {
                 IconButton(onClick = {

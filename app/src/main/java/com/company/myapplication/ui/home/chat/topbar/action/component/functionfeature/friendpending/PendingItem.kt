@@ -2,6 +2,7 @@ package com.company.myapplication.ui.home.chat.topbar.action.component.functionf
 
 import android.app.Activity
 import android.widget.Toast
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -25,9 +26,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import coil.compose.rememberAsyncImagePainter
+import com.company.myapplication.R
 import com.company.myapplication.repository.apiconfig.ApiConfig
 import com.company.myapplication.util.titleFont
 import com.company.myapplication.viewmodel.FriendViewModel
@@ -59,8 +63,12 @@ fun PendingItem(
                 .padding(vertical = 10.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            AsyncImage(
-                model = avatarUrl,
+            Image(
+                painter = rememberAsyncImagePainter(
+                    model = avatarUrl,
+                    error = painterResource(R.drawable.person),
+                    fallback = painterResource(R.drawable.person)
+                ),
                 contentDescription = null,
                 modifier = Modifier
                     .size(50.dp)
@@ -92,7 +100,7 @@ fun PendingItem(
                     }
                 }
             ) {
-                Text(text = "Chấp nhận", fontSize = 12.sp, fontFamily = titleFont)
+                Text(text = "Chấp nhận", fontSize = 10.sp, fontFamily = titleFont)
             }
             Button(
                 modifier = Modifier
@@ -111,7 +119,7 @@ fun PendingItem(
                     }
                 }
             ) {
-                Text(text = "Từ chối", fontSize = 12.sp, fontFamily = titleFont)
+                Text(text = "Từ chối", fontSize = 10.sp, fontFamily = titleFont)
             }
         }
     }

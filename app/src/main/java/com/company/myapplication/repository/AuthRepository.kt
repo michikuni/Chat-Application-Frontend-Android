@@ -10,6 +10,7 @@ import com.company.myapplication.data.model.response.AuthResponse
 import com.company.myapplication.repository.apiconfig.ApiConfig
 import com.company.myapplication.repository.interceptor.AuthInterceptor
 import okhttp3.OkHttpClient
+import org.json.JSONObject
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
@@ -32,19 +33,39 @@ class AuthRepository (context: Context){
     private val retrofit = createRetrofit(context)
     private val authApi = retrofit.create(AuthApi::class.java)
 
-    suspend fun register(name: String, account: String, email:String, password: String): Boolean{
-        val response = authApi.register(RegisterRequest(name, account, email, password))
-        return response.isSuccessful
-    }
-
-    suspend fun login(account: String, password: String):LoginResponse?{
+    suspend fun login(account: String, password: String): LoginResponse? {
         val response = authApi.login(LoginRequest(account, password))
-        return if (response.isSuccessful)
+        return if (response.isSuccessful) {
             response.body()
-        else {
-            null
+        } else {
+            val errorBody = response.errorBody()?.string()
+            val errorMessage = try {
+                // parse JSON lỗi từ backend
+                val errorJson = JSONObject(errorBody ?: "")
+                errorJson.optString("message", "Đăng nhập thất bại")
+            } catch (e: Exception) {
+                "Đăng nhập thất bại"
+            }
+            throw IllegalArgumentException(errorMessage)
         }
     }
+
+    suspend fun register(name: String, account: String, email: String, password: String): Boolean {
+        val response = authApi.register(RegisterRequest(name, account, email, password))
+        return if (response.isSuccessful) {
+            true
+        } else {
+            val errorBody = response.errorBody()?.string()
+            val errorMessage = try {
+                val errorJson = JSONObject(errorBody ?: "")
+                errorJson.optString("message", "Đăng ký thất bại")
+            } catch (e: Exception) {
+                "Đăng ký thất bại"
+            }
+            throw IllegalArgumentException(errorMessage)
+        }
+    }
+
 
     suspend fun checkTokenValid(): AuthResponse? {
         val response = authApi.checkTokenValid()

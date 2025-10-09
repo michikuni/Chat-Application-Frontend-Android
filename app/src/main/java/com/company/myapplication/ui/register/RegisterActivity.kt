@@ -106,7 +106,15 @@ fun RegisterScreen(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        Button(onClick = { viewModel.register(name, account, email, password) },modifier = Modifier.fillMaxWidth().height(45.dp)
+        Button(
+            onClick = {
+                if (password == confirmPassword){
+                    viewModel.register(name, account, email, password)
+                } else {
+                    viewModel.errorMessage = "Mật khẩu không khớp"
+                }
+            },
+            modifier = Modifier.fillMaxWidth().height(45.dp)
         ) {
             Text(text = "Đăng ký", fontFamily = titleFont)
         }
@@ -118,6 +126,11 @@ fun RegisterScreen(
         }
         viewModel.errorMessage?.let {
             Text(text = it, color = Color.Red, fontFamily = titleFont)
+            LaunchedEffect(Unit) {
+                delay(1000)
+                viewModel.resetErrorMessage()
+            }
+
         }
 
         if (viewModel.registerSuccess) {

@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.dp
 import com.company.myapplication.R
 import com.company.myapplication.util.titleFont
 import com.company.myapplication.viewmodel.AuthViewModel
+import kotlinx.coroutines.delay
 
 @Composable
 fun LoginScreen(
@@ -97,6 +98,10 @@ fun LoginScreen(
 
         viewModel.errorMessage?.let {
             Text(text = it, color = Color.Red, fontFamily = titleFont)
+            LaunchedEffect(Unit) {
+                delay(1000)
+                viewModel.resetErrorMessage()
+            }
         }
         Spacer(modifier = Modifier.height(8.dp))
 

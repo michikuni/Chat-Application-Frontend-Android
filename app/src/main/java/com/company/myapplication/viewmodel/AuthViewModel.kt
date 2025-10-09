@@ -19,32 +19,32 @@ class AuthViewModel(activity: Activity): ViewModel(){
     var registerSuccess by mutableStateOf(false)
     var loginSuccess by mutableStateOf(false)
 
-    fun login(activity: Activity, account: String, password: String){
+    fun login(activity: Activity, account: String, password: String) {
         viewModelScope.launch {
             try {
                 UserSharedPreferences.clearSession(activity)
                 val result = repo.login(account, password)
                 val fcmToken = UserSharedPreferences.getFcmToken(activity)
-                Log.d("FCM", "Send token success: $result")
-                if (result != null){
+
+                if (result != null) {
                     val id = result.id
                     val username = result.username
                     val token = result.token
-                    errorMessage = null
                     fcmToken?.let { FcmTokenResponse(userId = id, token = it) }
                         ?.let { fcmRepo.sendToken(it) }
-                    UserSharedPreferences.saveUser(activity, id = id, username = username, token = token)
+
+                    UserSharedPreferences.saveUser(activity, id, username, token)
                     loginSuccess = true
-                } else{
-                    errorMessage = "Login failed can't response token"
+                    errorMessage = null
                 }
-            } catch (e: NullPointerException){
-                errorMessage = "Lỗi đăng nhập ${e.message}"
-            } catch (e: Exception){
-                errorMessage = "Lỗi đăng nhập ${e.message}"
+            } catch (e: IllegalArgumentException) {
+                errorMessage = e.message ?: "Tên đăng nhập hoặc mật khẩu không đúng"
+            } catch (e: Exception) {
+                errorMessage = "Lỗi đăng nhập: ${e.message}"
             }
         }
     }
+
 
     fun logout(activity: Activity) {
         UserSharedPreferences.clearSession(activity)
@@ -63,4 +63,8 @@ class AuthViewModel(activity: Activity): ViewModel(){
             }
         }
     }
+    fun resetErrorMessage() {
+        errorMessage = null
+    }
+
 }

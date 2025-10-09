@@ -3,6 +3,7 @@ package com.company.myapplication.repository
 import android.content.Context
 import android.net.Uri
 import com.company.myapplication.data.api.FeedApi
+import com.company.myapplication.data.model.feed.FeedDTO
 import com.company.myapplication.data.model.response.ApiResponse
 import com.company.myapplication.repository.apiconfig.ApiConfig
 import com.company.myapplication.repository.interceptor.AuthInterceptor
@@ -59,4 +60,7 @@ class FeedRepository (context: Context){
         return feedApi.postNewsFeed(userId, contentPart, mediaPart)
     }
 
+    suspend fun getAllFeedByUserId(userId: Long): List<FeedDTO> {
+        return feedApi.getAllFeed(userId)
+    }
 }

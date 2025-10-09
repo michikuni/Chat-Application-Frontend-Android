@@ -93,8 +93,9 @@ fun AppNavigation(activity: Activity) {
         composable ("moment"){
             MomentScreen(
                 navHostController = navController,
+                feedViewModel = feedViewModel,
                 context = activity,
-                feedViewModel = feedViewModel
+                userViewModel = userViewModel
             )
         }
 

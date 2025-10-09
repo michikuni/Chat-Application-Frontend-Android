@@ -35,9 +35,9 @@ fun SplashScreen(
         alpha.animateTo(1f, animationSpec = tween(1000)) // fade in 1s
         delay(1500)
         if (token != null){
-            Log.e("SPLASH", token)
+//            Log.e("SPLASH", token)
             val response = api.checkTokenValid()
-            Log.e("SPLAH", response?.valid.toString())
+//            Log.e("SPLAH", response?.valid.toString())
             if (response?.valid == true){
                 navHostController.navigate("home"){
                     popUpTo ("splash"){ inclusive = true }

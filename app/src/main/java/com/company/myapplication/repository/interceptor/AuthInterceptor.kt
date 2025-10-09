@@ -16,7 +16,7 @@ class AuthInterceptor(private val context: Context) : Interceptor {
         } else {
             chain.request()
         }
-        Log.e("AuthInterceptor", "Authorization Header: Bearer $token")
+//        Log.e("AuthInterceptor", "Authorization Header: Bearer $token")
 
         val response = chain.proceed(request)
 

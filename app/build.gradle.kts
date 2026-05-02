@@ -29,8 +29,10 @@ android {
             )
         }
     }
-    kotlinOptions {
-        jvmTarget = "17"
+    kotlin {
+        compilerOptions {
+            jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)
+        }
     }
     buildFeatures {
         compose = true
@@ -43,45 +45,59 @@ android {
 }
 
 dependencies {
-    implementation("org.hildan.krossbow:krossbow-stomp-kxserialization-json:7.0.0")
-    implementation("org.hildan.krossbow:krossbow-stomp-core:7.0.0")
-    implementation("org.hildan.krossbow:krossbow-websocket-builtin:7.0.0")
+
+    // 🔥 Firebase (Push Notification)
     implementation(libs.firebase.messaging)
-    implementation(libs.androidx.runtime)
+
+    // 🎨 Compose UI
+    implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.compose.runtime)
     implementation(libs.androidx.compose.foundation.layout)
-    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.4")
-    implementation("androidx.navigation:navigation-compose:2.9.3")
-    implementation(libs.androidx.material)
-    implementation (libs.androidx.material.icons.extended)
-
-    implementation(libs.font.awesome)
-
-    implementation(libs.coil.compose)
-
-    implementation(libs.retrofit)
-    implementation(libs.converter.gson)
-
-    implementation(libs.androidx.datastore.preferences)
-
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.lifecycle.runtime.ktx)
-    implementation(libs.androidx.activity.compose)
-    implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
-    implementation(libs.androidx.appcompat)
-    implementation(libs.material)
-    implementation(libs.androidx.activity)
+    implementation(libs.androidx.material.icons.extended)
+
+    // 🧭 Navigation
     implementation(libs.androidx.navigation.compose)
+
+    // 🖼️ Image Loading
+    implementation(libs.coil.compose)
+
+    // 🌐 Networking
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
+
+    // 🔌 Realtime / WebSocket (nếu có dùng sau này thì thêm lại Krossbow ở đây)
+
+    // 💾 Local Storage
+    implementation(libs.androidx.datastore.preferences)
+
+    // ⚙️ Android Core
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.androidx.activity.compose)
+
+    // 🔄 State (LiveData bridge)
     implementation(libs.androidx.runtime.livedata)
+
+    // 🎨 Icon / Font ngoài
+    implementation(libs.font.awesome)
+
+    // 🧪 Testing
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+    // 🧪 Compose Testing
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
+
+    // 🛠 Debug tools
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    // ⚡ Java 8+ APIs on old Android
+    coreLibraryDesugaring(libs.desugar.jdk.libs)
 }

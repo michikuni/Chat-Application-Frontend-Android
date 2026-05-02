@@ -29,10 +29,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import com.company.myapplication.R
 import com.company.myapplication.repository.UserRepository
 import com.company.myapplication.repository.apiconfig.ApiConfig
 import com.company.myapplication.util.UserSharedPreferences
@@ -81,7 +83,7 @@ fun TopSection(
         if (selectedImageUri != null) {
             // Preview ảnh vừa chọn từ gallery
             AsyncImage(
-                model = selectedImageUri,
+                model = painterResource(R.drawable.person),
                 contentDescription = "preview avatar",
                 modifier = Modifier
                     .width(100.dp)

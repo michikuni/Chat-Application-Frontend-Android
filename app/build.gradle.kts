@@ -4,6 +4,8 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     id("org.jetbrains.kotlin.plugin.serialization") version "1.9.23"
     alias(libs.plugins.google.gms.google.services)
+    alias(libs.plugins.hilt.android)
+    alias(libs.plugins.ksp)
 }
 
 android {
@@ -46,8 +48,17 @@ android {
 
 dependencies {
 
-    // 🔥 Firebase (Push Notification)
+    // 🔥 Firebase (BoM manages versions)
+    implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.messaging)
+    implementation(libs.firebase.firestore)
+    implementation(libs.firebase.config)
+    implementation(libs.firebase.auth)
+
+    // 🧩 Hilt (DI)
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.compiler)
+    implementation(libs.androidx.hilt.navigation.compose)
 
     // 🎨 Compose UI
     implementation(platform(libs.androidx.compose.bom))
@@ -84,6 +95,9 @@ dependencies {
 
     // 🎨 Icon / Font ngoài
     implementation(libs.font.awesome)
+
+    // ⚡ Coroutines bridge cho Play Services Task (Firestore .await())
+    implementation(libs.kotlinx.coroutines.play.services)
 
     // 🧪 Testing
     testImplementation(libs.junit)

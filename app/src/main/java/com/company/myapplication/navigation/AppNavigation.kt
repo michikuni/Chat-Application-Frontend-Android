@@ -2,7 +2,7 @@ package com.company.myapplication.navigation
 
 import android.app.Activity
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -28,11 +28,12 @@ import com.company.myapplication.viewmodel.UserViewModel
 @Composable
 fun AppNavigation(activity: Activity) {
     val navController = rememberNavController()
-    val conversationViewModel = remember { ConversationViewModel(activity) }
-    val friendViewModel = remember { FriendViewModel(activity) }
-    val authViewModel = remember { AuthViewModel(activity) }
-    val userViewModel = remember { UserViewModel(activity) }
-    val feedViewModel = remember { FeedViewModel(activity) }
+    // ViewModels được lấy từ Hilt với scope tại Activity (graph root) để đảm bảo dùng chung
+    val conversationViewModel: ConversationViewModel = hiltViewModel()
+    val friendViewModel: FriendViewModel = hiltViewModel()
+    val authViewModel: AuthViewModel = hiltViewModel()
+    val userViewModel: UserViewModel = hiltViewModel()
+    val feedViewModel: FeedViewModel = hiltViewModel()
 
     NavHost(navController = navController, startDestination = "splash") {
         composable(route = "splash") {
@@ -45,17 +46,19 @@ fun AppNavigation(activity: Activity) {
             LoginScreen(
                 activity = activity,
                 viewModel = authViewModel,
-                onLoginSuccess = {navController.navigate("home"){
-                    popUpTo("login"){ inclusive = true }
-                } },
-                onNavigateToRegister = { navController.navigate("register")}
+                onLoginSuccess = {
+                    navController.navigate("home") {
+                        popUpTo("login") { inclusive = true }
+                    }
+                },
+                onNavigateToRegister = { navController.navigate("register") }
             )
         }
         composable(route = "register") {
             RegisterScreen(
                 viewModel = authViewModel,
-                onNavigateToLogin = { navController.navigate("login")},
-                onRegisterSuccess = { navController.navigate("login")}
+                onNavigateToLogin = { navController.navigate("login") },
+                onRegisterSuccess = { navController.navigate("login") }
             )
         }
         composable(route = "home") {
@@ -67,7 +70,6 @@ fun AppNavigation(activity: Activity) {
                 userViewModel = userViewModel
             )
         }
-
         composable(route = "contact") {
             ContactScreen(
                 activity = activity,
@@ -75,7 +77,6 @@ fun AppNavigation(activity: Activity) {
                 navHostController = navController
             )
         }
-
         composable("setting") {
             SettingScreen(
                 navHostController = navController,
@@ -89,8 +90,7 @@ fun AppNavigation(activity: Activity) {
                 userViewModel = userViewModel
             )
         }
-
-        composable ("moment"){
+        composable("moment") {
             MomentScreen(
                 navHostController = navController,
                 feedViewModel = feedViewModel,
@@ -98,7 +98,6 @@ fun AppNavigation(activity: Activity) {
                 userViewModel = userViewModel
             )
         }
-
         composable(
             route = "box_chat/{conversationId}/{contact}",
             arguments = listOf(
@@ -116,15 +115,13 @@ fun AppNavigation(activity: Activity) {
                 contact = contact
             )
         }
-
-        composable (
+        composable(
             route = "chat_friend_info/{userId}/{conversationId}",
             arguments = listOf(
-                navArgument(name = "conversationId"){ type = NavType.LongType },
-                navArgument(name = "userId"){type = NavType.LongType}
+                navArgument(name = "conversationId") { type = NavType.LongType },
+                navArgument(name = "userId") { type = NavType.LongType }
             ),
-
-        ){backStackEntry ->
+        ) { backStackEntry ->
             val conversationId = backStackEntry.arguments?.getLong("conversationId") ?: -1
             val userId = backStackEntry.arguments?.getLong("userId") ?: -1
             InfoScreen(
@@ -136,13 +133,12 @@ fun AppNavigation(activity: Activity) {
                 conversationId = conversationId
             )
         }
-
-        composable (
+        composable(
             route = "chat_media/{conversationId}",
             arguments = listOf(
-                navArgument(name = "conversationId"){ type = NavType.LongType}
+                navArgument(name = "conversationId") { type = NavType.LongType }
             )
-        ){backStackEntry ->
+        ) { backStackEntry ->
             val conversationId = backStackEntry.arguments?.getLong("conversationId") ?: -1
             MediaScreen(
                 conversationId = conversationId,
@@ -150,13 +146,12 @@ fun AppNavigation(activity: Activity) {
                 navHostController = navController
             )
         }
-
         composable(
             route = "group_members/{conversationId}",
             arguments = listOf(
-                navArgument(name = "conversationId"){ type = NavType.LongType}
+                navArgument(name = "conversationId") { type = NavType.LongType }
             )
-        ){backStackEntry ->
+        ) { backStackEntry ->
             val conversationId = backStackEntry.arguments?.getLong("conversationId") ?: -1
             GroupMembers(
                 conversationId = conversationId,

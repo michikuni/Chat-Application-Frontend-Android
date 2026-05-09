@@ -1,29 +1,31 @@
 package com.company.myapplication.viewmodel
 
 import android.content.Context
+import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.company.myapplication.data.model.response.UserResponse
-import com.company.myapplication.repository.UserRepository
+import com.company.myapplication.domain.repository.UserRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class UserViewModel(context: Context): ViewModel(){
-    val repo = UserRepository(context = context)
+@HiltViewModel
+class UserViewModel @Inject constructor(
+    private val userRepository: UserRepository
+) : ViewModel() {
 
     private val _userInfo = MutableStateFlow<UserResponse?>(null)
     val userInfo: StateFlow<UserResponse?> = _userInfo
+
     private val _userInfoList = MutableStateFlow<List<UserResponse>>(emptyList())
     val userInfoList: StateFlow<List<UserResponse>> = _userInfoList
 
-    fun getUserInfo(userId: Long){
+    fun getUserInfo(userId: Long) {
         viewModelScope.launch {
-            val info = repo.getUserInfo(userId = userId)
-            if (info != null){
-                _userInfo.value = info
-            }
+            userRepository.getUserInfo(userId)?.let { _userInfo.value = it }
         }
     }
 
@@ -31,12 +33,15 @@ class UserViewModel(context: Context): ViewModel(){
         viewModelScope.launch {
             val result = mutableListOf<UserResponse>()
             userIds?.forEach { id ->
-                val user = repo.getUserInfo(userId = id)
-                if (user != null) {
-                    result.add(user)
-                }
+                userRepository.getUserInfo(id)?.let { result.add(it) }
             }
             _userInfoList.value = result
+        }
+    }
+
+    fun uploadImage(context: Context, uri: Uri, onResult: (Boolean) -> Unit = {}) {
+        viewModelScope.launch {
+            onResult(userRepository.uploadImage(context, uri))
         }
     }
 }

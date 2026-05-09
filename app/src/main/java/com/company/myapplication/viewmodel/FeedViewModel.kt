@@ -1,44 +1,28 @@
 package com.company.myapplication.viewmodel
 
-import android.app.Activity
 import android.content.Context
 import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.company.myapplication.data.model.chat.Message
 import com.company.myapplication.data.model.feed.FeedDTO
 import com.company.myapplication.data.model.response.ApiResponse
-import com.company.myapplication.repository.FeedRepository
-import kotlinx.coroutines.delay
+import com.company.myapplication.domain.repository.FeedRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class FeedViewModel(activity: Activity): ViewModel(){
-    val repo = FeedRepository(context = activity)
+@HiltViewModel
+class FeedViewModel @Inject constructor(
+    private val repo: FeedRepository
+) : ViewModel() {
 
     private val _state = MutableStateFlow<ApiResponse?>(null)
     val state: StateFlow<ApiResponse?> get() = _state
 
     private val _loading = MutableStateFlow(false)
     val loading: StateFlow<Boolean> get() = _loading
-//    private val _allFeed = MutableStateFlow<List<FeedDTO>>(emptyList())
-//    val allFeed: StateFlow<List<FeedDTO>> get() = _allFeed
-//
-//    fun getAllFeed(userId: Long){
-//        viewModelScope.launch {
-//            val result = repo.getAllFeeds(userId = userId)
-//            try {
-//                if (result != null) {
-//                    _allFeed.value = result
-//                }
-//            } catch (e: Exception){
-//                _state.value = ApiResponse(error = e.message)
-//            } finally {
-//                _loading.value = false
-//            }
-//        }
-//    }
 
     private val _allFeed = MutableStateFlow<List<FeedDTO>>(emptyList())
     val allFeed: StateFlow<List<FeedDTO>> = _allFeed
@@ -46,8 +30,7 @@ class FeedViewModel(activity: Activity): ViewModel(){
     fun getAllFeed(userId: Long) {
         viewModelScope.launch {
             try {
-                val response = repo.getAllFeedByUserId(userId)
-                _allFeed.value = response
+                _allFeed.value = repo.getAllFeedByUserId(userId)
             } catch (e: Exception) {
                 e.printStackTrace()
             }

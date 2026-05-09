@@ -18,7 +18,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -27,11 +26,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.company.myapplication.R
 import com.company.myapplication.data.model.chat.CreateConversation
-import com.company.myapplication.repository.ConversationRepository
 import com.company.myapplication.ui.home.util.TextField
 import com.company.myapplication.util.DataChangeHelper
 import com.company.myapplication.viewmodel.ConversationViewModel
-import kotlinx.coroutines.launch
 
 
 @Composable
@@ -43,20 +40,16 @@ fun BottomBoxChat(
     color: List<String>
 ){
     var chatMessage by remember(userId, conversationId) { mutableStateOf("") }
-    val repo = ConversationRepository(context = activity)
-    val scope = rememberCoroutineScope()
     val imageLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent()
     ) { uri: Uri? ->
         uri?.let {
-            scope.launch {
-                repo.sendMediaFile(
-                    context = activity,
-                    userId = userId,
-                    conversationId = conversationId,
-                    uri = it
-                )
-            }
+            conversationViewModel.sendMediaFile(
+                context = activity,
+                userId = userId,
+                conversationId = conversationId,
+                uri = it
+            )
         }
     }
 

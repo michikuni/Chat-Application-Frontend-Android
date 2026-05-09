@@ -1,21 +1,26 @@
 package com.company.myapplication.viewmodel
 
 import android.app.Activity
-import android.util.Log
-import androidx.compose.runtime.*
-import androidx.lifecycle.*
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.company.myapplication.data.model.fcm.FcmTokenResponse
-import com.company.myapplication.repository.AuthRepository
-import com.company.myapplication.repository.FcmRepository
+import com.company.myapplication.domain.repository.AuthRepository
+import com.company.myapplication.domain.repository.FcmRepository
 import com.company.myapplication.util.UserSharedPreferences
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class AuthViewModel(activity: Activity): ViewModel(){
-    private val repo = AuthRepository(activity)
-    private val fcmRepo = FcmRepository(activity)
+@HiltViewModel
+class AuthViewModel @Inject constructor(
+    private val authRepository: AuthRepository,
+    private val fcmRepository: FcmRepository
+) : ViewModel() {
 
     var errorMessage by mutableStateOf<String?>(null)
-
     var registerSuccess by mutableStateOf(false)
     var loginSuccess by mutableStateOf(false)
 
@@ -23,17 +28,14 @@ class AuthViewModel(activity: Activity): ViewModel(){
         viewModelScope.launch {
             try {
                 UserSharedPreferences.clearSession(activity)
-                val result = repo.login(account, password)
+                val result = authRepository.login(account, password)
                 val fcmToken = UserSharedPreferences.getFcmToken(activity)
 
                 if (result != null) {
-                    val id = result.id
-                    val username = result.username
-                    val token = result.token
-                    fcmToken?.let { FcmTokenResponse(userId = id, token = it) }
-                        ?.let { fcmRepo.sendToken(it) }
+                    fcmToken?.let { FcmTokenResponse(userId = result.id, token = it) }
+                        ?.let { fcmRepository.sendToken(it) }
 
-                    UserSharedPreferences.saveUser(activity, id, username, token)
+                    UserSharedPreferences.saveUser(activity, result.id, result.username, result.token)
                     loginSuccess = true
                     errorMessage = null
                 }
@@ -45,26 +47,25 @@ class AuthViewModel(activity: Activity): ViewModel(){
         }
     }
 
-
     fun logout(activity: Activity) {
+        authRepository.logout()
         UserSharedPreferences.clearSession(activity)
     }
 
-
-    fun register(name: String, account: String, email: String, password: String){
+    fun register(name: String, account: String, email: String, password: String) {
         viewModelScope.launch {
             try {
-                val success = repo.register(name, account, email, password)
+                val success = authRepository.register(name, account, email, password)
                 registerSuccess = success
                 errorMessage = if (success) null else "Đăng ký thất bại"
-            } catch (e: IllegalArgumentException){
+            } catch (e: IllegalArgumentException) {
                 errorMessage = "Lỗi đăng ký: ${e.message}"
                 registerSuccess = false
             }
         }
     }
+
     fun resetErrorMessage() {
         errorMessage = null
     }
-
 }

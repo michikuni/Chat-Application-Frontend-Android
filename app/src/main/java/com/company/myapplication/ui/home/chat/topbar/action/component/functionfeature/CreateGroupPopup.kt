@@ -33,7 +33,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -46,19 +45,19 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.company.myapplication.data.model.chat.CreateConversationGroup
 import com.company.myapplication.data.model.response.UserResponse
-import com.company.myapplication.repository.ConversationRepository
 import com.company.myapplication.repository.apiconfig.ApiConfig
 import com.company.myapplication.ui.home.util.SearchBar
 import com.company.myapplication.util.topAppBarColor
 import com.company.myapplication.R
-import kotlinx.coroutines.launch
 import androidx.core.net.toUri
 import coil.compose.rememberAsyncImagePainter
 import com.company.myapplication.util.UserSharedPreferences
 import com.company.myapplication.util.backgroundColor
 import com.company.myapplication.util.titleFont
+import com.company.myapplication.viewmodel.ConversationViewModel
 import java.io.File
 import java.io.FileOutputStream
 
@@ -67,15 +66,14 @@ import java.io.FileOutputStream
 fun CreateGroupPopup (
     context: Context,
     onDismiss: () -> Unit,
-    friends: List<UserResponse>
+    friends: List<UserResponse>,
+    conversationViewModel: ConversationViewModel = hiltViewModel()
 ){
     var groupName by remember { mutableStateOf("") }
     var searchQuery by remember { mutableStateOf("") }
     val userId = UserSharedPreferences.getId(context = context)
     val selectedUsers = remember { mutableStateListOf<UserResponse>() }
     val memberIds: List<Long> = listOf(userId) + selectedUsers.map { it.id }
-    val repo = ConversationRepository(context = context)
-    val scope = rememberCoroutineScope()
     val filteredUsers = friends.filter {
         it.name.contains(searchQuery, ignoreCase = true)
     }
@@ -124,15 +122,14 @@ fun CreateGroupPopup (
                                 modifier = Modifier
                                     .padding(8.dp)
                                     .clickable(enabled = selectedUsers.isNotEmpty()) {
-                                        scope.launch {
-                                            repo.createConversationGroup(
-                                                data = CreateConversationGroup(
-                                                    members = memberIds,
-                                                    name = groupName),
-                                                uri = selectedImageUri ?: uri,
-                                                context = context
-                                            )
-                                        }
+                                        conversationViewModel.createConversationGroup(
+                                            data = CreateConversationGroup(
+                                                members = memberIds,
+                                                name = groupName
+                                            ),
+                                            uri = selectedImageUri ?: uri,
+                                            context = context
+                                        )
                                         onDismiss()
                                     },
                                 fontFamily = titleFont

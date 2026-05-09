@@ -26,24 +26,25 @@ import androidx.compose.ui.unit.*
 import androidx.navigation.NavHostController
 import coil.compose.rememberAsyncImagePainter
 import com.company.myapplication.R
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.company.myapplication.data.model.response.UserResponse
-import com.company.myapplication.repository.ConversationRepository
 import com.company.myapplication.repository.apiconfig.ApiConfig
 import com.company.myapplication.util.UserSharedPreferences
 import com.company.myapplication.util.titleFont
+import com.company.myapplication.viewmodel.ConversationViewModel
 
 @Composable
 fun ContactItem(
     contact: UserResponse,
     context: Activity,
-    navHostController: NavHostController
+    navHostController: NavHostController,
+    conversationViewModel: ConversationViewModel = hiltViewModel()
 ){
     val userId = UserSharedPreferences.getId(context = context)
     var isSelected by remember { mutableStateOf(false) }
-    val repo = ConversationRepository(context = context)
     var conversationId by remember { mutableLongStateOf(-1) }
     LaunchedEffect(contact.id) {
-        conversationId = repo.findConversation(userId, contact.id)
+        conversationId = conversationViewModel.findConversation(userId, contact.id)
     }
     Row (
         modifier = Modifier

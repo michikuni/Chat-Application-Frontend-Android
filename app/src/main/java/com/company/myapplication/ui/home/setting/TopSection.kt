@@ -23,7 +23,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -35,20 +34,17 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.company.myapplication.R
-import com.company.myapplication.repository.UserRepository
 import com.company.myapplication.repository.apiconfig.ApiConfig
 import com.company.myapplication.util.UserSharedPreferences
 import com.company.myapplication.util.backgroundColor
 import com.company.myapplication.util.titleFont
 import com.company.myapplication.viewmodel.UserViewModel
-import kotlinx.coroutines.launch
 
 @Composable
 fun TopSection(
     context: Context,
     userViewModel: UserViewModel
 ){
-    val repo = UserRepository(context = context)
     val userId = UserSharedPreferences.getId(context = context)
     var selectedImageUri by remember { mutableStateOf<Uri?>(null) }
     var avatarUrl by remember { mutableStateOf("${ApiConfig.BASE_URL}/api/users/get_avatar/$userId") }
@@ -59,7 +55,6 @@ fun TopSection(
     ) { uri: Uri? ->
         selectedImageUri = uri
     }
-    val scope = rememberCoroutineScope()
     LaunchedEffect(selectedImageUri) {
         if (selectedImageUri == null) {
             avatarUrl = "${ApiConfig.BASE_URL}/api/users/get_avatar/$userId?ts=${System.currentTimeMillis()}"
@@ -117,8 +112,7 @@ fun TopSection(
             selectedImageUri?.let { uri ->
                 Button(
                     onClick = {
-                        scope.launch {
-                            repo.uploadImage(context, uri)
+                        userViewModel.uploadImage(context, uri) {
                             selectedImageUri = null
                         }
                     },

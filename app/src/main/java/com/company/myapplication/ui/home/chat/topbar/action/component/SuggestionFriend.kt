@@ -30,11 +30,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import coil.compose.rememberAsyncImagePainter
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.company.myapplication.R
-import com.company.myapplication.repository.ConversationRepository
 import com.company.myapplication.repository.apiconfig.ApiConfig
 import com.company.myapplication.util.backgroundColor
 import com.company.myapplication.util.titleFont
+import com.company.myapplication.viewmodel.ConversationViewModel
 import com.company.myapplication.viewmodel.FriendViewModel
 
 @Composable
@@ -44,20 +45,20 @@ fun SuggestionFriend(
     friendId: Long,
     navHostController: NavHostController,
     context: Context,
-    friendViewModel: FriendViewModel
+    friendViewModel: FriendViewModel,
+    conversationViewModel: ConversationViewModel = hiltViewModel()
 ) {
     val acceptedFriendSuccess = friendViewModel.acceptedFriendSuccess
     val canceledFriendSuccess = friendViewModel.canceledFriendSuccess
     var isSelected by remember { mutableStateOf(false) }
     var avatarUrl by remember { mutableStateOf("${ApiConfig.BASE_URL}/api/users/get_avatar/${friendId}") }
-    val repo = ConversationRepository(context = context)
     var conversationId by remember { mutableLongStateOf(-1) }
     LaunchedEffect(friendId) {
-        conversationId = repo.findConversation(userId, friendId)
+        conversationId = conversationViewModel.findConversation(userId, friendId)
     }
     LaunchedEffect(acceptedFriendSuccess, canceledFriendSuccess) {
         if (acceptedFriendSuccess || canceledFriendSuccess) {
-            conversationId = repo.findConversation(userId, friendId)
+            conversationId = conversationViewModel.findConversation(userId, friendId)
         }
     }
     Row(

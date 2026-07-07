@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "569555971190",
-    "project_id": "mir-communicate",
-    "storage_bucket": "mir-communicate.firebasestorage.app"
+    "project_number": "445761305753",
+    "project_id": "chat-application-dd146",
+    "storage_bucket": "chat-application-dd146.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:569555971190:android:349f6b328b89edc2b1c357",
+        "mobilesdk_app_id": "1:445761305753:android:afa570af0858b105a60c08",
         "android_client_info": {
           "package_name": "com.company.myapplication"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyAzvfWbn9SDAMFuRfpoOKFl4WA_goxa8iU"
+          "current_key": "AIzaSyCK6BInYPZI-PCWfUvU6hseNaT4e07fKaM"
         }
       ],
       "services": {
